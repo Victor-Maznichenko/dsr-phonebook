@@ -1,0 +1,28 @@
+{
+  "name": "dsr-phonebook",
+  "description": "Corporate online phonebook application",
+  "license": "MIT",
+  "private": true,
+  "author": {
+    "name": "Victor Maznichenko",
+    "email": "victor_maznichenko@mail.ru",
+    "url": "https://github.com/victor_maznichenko"
+  },
+  "packageManager": "bun@1.2.22",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "devDependencies": {
+    "turbo": "^2.8.3",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7"
+  },
+  "scripts": {
+    "prepare": "husky",
+    "dev": "turbo dev",
+    "build": "turbo run frontend#build",
+    "lint": "turbo run lint",
+    "test": "node index.js"
+  }
+}
