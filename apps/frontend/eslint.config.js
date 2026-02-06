@@ -84,6 +84,13 @@ export default eslint(
             }
           ]
         }
+      ],
+      'perfectionist/sort-interfaces': [
+        'error',
+        {
+          type: 'line-length',
+          order: 'desc'
+        }
       ]
     }
   }

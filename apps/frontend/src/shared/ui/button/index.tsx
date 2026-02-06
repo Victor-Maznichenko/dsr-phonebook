@@ -18,12 +18,14 @@ type ButtonVariants =
   | 'text'
   | 'unstyled';
 
-type ButtonProps<T extends ElementType> = {
+interface ButtonOwnProps<T> {
   variant?: ButtonVariants;
   disabled?: boolean;
   loading?: boolean;
   as?: T;
-} & ComponentProps<T>;
+}
+
+type ButtonProps<T extends ElementType = 'button'> = ButtonOwnProps<T> & Omit<ComponentProps<T>, keyof ButtonOwnProps<T>>;
 
 export const Button = <T extends ElementType = 'button'>({
   variant = 'light-orange-md',
@@ -38,14 +40,14 @@ export const Button = <T extends ElementType = 'button'>({
   const Component = as || 'button';
 
   const defaultButtonProps = {
-    type: props?.type || 'button',
-    disabled: isDisabled
+    type: 'button' as const,
+    disabled
   };
 
   return (
     <Component
       className={clsx(className, styles.button, styles[variant], isDisabled && styles.disabled)}
-      {...defaultButtonProps}
+      {...(Component === 'button' ? defaultButtonProps : {})}
       {...props}
     >
       <span>{loading ? 'Подождите...' : children}</span>
