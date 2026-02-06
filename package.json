@@ -23,6 +23,5 @@
     "dev": "turbo dev",
     "build": "turbo run frontend#build",
     "lint": "turbo run lint",
-    "test": "node index.js"
   }
 }

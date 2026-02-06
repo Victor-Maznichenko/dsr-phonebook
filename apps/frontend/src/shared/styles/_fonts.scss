@@ -1,6 +1,6 @@
 @use 'mixins' as *;
 
-// @include font-face('Montserrat', 400, 'Regular');
-// @include font-face('Montserrat', 500, 'Medium');
-// @include font-face('Montserrat', 600, 'SemiBold');
-// @include font-face('Montserrat', 700, 'Bold');
+@include font-face(Poppins, 400, 'Regular');
+@include font-face(Poppins, 500, 'Medium');
+@include font-face(Poppins, 600, 'SemiBold');
+@include font-face(Poppins, 700, 'Bold');

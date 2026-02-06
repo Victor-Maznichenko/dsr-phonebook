@@ -1,0 +1,102 @@
+@use "sass:map";
+
+.button {
+  line-height: 1;
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-decoration: none;
+  display: inline-block;
+  padding: .875rem 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  transition: opacity 0.25s, background-color 0.25s;
+  border-radius: .25rem;
+}
+
+.loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-height: 50%;
+  aspect-ratio: 1;
+}
+
+$sizes: (
+  sm: (
+    padding: .625rem .75rem,
+    font-size: .75rem,
+  ),
+  md: (
+    padding: .875rem 1rem,
+    font-size: .875rem,
+  ),
+  lg: (
+    padding: 1rem 1.125rem,
+    font-size: 1.125rem,
+  ),
+);
+
+@mixin init-button-sizes($size) {
+  .filled-stone-#{$size}, .filled-orange-#{$size}, .light-green-#{$size}, .light-orange-#{$size} {
+    $config: map.get($sizes, $size);
+    padding: map.get($config, padding);
+    font-size: map.get($config, font-size);
+  }
+}
+
+@mixin init-light-colors($c) {
+  .light-#{$c}-sm, .light-#{$c}-md, .light-#{$c}-lg {
+    color: var(--color-#{$c});
+    background-color: var(--color-#{$c}-7);
+
+    &:hover {
+      background-color: var(--color-#{$c}-12);
+    }
+  }
+}
+
+@mixin init-filled-colors($c) {
+  .filled-#{$c}-sm, .filled-#{$c}-md, .filled-#{$c}-lg {
+    color: var(--color-white);
+    background-color: var(--color-#{$c});
+
+    &:hover {
+      background-color: var(--color-#{$c}-85);
+    }
+  }
+}
+
+@include init-button-sizes('sm');
+@include init-button-sizes('md');
+@include init-button-sizes('lg');
+
+@include init-light-colors('orange');
+@include init-light-colors('green');
+
+@include init-filled-colors('orange');
+@include init-filled-colors('stone');
+
+.text {
+  all: unset;
+  display: inline;
+  transition: filter var(--trans-fast);
+
+  &:hover {
+    filter: drop-shadow(0 0 1.5rem var(--color-indigo));
+  }
+}
+
+.disabled {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.unstyled {
+  all: unset;
+  display: inline-block;
+}
+

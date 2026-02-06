@@ -1,4 +1,5 @@
 import { eslint } from '@siberiacancode/eslint';
+// For more info, see https://github.com/storybookjs/eslint-plugin-storybook#configuration-flat-config-format
 
 export default eslint(
   {
@@ -63,6 +64,23 @@ export default eslint(
             {
               groupName: 'internal-shared-ui',
               elementNamePattern: '^(@|~)/shared/ui'
+            }
+          ]
+        }
+      ],
+      'perfectionist/sort-jsx-props': [
+        'error',
+        {
+          type: 'line-length',
+          order: 'desc',
+          groups: [
+            'className',
+            'prop'
+          ],
+          customGroups: [
+            {
+              groupName: 'className',
+              elementNamePattern: '^className$'
             }
           ]
         }

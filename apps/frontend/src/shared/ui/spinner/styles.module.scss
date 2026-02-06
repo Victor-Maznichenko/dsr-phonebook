@@ -1,0 +1,27 @@
+@keyframes spinner-animation {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner {
+  display: inline-block;
+  aspect-ratio: 1;
+  height: 2rem;
+
+  &::after {
+    content: '';
+    display: block;
+    border-radius: 50%;
+    border-style: solid;
+    border-width: calc(var(--loader-size) / 8);
+    border-color: currentColor currentColor currentColor transparent;
+    animation: spinner-animation 1.2s linear infinite;
+    height: 100%;
+    width: 100%;
+  }
+}

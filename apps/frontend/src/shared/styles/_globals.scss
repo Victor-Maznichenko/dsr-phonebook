@@ -8,10 +8,13 @@
   animation: none;
 }
 
+*, *::after, *::before {
+  box-sizing: border-box;
+}
+
 * {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 
 ::selection {
@@ -39,7 +42,7 @@ html {
 }
 
 body {
-  // font-family: 'Montserrat', Verdana, Geneva, Tahoma, sans-serif;
+  font-family: Poppins, sans-serif;
   background-color: var(--color-background);
   font-optical-sizing: auto;
   color: var(--color-text);

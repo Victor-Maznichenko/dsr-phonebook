@@ -6,10 +6,17 @@
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "moduleDetection": "force",
     "useDefineForClassFields": true,
+
+    /* Absolute Imports */
+    "baseUrl": "./",
     "module": "ESNext",
+    "ignoreDeprecations": "6.0",
 
     /* Bundler mode */
     "moduleResolution": "bundler",
+    "paths": {
+      "@/*": ["*", "src/*"]
+    },
     "types": ["vite/client"],
     "allowImportingTsExtensions": true,
 
