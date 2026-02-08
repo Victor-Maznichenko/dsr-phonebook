@@ -50,7 +50,7 @@ export const Button = <T extends ElementType = 'button'>({
       {...(Component === 'button' ? defaultButtonProps : {})}
       {...props}
     >
-      <span>{loading ? 'Подождите...' : children}</span>
+      {loading ? 'Подождите...' : children}
     </Component>
   );
 };

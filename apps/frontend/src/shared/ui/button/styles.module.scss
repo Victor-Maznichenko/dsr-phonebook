@@ -13,7 +13,11 @@
   font-size: 0.75rem;
   font-weight: 600;
   transition: opacity 0.25s, background-color 0.25s;
-  border-radius: .25rem;
+  border-radius: var(--border-radius-sm);
+
+  &:active {
+    transform: translateY(calc(.0625rem));
+  }
 }
 
 .loader {
@@ -84,6 +88,7 @@ $sizes: (
   all: unset;
   display: inline;
   transition: filter var(--trans-fast);
+  cursor: pointer;
 
   &:hover {
     filter: drop-shadow(0 0 1.5rem var(--color-indigo));
@@ -98,5 +103,6 @@ $sizes: (
 .unstyled {
   all: unset;
   display: inline-block;
+  cursor: pointer;
 }
 

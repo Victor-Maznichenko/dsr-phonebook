@@ -9,9 +9,10 @@
 }
 
 .spinner {
+  color: var(--spinner-color);
+  height: var(--spinner-size);
   display: inline-block;
   aspect-ratio: 1;
-  height: 2rem;
 
   &::after {
     content: '';

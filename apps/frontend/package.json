@@ -16,7 +16,8 @@
     "clsx": "^2.1.1",
     "motion": "^12.33.0",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react-dom": "^19.2.0",
+    "react-number-format": "^5.4.4"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^5.0.0",

@@ -22,6 +22,6 @@
     "prepare": "husky",
     "dev": "turbo dev",
     "build": "turbo run frontend#build",
-    "lint": "turbo run lint",
+    "lint": "turbo run lint"
   }
 }
