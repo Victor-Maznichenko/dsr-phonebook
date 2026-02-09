@@ -1,0 +1,24 @@
+.avatar {
+    display: inline-block;
+    aspect-ratio: 1;
+    width: 38px;
+    border: 1px solid #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Poppins, sans-serif;
+    font-size: 17px;
+}
+
+.circle {
+    border-radius: 50%;
+}
+
+.square {
+    border-radius: var(--border-radius-md);
+}
+
+.icon {
+    width: 87.5%;
+    height: 87.5%;
+}

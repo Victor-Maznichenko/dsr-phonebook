@@ -10,7 +10,7 @@
 
 .spinner {
   color: var(--spinner-color);
-  height: var(--spinner-size);
+  height: calc(var(--spinner-size) * 1px);
   display: inline-block;
   aspect-ratio: 1;
 

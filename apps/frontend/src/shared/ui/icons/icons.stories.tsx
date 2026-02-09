@@ -1,45 +1,58 @@
-/* import type { Meta, StoryObj } from '@storybook/react-vite';
-import { useArgs } from 'storybook/internal/preview-api';
-import { InputText } from '.';
+import React from "react";
+import type { Meta as MetaType, StoryObj } from "@storybook/react";
+import * as Icons from "./ui";
 
-const meta = {
-  title: 'shared/InputText',
-  component: InputText,
-  parameters: { layout: 'centered' },
-  tags: ['autodocs'],
-  argTypes: {
-    onChange: { control: false },
-    defaultValue: { control: false }
-  }
-} satisfies Meta<typeof InputText>;
+type IconComp = React.FC<React.SVGProps<SVGSVGElement> & { size?: number; color?: string }>;
+
+const meta: MetaType = {
+   title: "shared/Icons",
+   parameters: { controls: { expanded: true } },
+    argTypes: {
+      size: { control: { type: "number", min: 8, max: 256, step: 1 } },
+      color: { control: "color" },
+    },
+};
 
 export default meta;
-
 type Story = StoryObj<typeof meta>;
 
-export const Example: Story = {
-  args: {
-    value: '',
-    readOnly: false,
-    disabled: false,
-    hasClear: false,
-    placeholder: 'Введите текст',
-    label: 'Название input :)'
-  },
+export const Gallery: Story = (args: { size: number; color: string }) => {
+   const entries = Object.entries(Icons).filter(([, Comp]) => typeof Comp === "function") as [
+      string,
+      IconComp
+   ][];
 
-  render: (args) => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [{ value }, updateArgs] = useArgs();
-
-    return (
-      <div style={{ width: '300px' }}>
-        <InputText
-          {...args}
-          onChange={(e) => updateArgs({ value: e.target.value })}
-          value={value}
-        />
+   return (
+      <div>
+        <div
+         style={{
+            fontSize: 12,
+            margin: "0 auto",
+            display: "flex",
+            flexWrap: "wrap",
+            alignItems: 'flex-start',
+            gap: 16,
+         }}
+      >
+         {entries.map(([name, Icon]) => (
+            <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+               <div key={name} style={{ border: "1px solid #000", fontSize: 0 }}>
+                  <Icon size={args.size} />
+               </div>
+               <span>{name}</span>
+            </div>
+         ))}
       </div>
-    );
-  }
+      </div>
+   );
 };
- */
+
+Gallery.args = {
+   size: 32,
+   color: "#111111",
+};
+
+Gallery.argTypes = {
+   size: { control: { type: "number", min: 8, max: 256, step: 1 } },
+   color: { control: "color" },
+};
