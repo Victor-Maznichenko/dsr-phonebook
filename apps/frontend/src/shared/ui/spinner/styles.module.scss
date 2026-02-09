@@ -9,6 +9,9 @@
 }
 
 .spinner {
+  --spinner-size: 32;
+  --spinner-color: var(--color-dark);
+
   color: var(--spinner-color);
   height: calc(var(--spinner-size) * 1px);
   display: inline-block;

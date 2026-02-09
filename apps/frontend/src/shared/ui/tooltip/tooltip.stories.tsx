@@ -6,19 +6,22 @@ const meta = {
   component: Tooltip,
   parameters: { layout: 'centered' },
   tags: ['autodocs'],
-  argTypes: {
-  },
-  args: {
-
-  }
+  argTypes: {}
 } satisfies Meta<typeof Tooltip>;
 
 export default meta;
+
 type Story = StoryObj<typeof meta>;
 
 export const Example: Story = {
-  args: {
-    triggerContent: 'Tooltip Trigger',
-    children: 'Контент тултипа...'
+  args: {},
+
+  render: (args) => {
+    return (
+      <Tooltip {...args}>
+        <Tooltip.Trigger>Trigger</Tooltip.Trigger>
+        <Tooltip.Content>Content</Tooltip.Content>
+      </Tooltip>
+    );
   }
 };

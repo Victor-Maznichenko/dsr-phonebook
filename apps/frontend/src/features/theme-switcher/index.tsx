@@ -44,7 +44,7 @@ export const ThemeSwitcher = ({ onClick, ...props }: ThemeSwitcherProps) => {
   };
 
   return (
-    <Button className={styles.btn} variant='unstyled' onClick={handleClick} {...props}>
+    <Button className={styles.btn} onClick={handleClick} variant='unstyled' {...props}>
       {isLightTheme ? <Icons.Sun /> : <Icons.Moon />}
     </Button>
   );

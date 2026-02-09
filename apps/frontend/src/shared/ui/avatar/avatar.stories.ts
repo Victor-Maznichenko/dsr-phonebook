@@ -8,7 +8,7 @@ const meta = {
   tags: ['autodocs'],
   argTypes: {},
   args: {
-    variant: 'circle',
+    variant: 'circle'
   }
 } satisfies Meta<typeof Avatar>;
 

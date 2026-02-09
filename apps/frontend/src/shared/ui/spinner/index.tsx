@@ -3,11 +3,11 @@ import clsx from 'clsx';
 import styles from './styles.module.scss';
 
 interface SpinnerProps extends ComponentProps<'div'> {
-  size?: number,
   color?: string,
+  size?: number,
 }
 
-export const Spinner = ({ className, color, size = 32, ...props }: SpinnerProps) => {
+export const Spinner = ({ className, color, size, ...props }: SpinnerProps) => {
   return (
     <div
       className={clsx(styles.spinner, className)}

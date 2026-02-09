@@ -147,8 +147,11 @@ export const InputText = ({
         )}
 
         {isInvalid && (
-          <Tooltip className={styles.errorTooltip} triggerContent={<Icons.Error />}>
-            {errorMessage}
+          <Tooltip className={styles.errorTooltip}>
+            <Tooltip.Trigger>
+              <Icons.Error />
+            </Tooltip.Trigger>
+            <Tooltip.Content>{errorMessage}</Tooltip.Content>
           </Tooltip>
         )}
       </div>

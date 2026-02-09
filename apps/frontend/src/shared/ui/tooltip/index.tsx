@@ -1,36 +1,57 @@
-import type { ComponentProps, ReactNode } from 'react';
+import type { ComponentProps } from 'react';
 import { FloatingPortal } from '@floating-ui/react';
 import clsx from 'clsx';
-import { useTooltip } from './use-tooltip';
+import { TooltipContext, useTooltip, useTooltipContext } from './lib';
 import styles from './styles.module.scss';
 
-interface TooltipProps extends ComponentProps<'div'> {
-  triggerContent?: ReactNode,
-}
+type DefaultProps = ComponentProps<'div'>;
 
-export const Tooltip = ({ className, children, triggerContent, ...props }: TooltipProps) => {
-  const { refs, tooltipStyles, getFloatingProps, getReferenceProps } = useTooltip();
+const Tooltip = ({ className, children, ...props }: DefaultProps) => {
+  const config = useTooltip();
 
   return (
-    <div className={clsx(styles.tooltip, className)}>
-      <div
-        className={clsx(styles.tooltipTrigger, className)}
-        ref={refs.setReference}
-        {...props}
-        {...getReferenceProps()}
-      >
-        {triggerContent}
+    <TooltipContext value={config}>
+      <div className={clsx(styles.tooltip, className)} {...props}>
+        {children}
       </div>
-      <FloatingPortal>
-        <div
-          className={styles.tooltipContent}
-          ref={refs.setFloating}
-          style={tooltipStyles}
-          {...getFloatingProps()}
-        >
-          {children}
-        </div>
-      </FloatingPortal>
+    </TooltipContext>
+  );
+};
+
+const Trigger = ({ className, children, ...props }: DefaultProps) => {
+  const { refs, getReferenceProps } = useTooltipContext();
+
+  return (
+    <div
+      className={clsx(styles.tooltipTrigger, className)}
+      ref={refs.setReference}
+      {...props}
+      {...getReferenceProps()}
+    >
+      {children}
     </div>
   );
 };
+
+const Content = ({ className, children, ...props }: DefaultProps) => {
+  const { refs, tooltipStyles, getFloatingProps } = useTooltipContext();
+
+  return (
+    <FloatingPortal>
+      <div
+        className={clsx(styles.tooltipContent, className)}
+        ref={refs.setFloating}
+        style={tooltipStyles}
+        {...getFloatingProps()}
+        {...props}
+      >
+        {children}
+      </div>
+    </FloatingPortal>
+  );
+};
+
+Tooltip.Trigger = Trigger;
+Tooltip.Content = Content;
+
+export { Tooltip };
