@@ -1,14 +1,14 @@
 import {
   offset,
+  useClick,
   useFloating,
-  useHover,
   useInteractions,
   useRole,
   useTransitionStyles
 } from '@floating-ui/react';
 import { useState } from 'react';
 
-export const useTooltip = ({ sideOffset = 8 }) => {
+export const useSelect = ({ sideOffset = 8 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const handleClose = () => setIsOpen(false);
 
@@ -18,9 +18,9 @@ export const useTooltip = ({ sideOffset = 8 }) => {
     middleware: [offset(sideOffset)]
   });
 
-  const role = useRole(context, { role: 'tooltip' });
-  const hover = useHover(context);
-  const { getReferenceProps, getFloatingProps } = useInteractions([role, hover]);
+  const role = useRole(context, { role: 'select' });
+  const click = useClick(context);
+  const { getReferenceProps, getFloatingProps } = useInteractions([role, click]);
 
   const { styles: transitionStyles } = useTransitionStyles(context, {
     duration: 300,
@@ -34,12 +34,12 @@ export const useTooltip = ({ sideOffset = 8 }) => {
     }
   });
 
-  const tooltipStyles = { ...floatingStyles, ...transitionStyles };
+  const selectPopupStyles = { ...floatingStyles, ...transitionStyles };
 
   return {
     refs,
     context,
-    tooltipStyles,
+    selectPopupStyles,
     getReferenceProps,
     getFloatingProps,
     handleClose

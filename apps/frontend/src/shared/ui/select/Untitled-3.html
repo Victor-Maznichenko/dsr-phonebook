@@ -1,0 +1,11 @@
+Как хочу использовать:
+<Select sideOffset={8}>
+  <Select.Trigger placeholder="Select apple" className={styles.Select}/>
+  <Select.Popup className={styles.Popup}>
+      {apples.map(({ label, value }) => (
+        <Select.Item key={label} value={value} className={styles.Item}>{label}</Select.Item>
+      ))}
+  </Select.Popup>
+</Select>
+
+

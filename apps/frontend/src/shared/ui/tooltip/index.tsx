@@ -5,9 +5,12 @@ import { TooltipContext, useTooltip, useTooltipContext } from './lib';
 import styles from './styles.module.scss';
 
 type DefaultProps = ComponentProps<'div'>;
+interface TooltipProps extends DefaultProps {
+  sideOffset?: number;
+}
 
-const Tooltip = ({ className, children, ...props }: DefaultProps) => {
-  const config = useTooltip();
+const Tooltip = ({ className, sideOffset, children, ...props }: TooltipProps) => {
+  const config = useTooltip({ sideOffset });
 
   return (
     <TooltipContext value={config}>

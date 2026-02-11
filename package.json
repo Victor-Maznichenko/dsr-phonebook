@@ -8,7 +8,6 @@
     "email": "victor_maznichenko@mail.ru",
     "url": "https://github.com/victor_maznichenko"
   },
-  "packageManager": "bun@1.2.22",
   "workspaces": [
     "apps/*",
     "packages/*"
