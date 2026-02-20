@@ -1,8 +1,11 @@
 import { Module } from '@nestjs/common';
-import { UsersModule } from './users/users.module';
-import { SequelizeModule } from '@nestjs/sequelize';
 import { ConfigModule } from '@nestjs/config';
-import { AccessRequestModule } from './access-request/access-request.module';
+import { APP_GUARD } from '@nestjs/core';
+import { SequelizeModule } from '@nestjs/sequelize';
+
+import { AuthGuard, UsersModule } from './modules';
+
+// import { AccessRequestModule } from './access-request/access-request.module';
 
 @Module({
    imports: [
@@ -19,10 +22,10 @@ import { AccessRequestModule } from './access-request/access-request.module';
       models: [],
       autoLoadModels: true,
     }),
+    // AuthModule,
     UsersModule,
-    AccessRequestModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [{ provide: APP_GUARD, useClass: AuthGuard }],
 })
 export class AppModule {}
