@@ -9,11 +9,12 @@ import {
   SerializeOptions,
 } from '@nestjs/common';
 
-import { Roles } from '@/modules/auth/decorators';
+// import { Roles } from '@/modules/auth/decorators';
 import { Role } from '@/shared/constants';
 
 import type { UpdatePersonalDto } from '../dto/update-personal.dto';
-import type { UsersService } from '../users.service';
+
+import { UsersService } from '../users.service';
 
 @Controller('users')
 export class UsersController {
@@ -46,7 +47,7 @@ export class UsersController {
   //   return this.usersService.(+id, updateUserDto);
   // }
 
-  @Roles(Role.ADMIN)
+  // @Roles(Role.ADMIN)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.usersService.removeById(+id);

@@ -3,7 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { SequelizeModule } from '@nestjs/sequelize';
 
-import { AuthGuard, UsersModule } from './modules';
+import { AuthGuard, AuthModule, UsersModule } from './modules';
 
 // import { AccessRequestModule } from './access-request/access-request.module';
 
@@ -22,7 +22,7 @@ import { AuthGuard, UsersModule } from './modules';
       models: [],
       autoLoadModels: true,
     }),
-    // AuthModule,
+    AuthModule,
     UsersModule,
   ],
   controllers: [],

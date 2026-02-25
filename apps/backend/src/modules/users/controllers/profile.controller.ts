@@ -6,10 +6,10 @@ import {
   Request,
 } from '@nestjs/common';
 
-import type { UsersService } from '../users.service';
+import { UsersService } from '../users.service';
 
 @Controller('profile')
-export class UsersController {
+export class ProfileController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get('profile')

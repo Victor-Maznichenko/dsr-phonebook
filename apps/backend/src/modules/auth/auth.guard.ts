@@ -1,16 +1,15 @@
 import type {
   CanActivate,
   ExecutionContext} from '@nestjs/common';
-import type { Reflector } from '@nestjs/core';
-import type { JwtService } from '@nestjs/jwt';
 import type { Request } from 'express';
+import type { User } from 'src/modules/users/models/user.model';
 
 import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-
-import type { User } from '@/modules/users';
+import { Reflector } from '@nestjs/core';
+import { JwtService } from '@nestjs/jwt';
 
 import { IS_PUBLIC_KEY, ROLES_KEY } from './decorators';
 

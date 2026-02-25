@@ -12,12 +12,12 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 
-import type { CreateUserDto, UsersService } from '@/modules/users';
+import { CreateUserDto, UsersService } from '@/modules/users';
 
 import type { RequestWithUser } from './auth.guard';
-import type { AuthService } from './auth.service';
 import type { LoginDto } from './dto/login.dto';
 
+import { AuthService } from './auth.service';
 import { Public } from './decorators';
 
 @Controller('auth')
@@ -69,7 +69,7 @@ export class AuthController {
   =========== Получить базовые поля текущего пользователя =========== 
   */
   @Get('me')
-  async getUserInfo(@Request() request) {
+  async getUserInfo(@Request() request: RequestWithUser) {
     const user = await this.userService.getById(+request.user.id, request.user);
 
     if (!user) {
