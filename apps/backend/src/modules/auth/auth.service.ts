@@ -15,6 +15,7 @@ import type { CreateUserDto, User} from '@/modules/users';
 import { UsersService } from '@/modules/users';
 
 import type { LoginDto } from './dto/login.dto';
+import { Role } from '@/shared/constants';
 
 @Injectable()
 export class AuthService {
@@ -29,8 +30,8 @@ export class AuthService {
   ===================
   */
 
-  async login(loginDto: LoginDto) {
-    const user = await this.validateUser(loginDto);
+  async login(loginDto: LoginDto, isAdmin?: boolean) {
+    const user = await this.validateUser(loginDto, isAdmin);
 
     return {
       access_token: this.generateToken(user, { expiresIn: '1h' }),
@@ -76,7 +77,7 @@ export class AuthService {
   ===================
   */
 
-  private async validateUser(loginDto: LoginDto) {
+  private async validateUser(loginDto: LoginDto, isAdmin?: boolean) {
     // 1. Получаеем User
     const user = await this.userService.getByEmail(loginDto.email);
 
@@ -85,6 +86,12 @@ export class AuthService {
       loginDto.password,
       user?.password ?? '',
     );
+
+    if(isAdmin && user?.role !== Role.ADMIN) {
+      throw new UnauthorizedException({
+        message: 'Некорректный емайл или пароль',
+      });
+    }
 
     if (user && passwordEquals) {
       return user;

@@ -1,23 +1,41 @@
+import type { Response } from 'express';
+
 import {
+  ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
-  Param,
-  Request,
+  Req,
+  Res,
+  UseInterceptors,
 } from '@nestjs/common';
+import { plainToInstance } from 'class-transformer';
 
+import { UserDetailDto } from '../dto/user-detail-dto';
 import { UsersService } from '../users.service';
 
+@UseInterceptors(ClassSerializerInterceptor)
 @Controller('profile')
 export class ProfileController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Get('profile')
-  async getById(@Request() { user }) {
-    const requestingUser = { id: user.id, role: user.role };
-    const result = await this.usersService.getById(+user.id, requestingUser);
+  /*
+  =========== Получить профиль =========== 
+  */
+  @Get()
+  async getProfile(@Req() { user }) {
+    const targetUser = await this.usersService.getById(+user.id);
+    const userDto = plainToInstance(UserDetailDto, targetUser, { excludeExtraneousValues: true });
+    return userDto;
+  }
 
-    return result;
+  /*   
+  =========== Удлалить профиль =========== 
+  */
+  @Delete()
+  async removeProfile(@Req() { user }, @Res({ passthrough: true }) response: Response) {
+    await this.usersService.removeById(+user.id);
+    response.cookie('refresh_token', '', { maxAge: 0 });
   }
 
 //   @Patch('profile/personal')
@@ -28,15 +46,5 @@ export class ProfileController {
   // @Patch(':id')
   // update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
   //   return this.usersService.(+id, updateUserDto);
-  // }
-
-  @Delete('/profile')
-  remove(@Param('id') id: string) {
-    return this.usersService.removeById(+id);
-  }
-
-  // @Get('me')
-  // getMe() {
-  //   return this.usersService.getMe();
   // }
 }

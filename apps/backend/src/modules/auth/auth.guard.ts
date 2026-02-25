@@ -1,8 +1,6 @@
 import type {
   CanActivate,
   ExecutionContext} from '@nestjs/common';
-import type { Request } from 'express';
-import type { User } from 'src/modules/users/models/user.model';
 
 import {
   Injectable,
@@ -13,11 +11,6 @@ import { JwtService } from '@nestjs/jwt';
 
 import { IS_PUBLIC_KEY, ROLES_KEY } from './decorators';
 
-type TokenPayload = Pick<User, 'email' | 'id' | 'role'>;
-
-export interface RequestWithUser extends Request {
-  user: TokenPayload;
-}
 
 @Injectable()
 export class AuthGuard implements CanActivate {

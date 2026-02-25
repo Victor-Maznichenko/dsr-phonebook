@@ -1,38 +1,60 @@
 import {
-  Body,
+  ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
   Param,
-  Patch,
   Req,
-  SerializeOptions,
+  UseInterceptors,
 } from '@nestjs/common';
+import { plainToClass, plainToInstance } from 'class-transformer';
 
-// import { Roles } from '@/modules/auth/decorators';
+import { Roles } from '@/modules/auth/decorators';
 import { Role } from '@/shared/constants';
 
-import type { UpdatePersonalDto } from '../dto/update-personal.dto';
-
+import { UserCompactDto } from '../dto/user-compact-dto';
+import { UserDetailDto } from '../dto/user-detail-dto';
 import { UsersService } from '../users.service';
 
+@UseInterceptors(ClassSerializerInterceptor)
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly usersService: UsersService) { }
 
+  /* 
+  ===================
+  Получить всех пользователей
+  ===================
+  */
   @Get()
-  @SerializeOptions({ groups: ['compact'] })
-  getAll() {
-    return this.usersService.getAll();
+  @UseInterceptors(ClassSerializerInterceptor)
+  async getAll() {
+    const users = await this.usersService.getAll();
+    return users.map(u => plainToInstance(UserCompactDto, u.get({ plain: true })));
   }
 
-  // TODO: Достать request и сделать isAdmin flag
+  /* 
+  ===================
+  Получить пользователя по id
+  ===================
+  */
   @Get(':id')
   async getById(@Param('id') id: string, @Req() { user }) {
-    const requestingUser = { id: user.id, role: user.role };
-    const result = await this.usersService.getById(+id, requestingUser);
+    const targetUser = await this.usersService.getById(+id);
+    const hasAccess = +user.id === +id;
+    // const hasAccess = await this.accessService.checkAccess(user.id, targetUser.id);
 
-    return result;
+    // Преобразуем модель в DTO
+    const userDto = plainToClass(UserDetailDto, targetUser, { excludeExtraneousValues: true });
+
+    // Заменяем конфиденциальные данные на безопасные значения
+    if (!hasAccess) {
+      userDto.personalPhones = [];
+      userDto.hasPersonalAccess = false;
+    }
+
+    userDto.hasPersonalAccess = true;
+    return userDto;
   }
 
   // При изменении возвращается новый обьект
@@ -47,14 +69,9 @@ export class UsersController {
   //   return this.usersService.(+id, updateUserDto);
   // }
 
-  // @Roles(Role.ADMIN)
+  @Roles(Role.ADMIN)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.usersService.removeById(+id);
   }
-
-  // @Get('me')
-  // getMe() {
-  //   return this.usersService.getMe();
-  // }
 }

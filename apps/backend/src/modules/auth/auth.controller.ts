@@ -1,3 +1,5 @@
+import type { Response } from 'express';
+
 import {
   Body,
   Controller,
@@ -7,14 +9,12 @@ import {
   NotFoundException,
   Post,
   Req,
-  Request,
   Res,
   UnauthorizedException,
 } from '@nestjs/common';
 
 import { CreateUserDto, UsersService } from '@/modules/users';
 
-import type { RequestWithUser } from './auth.guard';
 import type { LoginDto } from './dto/login.dto';
 
 import { AuthService } from './auth.service';
@@ -28,13 +28,27 @@ export class AuthController {
   ) { }
 
   /*   
+  =========== Логин администратора =========== 
+  */
+  @HttpCode(HttpStatus.OK)
+  @Public()
+  @Post('admin/login')
+  async adminLogin(@Body() loginDto: LoginDto, @Res({ passthrough: true }) response: Response) {
+    const tokens = await this.authService.login(loginDto, true);
+    response.cookie('refresh_token', tokens.refresh_token, { httpOnly: true, secure: true, maxAge: 7 * 24 * 3600000 });
+    return tokens.access_token;
+  }
+
+  /*   
   =========== Логин =========== 
   */
   @HttpCode(HttpStatus.OK)
   @Public()
   @Post('login')
-  login(@Body() loginDto: LoginDto) {
-    return this.authService.login(loginDto);
+  async login(@Body() loginDto: LoginDto, @Res({ passthrough: true }) response: Response) {
+    const tokens = await this.authService.login(loginDto);
+    response.cookie('refresh_token', tokens.refresh_token, { httpOnly: true, secure: true, maxAge: 7 * 24 * 3600000 });
+    return tokens.access_token;
   }
 
   /*   
@@ -42,24 +56,26 @@ export class AuthController {
   */
   @Public()
   @Post('register')
-  register(@Body() registerDto: CreateUserDto) {
-    return this.authService.register(registerDto);
+  async register(@Body() registerDto: CreateUserDto, @Res({ passthrough: true }) response: Response) {
+    const tokens = await this.authService.register(registerDto);
+    response.cookie('refresh_token', tokens.refresh_token, { httpOnly: true, secure: true, maxAge: 7 * 24 * 3600000 });
+    return tokens.access_token;
   }
 
   /*   
   =========== Обновить токены =========== 
   */
   @Public()
-  @Get('/refresh')
-  async refreshToken(@Req() request, @Res() response) {
+  @Post('refresh')
+  async refreshToken(@Req() request: RequestWithUser, @Res({ passthrough: true }) response: Response) {
     try {
       const refreshToken = request.cookies?.refresh_token;
 
       if (!refreshToken) throw new UnauthorizedException('Refresh token not found');
 
       const tokens = await this.authService.refreshTokens(refreshToken);
-      response.cookie('refresh_token', tokens.refresh_token, { httpOnly: true, secure: true, maxAge: 7 * 24 * 3600000 });
-      return tokens;
+      response.cookie('refresh_token', tokens.refresh_token, { httpOnly: true, maxAge: 7 * 24 * 3600000 });
+      return tokens.access_token;
     } catch {
       throw new UnauthorizedException('Invalid refresh token');
     }
@@ -69,8 +85,8 @@ export class AuthController {
   =========== Получить базовые поля текущего пользователя =========== 
   */
   @Get('me')
-  async getUserInfo(@Request() request: RequestWithUser) {
-    const user = await this.userService.getById(+request.user.id, request.user);
+  async getUserInfo(@Req() request: RequestWithUser) {
+    const user = await this.userService.getById(+request.user.id);
 
     if (!user) {
       throw new NotFoundException();
@@ -83,5 +99,13 @@ export class AuthController {
       avatar: user.avatar,
       email: user.email,
     };
+  }
+
+  /*   
+  =========== Выход из аккаунта =========== 
+  */
+  @Post('logout')
+  logout(@Res({ passthrough: true }) response: Response) {
+    response.cookie('refresh_token', '', { maxAge: 0 });
   }
 }
