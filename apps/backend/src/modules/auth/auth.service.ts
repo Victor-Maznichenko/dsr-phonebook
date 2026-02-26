@@ -1,9 +1,7 @@
 
 import {
-  forwardRef,
   HttpException,
   HttpStatus,
-  Inject,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -13,9 +11,9 @@ import bcrypt from 'bcryptjs';
 import type { CreateUserDto, User} from '@/modules/users';
 
 import { UsersService } from '@/modules/users';
+import { Role } from '@/shared/constants';
 
 import type { LoginDto } from './dto/login.dto';
-import { Role } from '@/shared/constants';
 
 @Injectable()
 export class AuthService {

@@ -1,16 +1,19 @@
 import type { Response } from 'express';
 
 import {
+  Body,
   ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
+  Patch,
   Req,
   Res,
   UseInterceptors,
 } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 
+import { UpdateCredentialsDto } from '../dto/update-credentials.dto';
 import { UserDetailDto } from '../dto/user-detail-dto';
 import { UsersService } from '../users.service';
 
@@ -38,10 +41,13 @@ export class ProfileController {
     response.cookie('refresh_token', '', { maxAge: 0 });
   }
 
-//   @Patch('profile/personal')
-//   patchPersonalData(@Param('id') id: string, @Body() updatePersonalDto: UpdatePersonalDto) {
-//     return this.usersService.patchPersonalData(+id, updatePersonalDto);
-//   }
+  /*   
+  =========== Обновить учетные данные профиля =========== 
+  */
+  @Patch('credentitals')
+  patchCredentitals(@Req() { user }, @Body() updateCredentialsDto: UpdateCredentialsDto) {
+    return this.usersService.patchCredentials(+user.id, updateCredentialsDto);
+  }
 
   // @Patch(':id')
   // update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
