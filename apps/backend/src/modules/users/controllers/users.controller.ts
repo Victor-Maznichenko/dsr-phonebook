@@ -6,6 +6,7 @@ import {
   Get,
   Param,
   Patch,
+  Query,
   Req,
   UseInterceptors,
 } from '@nestjs/common';
@@ -13,6 +14,7 @@ import { plainToClass, plainToInstance } from 'class-transformer';
 
 import { Roles } from '@/modules/auth/decorators';
 import { Role } from '@/shared/constants';
+import { PaginationDto } from '@/shared/utils';
 
 import { UpdatePersonalDto } from '../dto';
 import { UpdateCredentialsDto } from '../dto/update-credentials.dto';
@@ -32,8 +34,11 @@ export class UsersController {
   */
   @Get()
   @UseInterceptors(ClassSerializerInterceptor)
-  async getAll() {
-    const users = await this.usersService.getAll();
+  async getAll(@Query() dto: PaginationDto) {
+    const offset = dto.offset ?? 0;
+    const limit = dto.limit ?? 10;
+
+    const users = await this.usersService.getAll({ offset, limit });
     return users.map(u => plainToInstance(UserCompactDto, u.get({ plain: true })));
   }
 

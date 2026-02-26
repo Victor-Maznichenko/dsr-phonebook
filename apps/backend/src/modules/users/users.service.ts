@@ -2,7 +2,7 @@ import { BadRequestException, ConflictException, Injectable, NotFoundException, 
 import { InjectModel } from '@nestjs/sequelize';
 import bcrypt from 'bcryptjs';
 import { Role } from 'src/shared/constants';
-import { BaseService } from 'src/shared/utils';
+import { BaseService, PaginationDto } from 'src/shared/utils';
 
 import type { CreateUserDto } from './dto/create-user.dto';
 
@@ -23,8 +23,8 @@ export class UsersService extends BaseService<User> {
     });
   }
   
-  async getAll() {
-    return await this.userModel.findAll();
+  async getAll({limit, offset}: PaginationDto) {
+    return await this.userModel.findAll({limit, offset});
   }
 
   async getById(targetUserId: number) {
@@ -86,18 +86,38 @@ export class UsersService extends BaseService<User> {
   async patchPersonalData(id: number, updateDto: UpdatePersonalDto) {
     const user = await this.getById(id);
 
-    await user.update(updateDto);
+    // Жёстко ограничиваем, какие поля можно трогать через personal
+    const allowedKeys: (keyof UpdatePersonalDto)[] = [
+      'firstName',
+      'lastName',
+      'workPhone',
+      'personalPhones',
+      'department',
+      'grade',
+      'officeAddress',
+      'birthday',
+      'about',
+      'hasPersonalAccess',
+    ];
 
-    const updatedFields: Partial<UpdatePersonalDto> = {};
+    const dataToUpdate: Partial<User> = {};
 
-    (Object.keys(updateDto) as (keyof UpdatePersonalDto)[]).forEach((key) => {
-      if (updateDto[key] !== undefined) {
-        // Берём значение из модели, чтобы вернуть уже сохранённые данные
-        // (на случай, если в будущем появится дополнительная логика обработки)
-        // @ts-expect-error динамический доступ к полям модели
-        updatedFields[key] = user[key];
+    for (const key of allowedKeys) {
+      const value = (updateDto as any)[key];
+      if (value !== undefined) {
+        (dataToUpdate as any)[key] = value;
       }
-    });
+    }
+
+    await user.update(dataToUpdate);
+
+    const updatedFields = {} as Partial<UpdatePersonalDto>;
+
+    for (const key of allowedKeys) {
+      if ((updateDto as any)[key] !== undefined) {
+        (updatedFields as any)[key] = (user as any)[key];
+      }
+    }
 
     return updatedFields;
   }

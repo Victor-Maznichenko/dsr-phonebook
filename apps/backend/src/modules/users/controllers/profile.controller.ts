@@ -13,6 +13,7 @@ import {
 } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 
+import { UpdatePersonalDto } from '../dto';
 import { UpdateCredentialsDto } from '../dto/update-credentials.dto';
 import { UserDetailDto } from '../dto/user-detail-dto';
 import { UsersService } from '../users.service';
@@ -48,6 +49,18 @@ export class ProfileController {
   patchCredentitals(@Req() { user }, @Body() updateCredentialsDto: UpdateCredentialsDto) {
     return this.usersService.patchCredentials(+user.id, updateCredentialsDto);
   }
+  
+    /* 
+    ===================
+    Изменить личные данные профиля по id 
+    ===================
+    */
+    @Patch('personal')
+    @UseInterceptors(ClassSerializerInterceptor)
+    async patchPersonalData(@Req() { user }, @Body() updatePersonalDto: UpdatePersonalDto) {
+      const updatedFields = await this.usersService.patchPersonalData(+user.id, updatePersonalDto);
+      return plainToInstance(UpdatePersonalDto, updatedFields);
+    }
 
   // @Patch(':id')
   // update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
