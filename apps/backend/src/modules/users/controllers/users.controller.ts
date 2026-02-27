@@ -10,6 +10,7 @@ import {
   Req,
   UseInterceptors,
 } from '@nestjs/common';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { plainToInstance } from 'class-transformer';
 
 import { AccessRequestsService } from '@/modules/access-requests/access-requests.service';
@@ -19,6 +20,7 @@ import { Role } from '@/shared/constants';
 import { UpdateCredentialsDto, UpdatePersonalDto, UserCompactDto, UserDetailDto, UsersFiltersDto } from '../dto';
 import { UsersService } from '../users.service';
 
+@ApiTags('Пользователи')
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('users')
 export class UsersController {
@@ -31,6 +33,13 @@ export class UsersController {
   */
   @Get()
   @UseInterceptors(ClassSerializerInterceptor)
+  @ApiOperation({ summary: 'Получить список пользователей' })
+  @ApiResponse({
+    status: 200,
+    description: 'Список пользователей успешно получен',
+    type: UserCompactDto,
+    isArray: true,
+  })
   async getAll(@Query() dto: UsersFiltersDto)  {
     const search = dto.search ?? '';
     const offset = dto.offset ?? 0;
@@ -50,6 +59,10 @@ export class UsersController {
   ===================
   */
   @Get(':id')
+  @ApiOperation({ summary: 'Получить пользователя по идентификатору' })
+  @ApiResponse({ status: 200, description: 'Пользователь успешно получен', type: UserDetailDto })
+  @ApiResponse({ status: 403, description: 'Нет доступа к личным данным пользователя' })
+  @ApiResponse({ status: 404, description: 'Пользователь не найден' })
   async getById(@Param('id') id: string, @Req() { user }) {
     const targetUser = await this.usersService.getById(+id);
     const hasAccess = await this.accessService.checkAccess(+user.id, +targetUser.id);
@@ -74,6 +87,9 @@ export class UsersController {
   */
   @Roles(Role.ADMIN)
   @Patch(':id/credentials')
+  @ApiOperation({ summary: '[ADMIN] Обновить учетные данные пользователя' })
+  @ApiResponse({ status: 200, description: 'Учетные данные пользователя успешно обновлены' })
+  @ApiResponse({ status: 403, description: 'Недостаточно прав для изменения учетных данных' })
   patchCredentials(@Param('id') id: string, @Body() updateCredentialsDto: UpdateCredentialsDto) {
     return this.usersService.patchCredentials(+id, updateCredentialsDto);
   }
@@ -86,6 +102,9 @@ export class UsersController {
   @Roles(Role.ADMIN)
   @Patch(':id/personal')
   @UseInterceptors(ClassSerializerInterceptor)
+  @ApiOperation({ summary: '[ADMIN] Обновить личные данные пользователя' })
+  @ApiResponse({ status: 200, description: 'Личные данные пользователя успешно обновлены', type: UpdatePersonalDto })
+  @ApiResponse({ status: 403, description: 'Недостаточно прав для изменения личных данных' })
   async patchPersonalData(@Param('id') id: string, @Body() updatePersonalDto: UpdatePersonalDto) {
     const updatedFields = await this.usersService.patchPersonalData(+id, updatePersonalDto);
     return plainToInstance(UpdatePersonalDto, updatedFields);
@@ -98,6 +117,9 @@ export class UsersController {
   */
   @Roles(Role.ADMIN)
   @Delete(':id')
+  @ApiOperation({ summary: '[ADMIN] Удалить пользователя' })
+  @ApiResponse({ status: 200, description: 'Пользователь успешно удалён' })
+  @ApiResponse({ status: 403, description: 'Недостаточно прав для удаления пользователя' })
   remove(@Param('id') id: string) {
     return this.usersService.removeById(+id);
   }

@@ -1,4 +1,5 @@
 import { BadRequestException, Body, Controller, Delete, ForbiddenException, Get, Param, Patch, Post, Query, Req } from '@nestjs/common';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { Roles } from '@/modules/auth/decorators';
 import { Role } from '@/shared/constants';
@@ -7,6 +8,7 @@ import { AccessRequestsService } from './access-requests.service';
 import { CreateAccessRequestDto, RequestsFiltersDto, UpdateAccessRequestDto } from './dto';
 import { AccessRequestStatus } from './lib';
 
+@ApiTags('Запросы доступа')
 @Controller('requests')
 export class AccessRequestsController {
   constructor(private readonly requestsService: AccessRequestsService) {}
@@ -18,6 +20,9 @@ export class AccessRequestsController {
   */
   @Roles(Role.DEFAULT)
   @Post()
+  @ApiOperation({ summary: 'Создать запрос на доступ к персональным данным пользователя' })
+  @ApiResponse({ status: 201, description: 'Запрос на доступ успешно создан' })
+  @ApiResponse({ status: 400, description: 'Запрос уже отправлен и ожидает рассмотрения' })
   create(@Req() request: RequestWithUser, @Body() dto: CreateAccessRequestDto) {
     return this.requestsService.create(+request.user.id, +dto.targetUserId);
   }
@@ -28,9 +33,13 @@ export class AccessRequestsController {
   ===================
   */
   @Patch(':id')
+  @ApiOperation({ summary: 'Обновить статус запроса на доступ' })
+  @ApiResponse({ status: 200, description: 'Статус запроса успешно обновлён' })
+  @ApiResponse({ status: 400, description: 'Некорректный новый статус запроса' })
+  @ApiResponse({ status: 403, description: 'Нет прав для изменения статуса запроса' })
   async update(@Param('id') id: string, @Req() request: RequestWithUser, @Body() dto: UpdateAccessRequestDto) {
     if(dto.status === AccessRequestStatus.PENDING) {
-      throw new BadRequestException('Запрос уже находится в статусе ожидания');
+      throw new BadRequestException('Некорректный новый статус запроса');
     }
 
     const accessRequest = await this.requestsService.getById(+id);
@@ -38,7 +47,7 @@ export class AccessRequestsController {
     const isTargetUser = +accessRequest.targetUserId === +request.user.id;
 
     if(!isAdmin && !isTargetUser) {
-      throw new ForbiddenException('У вас нет прав на изменение статуса этого запроса');
+      throw new ForbiddenException('Нет прав для изменения статуса запроса');
     }
 
     return this.requestsService.updateStatus(+id, dto.status);
@@ -50,6 +59,10 @@ export class AccessRequestsController {
   ===================
   */
   @Get('outgoing')
+  @ApiOperation({ summary: 'Получить исходящие запросы по идентификатору пользователя' })
+  @ApiResponse({ status: 200, description: 'Исходящие запросы успешно получены' })
+  @ApiResponse({ status: 400, description: 'Некорректный идентификатор пользователя' })
+  @ApiResponse({ status: 403, description: 'Нет доступа к запросам указанного пользователя' })
   getOutgoing(@Req() request: RequestWithUser, @Query() dto: RequestsFiltersDto & { userId?: number; }) {
     const offset = dto.offset ?? 0;
     const limit = dto.limit ?? 10;
@@ -60,7 +73,7 @@ export class AccessRequestsController {
     const isSelf = +request.user.id === +userId;
 
     if(userId < 1) {
-      throw new BadRequestException('Неверный query-параметр userId')
+      throw new BadRequestException('Некорректный идентификатор пользователя')
     }
 
     if(isAdmin || isSelf) {
@@ -77,6 +90,9 @@ export class AccessRequestsController {
   */
   @Roles(Role.DEFAULT)
   @Get('incoming')
+  @ApiOperation({ summary: 'Получить входящие запросы по идентификатору пользователя' })
+  @ApiResponse({ status: 200, description: 'Входящие запросы успешно получены' })
+  @ApiResponse({ status: 403, description: 'Нет доступа к запросам указанного пользователя' })
   getIncoming(@Req() request: RequestWithUser, @Query() dto: RequestsFiltersDto & { userId?: number; }) {
     const offset = dto.offset ?? 0;
     const limit = dto.limit ?? 10;
@@ -104,6 +120,9 @@ export class AccessRequestsController {
   */
   @Roles(Role.ADMIN)
   @Get()
+  @ApiOperation({ summary: '[ADMIN] Получить все запросы на доступ' })
+  @ApiResponse({ status: 200, description: 'Список всех запросов успешно получен' })
+  @ApiResponse({ status: 403, description: 'Недостаточно прав для получения всех запросов' })
   findAll(@Query() dto: RequestsFiltersDto) {
     const offset = dto.offset ?? 0;
     const limit = dto.limit ?? 10;
@@ -117,13 +136,16 @@ export class AccessRequestsController {
   ===================
   */
   @Delete(':id')
+  @ApiOperation({ summary: 'Удалить запрос на доступ' })
+  @ApiResponse({ status: 200, description: 'Запрос успешно удалён' })
+  @ApiResponse({ status: 403, description: 'Нет прав для удаления запроса' })
   async remove(@Param('id') id: string, @Req() request: RequestWithUser) {
     const accessRequest = await this.requestsService.getById(+id);
     const isAdmin = request.user.role === Role.ADMIN;
     const isCreator = +accessRequest.granteeUserId === +request.user.id;
 
     if (!isAdmin && !isCreator) {
-      throw new ForbiddenException('У вас нет прав на удаление этого запроса');
+      throw new ForbiddenException('Нет прав для удаления запроса');
     }
 
     return this.requestsService.removeById(+id);

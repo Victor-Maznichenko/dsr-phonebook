@@ -12,6 +12,7 @@ import {
   Res,
   UnauthorizedException,
 } from '@nestjs/common';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { CreateUserDto, UsersService } from '@/modules/users';
 
@@ -20,6 +21,7 @@ import type { LoginDto } from './dto';
 import { AuthService } from './auth.service';
 import { Public } from './decorators';
 
+@ApiTags('Авторизация')
 @Controller('auth')
 export class AuthController {
   constructor(
@@ -33,6 +35,9 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Public()
   @Post('admin/login')
+  @ApiOperation({ summary: 'Логин администратора' })
+  @ApiResponse({ status: 200, description: 'Администратор успешно авторизован' })
+  @ApiResponse({ status: 401, description: 'Неверные учетные данные администратора' })
   async adminLogin(@Body() loginDto: LoginDto, @Res({ passthrough: true }) response: Response) {
     const tokens = await this.authService.login(loginDto, true);
     response.cookie('refresh_token', tokens.refresh_token, { httpOnly: true, secure: true, maxAge: 7 * 24 * 3600000 });
@@ -45,6 +50,9 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Public()
   @Post('login')
+  @ApiOperation({ summary: 'Логин пользователя' })
+  @ApiResponse({ status: 200, description: 'Пользователь успешно авторизован' })
+  @ApiResponse({ status: 401, description: 'Неверные учетные данные' })
   async login(@Body() loginDto: LoginDto, @Res({ passthrough: true }) response: Response) {
     const tokens = await this.authService.login(loginDto);
     response.cookie('refresh_token', tokens.refresh_token, { httpOnly: true, secure: true, maxAge: 7 * 24 * 3600000 });
@@ -56,6 +64,9 @@ export class AuthController {
   */
   @Public()
   @Post('register')
+  @ApiOperation({ summary: 'Регистрация нового пользователя' })
+  @ApiResponse({ status: 201, description: 'Пользователь успешно зарегистрирован' })
+  @ApiResponse({ status: 400, description: 'Некорректные данные для регистрации' })
   async register(@Body() registerDto: CreateUserDto, @Res({ passthrough: true }) response: Response) {
     const tokens = await this.authService.register(registerDto);
     response.cookie('refresh_token', tokens.refresh_token, { httpOnly: true, secure: true, maxAge: 7 * 24 * 3600000 });
@@ -67,6 +78,9 @@ export class AuthController {
   */
   @Public()
   @Post('refresh')
+  @ApiOperation({ summary: 'Обновить пару токенов по refresh-токену' })
+  @ApiResponse({ status: 200, description: 'Токены успешно обновлены' })
+  @ApiResponse({ status: 401, description: 'Неверный или отсутствующий refresh-токен' })
   async refreshToken(@Req() request: RequestWithUser, @Res({ passthrough: true }) response: Response) {
     try {
       const refreshToken = request.cookies?.refresh_token;
@@ -85,6 +99,9 @@ export class AuthController {
   =========== Получить базовые поля текущего пользователя =========== 
   */
   @Get('me')
+  @ApiOperation({ summary: 'Получить базовую информацию о текущем пользователе' })
+  @ApiResponse({ status: 200, description: 'Информация о пользователе успешно получена' })
+  @ApiResponse({ status: 404, description: 'Пользователь не найден' })
   async getUserInfo(@Req() request: RequestWithUser) {
     const user = await this.userService.getById(+request.user.id);
 
@@ -105,6 +122,8 @@ export class AuthController {
   =========== Выход из аккаунта =========== 
   */
   @Post('logout')
+  @ApiOperation({ summary: 'Выход из аккаунта' })
+  @ApiResponse({ status: 200, description: 'Сессия завершена' })
   logout(@Res({ passthrough: true }) response: Response) {
     response.cookie('refresh_token', '', { maxAge: 0 });
   }
