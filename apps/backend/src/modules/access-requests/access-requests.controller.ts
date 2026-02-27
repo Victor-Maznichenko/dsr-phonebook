@@ -2,10 +2,9 @@ import { BadRequestException, Body, Controller, Delete, ForbiddenException, Get,
 
 import { Roles } from '@/modules/auth/decorators';
 import { Role } from '@/shared/constants';
-import { PaginationDto } from '@/shared/utils';
 
 import { AccessRequestsService } from './access-requests.service';
-import { CreateAccessRequestDto, UpdateAccessRequestDto } from './dto';
+import { CreateAccessRequestDto, RequestsFiltersDto, UpdateAccessRequestDto } from './dto';
 import { AccessRequestStatus } from './lib';
 
 @Controller('requests')
@@ -47,25 +46,86 @@ export class AccessRequestsController {
 
   /* 
   ===================
+  Получить исходящие запросы по userId
+  ===================
+  */
+  @Get('outgoing')
+  getOutgoing(@Req() request: RequestWithUser, @Query() dto: RequestsFiltersDto & { userId?: number; }) {
+    const offset = dto.offset ?? 0;
+    const limit = dto.limit ?? 10;
+    const status = dto.status ?? '';
+    const userId = dto.userId ?? -1;
+
+    const isAdmin = request.user.role === Role.ADMIN;
+    const isSelf = +request.user.id === +userId;
+
+    if(userId < 1) {
+      throw new BadRequestException('Неверный query-параметр userId')
+    }
+
+    if(isAdmin || isSelf) {
+      return this.requestsService.getOutgoingForUser(+userId, { offset, limit, status });
+    }
+
+    throw new ForbiddenException('Нет доступа к запросам этого пользователя');
+  }
+
+  /* 
+  ===================
+  Получить входящие запросы по userId
+  ===================
+  */
+  @Roles(Role.DEFAULT)
+  @Get('incoming')
+  getIncoming(@Req() request: RequestWithUser, @Query() dto: RequestsFiltersDto & { userId?: number; }) {
+    const offset = dto.offset ?? 0;
+    const limit = dto.limit ?? 10;
+    const status = dto.status ?? '';
+    let userId = dto.userId ?? -1;
+
+    const isAdmin = request.user.role === Role.ADMIN;
+    const isSelf = +request.user.id === +userId;
+
+    if(isAdmin && userId < 1) {
+      userId = +request.user.id;
+    }
+
+    if(isAdmin || isSelf) {
+      return this.requestsService.getIncomingForUser(+userId, { offset, limit, status });
+    }
+
+    throw new ForbiddenException('Нет доступа к запросам этого пользователя');
+  }
+
+  /* 
+  ===================
   [ADMIN] Получить все запросы
   ===================
   */
   @Roles(Role.ADMIN)
   @Get()
-  findAll(@Query() dto: PaginationDto) {
+  findAll(@Query() dto: RequestsFiltersDto) {
     const offset = dto.offset ?? 0;
     const limit = dto.limit ?? 10;
-    return this.requestsService.getAll({offset, limit});
+    const status = dto.status ?? '';
+    return this.requestsService.getAll({offset, limit, status});
   }
 
   /* 
   ===================
-  [ADMIN] Удалить запрос
+  Удалить запрос
   ===================
   */
-  @Roles(Role.ADMIN)
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string, @Req() request: RequestWithUser) {
+    const accessRequest = await this.requestsService.getById(+id);
+    const isAdmin = request.user.role === Role.ADMIN;
+    const isCreator = +accessRequest.granteeUserId === +request.user.id;
+
+    if (!isAdmin && !isCreator) {
+      throw new ForbiddenException('У вас нет прав на удаление этого запроса');
+    }
+
     return this.requestsService.removeById(+id);
   }
 }

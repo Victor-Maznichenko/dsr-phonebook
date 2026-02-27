@@ -1,7 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Column, DataType, HasMany, Model, Table } from 'sequelize-typescript';
-
-import { AccessRequest } from '@/modules/access-requests/access-request.model';
+import { Column, DataType, Model, Table } from 'sequelize-typescript';
 
 interface UserCreationAttrs {
   birthday: string;
@@ -97,22 +95,6 @@ export class User extends Model<User, UserCreationAttrs> {
     description: 'Флаг, есть ли личный доступ к данным',
     required: false,
   })
-  @Column({ type: DataType.STRING })
+  @Column({ type: DataType.BOOLEAN, allowNull: true, defaultValue: false })
   declare hasPersonalAccess: boolean;
-
-  @ApiProperty({
-    type: () => [AccessRequest],
-    description: 'Исходящие запросы доступа, созданные пользователем',
-    required: false,
-  })
-  @HasMany(() => AccessRequest, { as: 'outgoingRequests', foreignKey: 'granteeUserId' })
-  outgoingRequests: AccessRequest[];
-
-  @ApiProperty({
-    type: () => [AccessRequest],
-    description: 'Входящие запросы доступа к данным',
-    required: false,
-  })
-  @HasMany(() => AccessRequest, { as: 'incomingRequests', foreignKey: 'targetUserId' })
-  incomingRequests: AccessRequest[];
 }

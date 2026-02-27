@@ -117,7 +117,11 @@ export class AuthService {
     const payload = this.jwtService.verify(refreshToken);
     const user = await this.userService.findOne({ where: { id: payload.id } });
 
-    if (!user) throw new Error('User not found');
+    if (!user) {
+      throw new UnauthorizedException({
+        message: 'Пользователь не найден',
+      });
+    }
 
     return {
       access_token: this.generateToken(user, { expiresIn: '1h' }),

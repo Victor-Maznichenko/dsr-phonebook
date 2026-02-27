@@ -3,13 +3,13 @@ import { IsOptional, IsString } from 'class-validator';
 
 import { PaginationDto } from '@/shared/utils';
 
-export class UsersFiltersDto extends PaginationDto {
+export class RequestsFiltersDto extends PaginationDto {
   @ApiProperty({
-    description: 'Имя пользователя',
-    example: "Виктор",
-    minimum: 0
+    description: 'Статус запроса',
+    example: "pending",
+    required: false,
   })
   @IsString()
   @IsOptional()
-  declare search?: string;
+  declare status?: string;
 }

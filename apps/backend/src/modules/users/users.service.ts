@@ -1,7 +1,7 @@
 import { BadRequestException, ConflictException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import bcrypt from 'bcryptjs';
-import { FindOptions, Op, WhereOptions } from 'sequelize';
+import { Op, WhereOptions } from 'sequelize';
 import sequelize from 'sequelize/lib/sequelize';
 import { Role } from 'src/shared/constants';
 import { BaseService } from 'src/shared/utils';
@@ -49,17 +49,8 @@ export class UsersService extends BaseService<User> {
     return await this.userModel.findAll({ limit, offset, where });
   }
 
-  async getById(targetUserId: number, includeRequests = false) {
-    const requestsOption: Omit<FindOptions<User>, "where"> = {};
-
-    if(includeRequests) {
-      requestsOption.include = [
-        { association: 'outgoingRequests', include: [{ association: 'target' }] },
-        { association: 'incomingRequests', include: [{ association: 'grantee' }] },
-      ]
-    }
-
-    const user = await this.userModel.findByPk(targetUserId, requestsOption);
+  async getById(targetUserId: number) {
+    const user = await this.userModel.findByPk(targetUserId);
 
     if (!user) {
       throw new NotFoundException('Пользователь не найден');
@@ -116,44 +107,17 @@ export class UsersService extends BaseService<User> {
 
   async patchPersonalData(id: number, updateDto: UpdatePersonalDto) {
     const user = await this.getById(id);
-
-    // Жёстко ограничиваем, какие поля можно трогать через personal
-    const allowedKeys: (keyof UpdatePersonalDto)[] = [
-      'firstName',
-      'lastName',
-      'workPhone',
-      'personalPhones',
-      'department',
-      'grade',
-      'officeAddress',
-      'birthday',
-      'about',
-      'hasPersonalAccess',
-    ];
-
-    const dataToUpdate: Partial<User> = {};
-
-    for (const key of allowedKeys) {
-      const value = (updateDto as any)[key];
-      if (value !== undefined) {
-        (dataToUpdate as any)[key] = value;
-      }
-    }
-
-    await user.update(dataToUpdate);
+    await user.update(updateDto);
 
     const updatedFields = {} as Partial<UpdatePersonalDto>;
+    const userWithPersonal = user as User & UpdatePersonalDto;
 
-    for (const key of allowedKeys) {
-      if ((updateDto as any)[key] !== undefined) {
-        (updatedFields as any)[key] = (user as any)[key];
+    (Object.keys(updateDto)).forEach((key) => {
+      if (updateDto[key] !== undefined) {
+        (updatedFields as any)[key] = userWithPersonal[key];
       }
-    }
+    });
 
     return updatedFields;
   }
-
-  // updateById(id: number, updateUserDto: UpdateUserDto) {
-  //   return `This action updates a #${id} user`;
-  // }
 }

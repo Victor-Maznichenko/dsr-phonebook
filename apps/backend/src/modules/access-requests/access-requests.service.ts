@@ -1,9 +1,11 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
+import { WhereOptions } from 'sequelize';
 
-import { BaseService, PaginationDto } from '@/shared/utils';
+import { BaseService } from '@/shared/utils';
 
 import { AccessRequest } from './access-request.model';
+import { RequestsFiltersDto } from './dto';
 import { AccessRequestStatus } from './lib';
 
 @Injectable()
@@ -39,20 +41,75 @@ export class AccessRequestsService extends BaseService<AccessRequest>  {
   Получить все запросы
   ===================
   */
-  async getAll(query: PaginationDto) {
-    const { offset, limit } = query;
+  async getAll({ offset, limit, status }: Required<RequestsFiltersDto>) {
     const attributes = ['id', 'email', 'firstName', 'lastName', 'avatar'];
+    const where: WhereOptions<AccessRequest> = {};
 
-    const requests = await AccessRequest.findAndCountAll({
+    if(Object.values(AccessRequestStatus).includes(status as AccessRequestStatus)) {
+      where.status = status;
+    }
+
+    const requests = await this.requestModel.findAndCountAll({
       include: [
         { association: 'grantee', attributes },
         { association: 'target', attributes },
       ],
       limit,
-      offset
+      offset,
+      where
     });
     
     return requests;
+  }
+
+  /* 
+  ===================
+  Получить исходящие запросы по userId
+  ===================
+  */
+  async getOutgoingForUser(userId: number, { offset, limit, status }: Required<RequestsFiltersDto>) {
+    const attributes = ['id', 'email', 'firstName', 'lastName', 'avatar'];
+    const where: WhereOptions<AccessRequest> = { granteeUserId: userId };
+
+    if(Object.values(AccessRequestStatus).includes(status as AccessRequestStatus)) {
+      where.status = status;
+    }
+
+    return await this.requestModel.findAndCountAll({
+      include: [
+        { association: 'grantee', attributes },
+        { association: 'target', attributes },
+      ],
+      limit,
+      offset,
+      where,
+      order: [['createdAt', 'DESC']],
+    });
+  }
+
+  /* 
+  ===================
+  Получить входящие запросы по userId
+  ===================
+  */
+  async getIncomingForUser(userId: number, { offset, limit, status }: Required<RequestsFiltersDto>) {
+    const attributes = ['id', 'email', 'firstName', 'lastName', 'avatar'];
+    const where: WhereOptions<AccessRequest> = { targetUserId: userId };
+
+    if(Object.values(AccessRequestStatus).includes(status as AccessRequestStatus)) {
+      where.status = status;
+    }
+
+    return await this.requestModel.findAndCountAll({
+      include: [
+        { association: 'grantee', attributes },
+        { association: 'target', attributes },
+      ],
+      limit,
+      offset,
+      where,
+      order: [['createdAt', 'DESC']],
+    });
   }
 
   /* 
@@ -90,4 +147,26 @@ export class AccessRequestsService extends BaseService<AccessRequest>  {
   async removeById(id: number) {
     return await this.requestModel.destroy({ where: { id } });
   }
+
+  /* 
+  ===================
+  Проверить доступ
+  ===================
+  */
+  async checkAccess(granteeUserId: number, targetUserId: number): Promise<boolean> {
+    if (granteeUserId === targetUserId) {
+      return true;
+    }
+
+    const request = await this.requestModel.findOne({
+      where: {
+        granteeUserId,
+        targetUserId,
+        status: AccessRequestStatus.APPROVED,
+      },
+    });
+
+    return !!request;
+  }
+
 }

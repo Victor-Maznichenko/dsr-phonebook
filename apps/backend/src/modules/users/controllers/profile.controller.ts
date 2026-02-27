@@ -27,7 +27,7 @@ export class ProfileController {
   */
   @Get()
   async getProfile(@Req() { user }) {
-    const targetUser = await this.usersService.getById(+user.id, true);
+    const targetUser = await this.usersService.getById(+user.id);
     const userDto = plainToInstance(UserDetailDto, targetUser, { excludeExtraneousValues: true });
     return userDto;
   }
@@ -44,25 +44,20 @@ export class ProfileController {
   /*   
   =========== Обновить учетные данные профиля =========== 
   */
-  @Patch('credentitals')
-  patchCredentitals(@Req() { user }, @Body() updateCredentialsDto: UpdateCredentialsDto) {
+  @Patch('credentials')
+  patchCredentials(@Req() { user }, @Body() updateCredentialsDto: UpdateCredentialsDto) {
     return this.usersService.patchCredentials(+user.id, updateCredentialsDto);
   }
   
-    /* 
-    ===================
-    Изменить личные данные профиля по id 
-    ===================
-    */
-    @Patch('personal')
-    @UseInterceptors(ClassSerializerInterceptor)
-    async patchPersonalData(@Req() { user }, @Body() updatePersonalDto: UpdatePersonalDto) {
-      const updatedFields = await this.usersService.patchPersonalData(+user.id, updatePersonalDto);
-      return plainToInstance(UpdatePersonalDto, updatedFields);
-    }
-
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-  //   return this.usersService.(+id, updateUserDto);
-  // }
+  /* 
+  ===================
+  Изменить личные данные профиля по id 
+  ===================
+  */
+  @Patch('personal')
+  @UseInterceptors(ClassSerializerInterceptor)
+  async patchPersonalData(@Req() { user }, @Body() updatePersonalDto: UpdatePersonalDto) {
+    const updatedFields = await this.usersService.patchPersonalData(+user.id, updatePersonalDto);
+    return plainToInstance(UpdatePersonalDto, updatedFields);
+  }
 }
