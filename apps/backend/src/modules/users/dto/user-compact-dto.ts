@@ -1,13 +1,15 @@
-import { Expose } from 'class-transformer';
+import { PickType } from '@nestjs/mapped-types';
 
-export class UserCompactDto {
-  @Expose() id: number;
-  @Expose() email: string;
-  @Expose() firstName: string;
-  @Expose() lastName: string;
-  @Expose() workPhone: string;
-  @Expose() department: string;
-  @Expose() grade: string;
-  @Expose() birthday: string;
-  @Expose() avatar: string;
-}
+import { UserDto } from './user-dto';
+
+export class UserCompactDto extends PickType(UserDto, [
+  'id',
+  'email',
+  'firstName',
+  'lastName',
+  'workPhone',
+  'department',
+  'grade',
+  'birthday',
+  'avatar',
+] as const) {}

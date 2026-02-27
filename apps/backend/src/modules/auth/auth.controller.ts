@@ -15,7 +15,7 @@ import {
 
 import { CreateUserDto, UsersService } from '@/modules/users';
 
-import type { LoginDto } from './dto/login.dto';
+import type { LoginDto } from './dto';
 
 import { AuthService } from './auth.service';
 import { Public } from './decorators';

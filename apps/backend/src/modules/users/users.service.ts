@@ -1,14 +1,13 @@
 import { BadRequestException, ConflictException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import bcrypt from 'bcryptjs';
+import { FindOptions, Op, WhereOptions } from 'sequelize';
+import sequelize from 'sequelize/lib/sequelize';
 import { Role } from 'src/shared/constants';
-import { BaseService, PaginationDto } from 'src/shared/utils';
+import { BaseService } from 'src/shared/utils';
 
-import type { CreateUserDto } from './dto/create-user.dto';
-
-import { UpdatePersonalDto } from './dto';
-import { UpdateCredentialsDto } from './dto/update-credentials.dto';
-import { User } from './models/user.model';
+import { CreateUserDto, UpdateCredentialsDto, UpdatePersonalDto, UsersFiltersDto } from './dto';
+import { User } from './user.model';
 
 @Injectable()
 export class UsersService extends BaseService<User> {
@@ -22,13 +21,45 @@ export class UsersService extends BaseService<User> {
       role: Role.DEFAULT,
     });
   }
-  
-  async getAll({limit, offset}: PaginationDto) {
-    return await this.userModel.findAll({limit, offset});
+
+  async getAll({ limit, offset, search }: UsersFiltersDto) {
+    const where: WhereOptions<User> = {};
+
+    if (search) {
+      where[Op.or] = [
+        // Поиск по строке "Имя Фамилия"
+        sequelize.where(
+          sequelize.fn('concat_ws', ' ',
+            sequelize.col('firstName'),
+            sequelize.col('lastName'),
+          ),
+          { [Op.iLike]: `%${search}%` }
+        ),
+        // Поиск по строке "Фамилия Имя"
+        sequelize.where(
+          sequelize.fn('concat_ws', ' ',
+            sequelize.col('lastName'),
+            sequelize.col('firstName'),
+          ),
+          { [Op.iLike]: `%${search}%` }
+        )
+      ];
+    }
+
+    return await this.userModel.findAll({ limit, offset, where });
   }
 
-  async getById(targetUserId: number) {
-    const user = await this.userModel.findByPk(targetUserId);
+  async getById(targetUserId: number, includeRequests = false) {
+    const requestsOption: Omit<FindOptions<User>, "where"> = {};
+
+    if(includeRequests) {
+      requestsOption.include = [
+        { association: 'outgoingRequests', include: [{ association: 'target' }] },
+        { association: 'incomingRequests', include: [{ association: 'grantee' }] },
+      ]
+    }
+
+    const user = await this.userModel.findByPk(targetUserId, requestsOption);
 
     if (!user) {
       throw new NotFoundException('Пользователь не найден');
@@ -47,13 +78,13 @@ export class UsersService extends BaseService<User> {
 
   async patchCredentials(id: number, updateDto: UpdateCredentialsDto) {
     const user = await this.getById(id);
-    
+
     // Валидации
-    if((updateDto.newPassword && !updateDto.oldPassword) || (!updateDto.newPassword && updateDto.oldPassword)) {
+    if ((updateDto.newPassword && !updateDto.oldPassword) || (!updateDto.newPassword && updateDto.oldPassword)) {
       throw new BadRequestException('Для смены пароля необходимо указать старый и новый пароль');
     }
 
-    if(updateDto.email === user.email) {
+    if (updateDto.email === user.email) {
       throw new BadRequestException('Новый email такой же как старый');
     }
 
@@ -69,13 +100,13 @@ export class UsersService extends BaseService<User> {
     }
 
     // Обработка смены email
-    if(updateDto.email && updateDto.email !== user.email) {
+    if (updateDto.email && updateDto.email !== user.email) {
       const existingUser = await this.getByEmail(updateDto.email);
 
       if (existingUser) {
         throw new ConflictException('Указанный email уже используется');
       }
-      
+
       user.email = updateDto.email;
     }
 

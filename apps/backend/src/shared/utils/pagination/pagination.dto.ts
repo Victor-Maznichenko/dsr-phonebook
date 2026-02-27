@@ -9,7 +9,7 @@ export class PaginationDto {
   })
   @IsInt()
   @Min(1)
-  declare limit: number;
+  declare limit?: number;
 
   @ApiProperty({
     description: 'Количество элементов перед 1-ым которые нужно пропустить',
@@ -18,5 +18,5 @@ export class PaginationDto {
   })
   @IsInt()
   @Min(0)
-  declare offset: number;
+  declare offset?: number;
 }

@@ -1,4 +1,4 @@
 export * from './dto';
-export * from './models';
+export * from './user.model';
 export * from './users.module';
 export * from './users.service';

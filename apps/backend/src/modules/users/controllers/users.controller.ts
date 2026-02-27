@@ -14,12 +14,8 @@ import { plainToClass, plainToInstance } from 'class-transformer';
 
 import { Roles } from '@/modules/auth/decorators';
 import { Role } from '@/shared/constants';
-import { PaginationDto } from '@/shared/utils';
 
-import { UpdatePersonalDto } from '../dto';
-import { UpdateCredentialsDto } from '../dto/update-credentials.dto';
-import { UserCompactDto } from '../dto/user-compact-dto';
-import { UserDetailDto } from '../dto/user-detail-dto';
+import { UpdateCredentialsDto, UpdatePersonalDto, UserCompactDto, UserDetailDto, UsersFiltersDto } from '../dto';
 import { UsersService } from '../users.service';
 
 @UseInterceptors(ClassSerializerInterceptor)
@@ -34,11 +30,12 @@ export class UsersController {
   */
   @Get()
   @UseInterceptors(ClassSerializerInterceptor)
-  async getAll(@Query() dto: PaginationDto) {
+  async getAll(@Query() dto: UsersFiltersDto)  {
+    const search = dto.search ?? '';
     const offset = dto.offset ?? 0;
     const limit = dto.limit ?? 10;
 
-    const users = await this.usersService.getAll({ offset, limit });
+    const users = await this.usersService.getAll({ offset, limit, search });
     return users.map(u => plainToInstance(UserCompactDto, u.get({ plain: true })));
   }
 

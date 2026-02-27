@@ -1,46 +1,14 @@
-import { IsArray, IsBoolean, IsDateString, IsOptional, IsString, Length } from 'class-validator';
+import { PartialType } from '@nestjs/mapped-types';
+import { IsBoolean, IsOptional, IsString } from 'class-validator';
 
-export class UpdatePersonalDto {
+import { UserPersonalBaseDto } from './user-personal-base.dto';
+
+export class UpdatePersonalDto extends PartialType(UserPersonalBaseDto) {
   @IsOptional()
   @IsString()
-  @Length(1, 50)
-  firstName?: string;
-
-  @IsOptional()
-  @IsString()
-  @Length(1, 50)
-  lastName?: string;
-
-  @IsOptional()
-  @IsString()
-  workPhone?: string;
-
-  @IsOptional()
-  @IsArray()
-  @IsString({ each: true })
-  personalPhones?: string[];
-
-  @IsOptional()
-  @IsString()
-  department?: string;
-
-  @IsOptional()
-  @IsString()
-  grade?: string;
-
-  @IsOptional()
-  @IsString()
-  officeAddress?: string;
-
-  @IsOptional()
-  @IsDateString()
-  birthday?: string;
-
-  @IsOptional()
-  @IsString()
-  about?: string;
+  declare readonly about?: string;
 
   @IsOptional()
   @IsBoolean()
-  hasPersonalAccess?: boolean;
+  declare readonly hasPersonalAccess?: boolean;
 }

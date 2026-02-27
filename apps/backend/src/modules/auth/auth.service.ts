@@ -13,7 +13,7 @@ import type { CreateUserDto, User} from '@/modules/users';
 import { UsersService } from '@/modules/users';
 import { Role } from '@/shared/constants';
 
-import type { LoginDto } from './dto/login.dto';
+import type { LoginDto } from './dto';
 
 @Injectable()
 export class AuthService {
@@ -27,7 +27,6 @@ export class AuthService {
   Логин
   ===================
   */
-
   async login(loginDto: LoginDto, isAdmin?: boolean) {
     const user = await this.validateUser(loginDto, isAdmin);
 
@@ -42,7 +41,6 @@ export class AuthService {
   Регистрация
   ===================
   */
-
   async register(createUserDto: CreateUserDto) {
     // 1. Проверка не существует ли уже
     const candidate = await this.userService.getByEmail(createUserDto.email);
@@ -74,7 +72,6 @@ export class AuthService {
   Проверка учетных данных
   ===================
   */
-
   private async validateUser(loginDto: LoginDto, isAdmin?: boolean) {
     // 1. Получаеем User
     const user = await this.userService.getByEmail(loginDto.email);
@@ -105,7 +102,6 @@ export class AuthService {
   Генерация токена
   ===================
   */
-
   private generateToken(user: User, options?: JwtSignOptions) {
     const { id, email, role } = user;
     return this.jwtService.sign({ id, email, role }, options);

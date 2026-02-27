@@ -4,14 +4,14 @@ import { IsEmail, IsOptional, IsString, MinLength } from 'class-validator';
 export class UpdateCredentialsDto {
     @IsOptional()
     @IsEmail()
-    email?: string;
+    declare readonly email?: string;
 
     @IsOptional()
     @IsString()
     @MinLength(6)
-    newPassword?: string;
+    declare readonly newPassword?: string;
 
     @IsOptional()
     @IsString()
-    oldPassword?: string;
+    declare readonly oldPassword?: string;
 }

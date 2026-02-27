@@ -13,10 +13,9 @@ import {
 } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 
-import { UpdatePersonalDto } from '../dto';
-import { UpdateCredentialsDto } from '../dto/update-credentials.dto';
-import { UserDetailDto } from '../dto/user-detail-dto';
+import { UpdateCredentialsDto, UpdatePersonalDto, UserDetailDto } from '../dto';
 import { UsersService } from '../users.service';
+
 
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('profile')
@@ -28,7 +27,7 @@ export class ProfileController {
   */
   @Get()
   async getProfile(@Req() { user }) {
-    const targetUser = await this.usersService.getById(+user.id);
+    const targetUser = await this.usersService.getById(+user.id, true);
     const userDto = plainToInstance(UserDetailDto, targetUser, { excludeExtraneousValues: true });
     return userDto;
   }
