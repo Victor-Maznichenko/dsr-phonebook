@@ -15,9 +15,9 @@ export class UsersService extends BaseService<User> {
     super(userModel);
   }
 
-  async create(createUserDto: CreateUserDto) {
+  async create(dto: CreateUserDto) {
     return await this.userModel.create({
-      ...createUserDto,
+      ...dto,
       role: Role.DEFAULT,
     });
   }
@@ -67,53 +67,53 @@ export class UsersService extends BaseService<User> {
     return await this.userModel.destroy({ where: { id } });
   }
 
-  async patchCredentials(id: number, updateDto: UpdateCredentialsDto) {
+  async patchCredentials(id: number, dto: UpdateCredentialsDto) {
     const user = await this.getById(id);
 
     // Валидации
-    if ((updateDto.newPassword && !updateDto.oldPassword) || (!updateDto.newPassword && updateDto.oldPassword)) {
+    if ((dto.newPassword && !dto.oldPassword) || (!dto.newPassword && dto.oldPassword)) {
       throw new BadRequestException('Для смены пароля необходимо указать старый и новый пароль');
     }
 
-    if (updateDto.email === user.email) {
+    if (dto.email === user.email) {
       throw new BadRequestException('Новый email такой же как старый');
     }
 
     // Проверка совпадения паролей
-    if (updateDto.newPassword && updateDto.oldPassword) {
-      const isOldPasswordValid = await bcrypt.compare(updateDto.oldPassword, user.password);
+    if (dto.newPassword && dto.oldPassword) {
+      const isOldPasswordValid = await bcrypt.compare(dto.oldPassword, user.password);
 
       if (!isOldPasswordValid) {
         throw new UnauthorizedException('Неверный старый пароль');
       }
 
-      user.password = await bcrypt.hash(updateDto.newPassword, 10);
+      user.password = await bcrypt.hash(dto.newPassword, 10);
     }
 
     // Обработка смены email
-    if (updateDto.email && updateDto.email !== user.email) {
-      const existingUser = await this.getByEmail(updateDto.email);
+    if (dto.email && dto.email !== user.email) {
+      const existingUser = await this.getByEmail(dto.email);
 
       if (existingUser) {
         throw new ConflictException('Указанный email уже используется');
       }
 
-      user.email = updateDto.email;
+      user.email = dto.email;
     }
 
     await user.save();
     return "success";
   }
 
-  async patchPersonalData(id: number, updateDto: UpdatePersonalDto) {
+  async patchPersonalData(id: number, dto: UpdatePersonalDto) {
     const user = await this.getById(id);
-    await user.update(updateDto);
+    await user.update(dto);
 
     const updatedFields = {} as Partial<UpdatePersonalDto>;
     const userWithPersonal = user as User & UpdatePersonalDto;
 
-    (Object.keys(updateDto)).forEach((key) => {
-      if (updateDto[key] !== undefined) {
+    (Object.keys(dto)).forEach((key) => {
+      if (dto[key] !== undefined) {
         (updatedFields as any)[key] = userWithPersonal[key];
       }
     });

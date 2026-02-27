@@ -31,8 +31,7 @@ export class ProfileController {
   @ApiResponse({ status: 200, description: 'Профиль пользователя успешно получен', type: UserDetailDto })
   async getProfile(@Req() { user }) {
     const targetUser = await this.usersService.getById(+user.id);
-    const userDto = plainToInstance(UserDetailDto, targetUser, { excludeExtraneousValues: true });
-    return userDto;
+    return plainToInstance(UserDetailDto, targetUser, { excludeExtraneousValues: true });
   }
 
   /*   
@@ -52,8 +51,8 @@ export class ProfileController {
   @Patch('credentials')
   @ApiOperation({ summary: 'Обновить учетные данные текущего пользователя' })
   @ApiResponse({ status: 200, description: 'Учетные данные успешно обновлены' })
-  patchCredentials(@Req() { user }, @Body() updateCredentialsDto: UpdateCredentialsDto) {
-    return this.usersService.patchCredentials(+user.id, updateCredentialsDto);
+  patchCredentials(@Req() { user }, @Body() dto: UpdateCredentialsDto) {
+    return this.usersService.patchCredentials(+user.id, dto);
   }
   
   /* 
@@ -65,8 +64,8 @@ export class ProfileController {
   @UseInterceptors(ClassSerializerInterceptor)
   @ApiOperation({ summary: 'Обновить личные данные текущего пользователя' })
   @ApiResponse({ status: 200, description: 'Личные данные успешно обновлены', type: UpdatePersonalDto })
-  async patchPersonalData(@Req() { user }, @Body() updatePersonalDto: UpdatePersonalDto) {
-    const updatedFields = await this.usersService.patchPersonalData(+user.id, updatePersonalDto);
+  async patchPersonalData(@Req() { user }, @Body() dto: UpdatePersonalDto) {
+    const updatedFields = await this.usersService.patchPersonalData(+user.id, dto);
     return plainToInstance(UpdatePersonalDto, updatedFields);
   }
 }

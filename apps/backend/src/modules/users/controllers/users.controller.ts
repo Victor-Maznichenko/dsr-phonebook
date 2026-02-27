@@ -90,8 +90,8 @@ export class UsersController {
   @ApiOperation({ summary: '[ADMIN] Обновить учетные данные пользователя' })
   @ApiResponse({ status: 200, description: 'Учетные данные пользователя успешно обновлены' })
   @ApiResponse({ status: 403, description: 'Недостаточно прав для изменения учетных данных' })
-  patchCredentials(@Param('id') id: string, @Body() updateCredentialsDto: UpdateCredentialsDto) {
-    return this.usersService.patchCredentials(+id, updateCredentialsDto);
+  patchCredentials(@Param('id') id: string, @Body() dto: UpdateCredentialsDto) {
+    return this.usersService.patchCredentials(+id, dto);
   }
 
   /* 
@@ -105,8 +105,8 @@ export class UsersController {
   @ApiOperation({ summary: '[ADMIN] Обновить личные данные пользователя' })
   @ApiResponse({ status: 200, description: 'Личные данные пользователя успешно обновлены', type: UpdatePersonalDto })
   @ApiResponse({ status: 403, description: 'Недостаточно прав для изменения личных данных' })
-  async patchPersonalData(@Param('id') id: string, @Body() updatePersonalDto: UpdatePersonalDto) {
-    const updatedFields = await this.usersService.patchPersonalData(+id, updatePersonalDto);
+  async patchPersonalData(@Param('id') id: string, @Body() dto: UpdatePersonalDto) {
+    const updatedFields = await this.usersService.patchPersonalData(+id, dto);
     return plainToInstance(UpdatePersonalDto, updatedFields);
   }
 

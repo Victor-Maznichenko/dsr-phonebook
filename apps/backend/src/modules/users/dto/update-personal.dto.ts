@@ -1,14 +1,12 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { IsBoolean, IsOptional, IsString } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
+
+import { ValidationMessage } from '@/shared/constants';
 
 import { UserPersonalBaseDto } from './user-personal-base.dto';
 
 export class UpdatePersonalDto extends PartialType(UserPersonalBaseDto) {
   @IsOptional()
-  @IsString()
+  @IsString({ message: ValidationMessage.ABOUT_MUST_BE_STRING })
   declare readonly about?: string;
-
-  @IsOptional()
-  @IsBoolean()
-  declare readonly hasPersonalAccess?: boolean;
 }

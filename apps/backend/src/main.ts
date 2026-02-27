@@ -1,3 +1,4 @@
+import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, OpenAPIObject, SwaggerModule } from '@nestjs/swagger';
 import cookieParser from 'cookie-parser';
@@ -10,6 +11,15 @@ async function bootstrap() {
 
   // Cookies
   app.use(cookieParser());
+
+  // Validation pipe
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      transform: true,
+      transformOptions: { enableImplicitConversion: true }
+    })
+  );
 
   // Swagger
   const config = new DocumentBuilder()

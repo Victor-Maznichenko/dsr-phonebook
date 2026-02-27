@@ -1,15 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsOptional, IsString } from 'class-validator';
 
+import { ValidationMessage } from '@/shared/constants';
 import { PaginationDto } from '@/shared/utils';
 
 export class UsersFiltersDto extends PaginationDto {
   @ApiProperty({
     description: 'Имя пользователя',
-    example: "Виктор",
-    minimum: 0
+    example: 'Виктор',
   })
-  @IsString()
+  @IsString({ message: ValidationMessage.SEARCH_MUST_BE_STRING })
   @IsOptional()
-  declare search?: string;
+  declare readonly search?: string;
 }

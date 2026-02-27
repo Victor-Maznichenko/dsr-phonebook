@@ -27,8 +27,8 @@ export class AuthService {
   Логин
   ===================
   */
-  async login(loginDto: LoginDto, isAdmin?: boolean) {
-    const user = await this.validateUser(loginDto, isAdmin);
+  async login(dto: LoginDto, isAdmin?: boolean) {
+    const user = await this.validateUser(dto, isAdmin);
 
     return {
       access_token: this.generateToken(user, { expiresIn: '1h' }),
@@ -41,9 +41,9 @@ export class AuthService {
   Регистрация
   ===================
   */
-  async register(createUserDto: CreateUserDto) {
+  async register(dto: CreateUserDto) {
     // 1. Проверка не существует ли уже
-    const candidate = await this.userService.getByEmail(createUserDto.email);
+    const candidate = await this.userService.getByEmail(dto.email);
 
     if (candidate) {
       throw new HttpException(
@@ -53,11 +53,11 @@ export class AuthService {
     }
 
     // 2. Хэшируем пароль
-    const hashPassword = await bcrypt.hash(createUserDto.password, 5);
+    const hashPassword = await bcrypt.hash(dto.password, 5);
 
     // 3. Создаем пользователя и возвращаем токен
     const user = await this.userService.create({
-      ...createUserDto,
+      ...dto,
       password: hashPassword,
     });
 
@@ -72,13 +72,13 @@ export class AuthService {
   Проверка учетных данных
   ===================
   */
-  private async validateUser(loginDto: LoginDto, isAdmin?: boolean) {
+  private async validateUser(dto: LoginDto, isAdmin?: boolean) {
     // 1. Получаеем User
-    const user = await this.userService.getByEmail(loginDto.email);
+    const user = await this.userService.getByEmail(dto.email);
 
     // 2. Валидируем
     const passwordEquals = await bcrypt.compare(
-      loginDto.password,
+      dto.password,
       user?.password ?? '',
     );
 

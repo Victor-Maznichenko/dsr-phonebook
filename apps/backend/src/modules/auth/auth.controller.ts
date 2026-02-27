@@ -16,10 +16,9 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { CreateUserDto, UsersService } from '@/modules/users';
 
-import type { LoginDto } from './dto';
-
 import { AuthService } from './auth.service';
 import { Public } from './decorators';
+import { LoginDto } from './dto';
 
 @ApiTags('Авторизация')
 @Controller('auth')
@@ -38,8 +37,8 @@ export class AuthController {
   @ApiOperation({ summary: 'Логин администратора' })
   @ApiResponse({ status: 200, description: 'Администратор успешно авторизован' })
   @ApiResponse({ status: 401, description: 'Неверные учетные данные администратора' })
-  async adminLogin(@Body() loginDto: LoginDto, @Res({ passthrough: true }) response: Response) {
-    const tokens = await this.authService.login(loginDto, true);
+  async adminLogin(@Body() dto: LoginDto, @Res({ passthrough: true }) response: Response) {
+    const tokens = await this.authService.login(dto, true);
     response.cookie('refresh_token', tokens.refresh_token, { httpOnly: true, secure: true, maxAge: 7 * 24 * 3600000 });
     return tokens.access_token;
   }
@@ -53,8 +52,8 @@ export class AuthController {
   @ApiOperation({ summary: 'Логин пользователя' })
   @ApiResponse({ status: 200, description: 'Пользователь успешно авторизован' })
   @ApiResponse({ status: 401, description: 'Неверные учетные данные' })
-  async login(@Body() loginDto: LoginDto, @Res({ passthrough: true }) response: Response) {
-    const tokens = await this.authService.login(loginDto);
+  async login(@Body() dto: LoginDto, @Res({ passthrough: true }) response: Response) {
+    const tokens = await this.authService.login(dto);
     response.cookie('refresh_token', tokens.refresh_token, { httpOnly: true, secure: true, maxAge: 7 * 24 * 3600000 });
     return tokens.access_token;
   }
@@ -67,8 +66,8 @@ export class AuthController {
   @ApiOperation({ summary: 'Регистрация нового пользователя' })
   @ApiResponse({ status: 201, description: 'Пользователь успешно зарегистрирован' })
   @ApiResponse({ status: 400, description: 'Некорректные данные для регистрации' })
-  async register(@Body() registerDto: CreateUserDto, @Res({ passthrough: true }) response: Response) {
-    const tokens = await this.authService.register(registerDto);
+  async register(@Body() dto: CreateUserDto, @Res({ passthrough: true }) response: Response) {
+    const tokens = await this.authService.register(dto);
     response.cookie('refresh_token', tokens.refresh_token, { httpOnly: true, secure: true, maxAge: 7 * 24 * 3600000 });
     return tokens.access_token;
   }
