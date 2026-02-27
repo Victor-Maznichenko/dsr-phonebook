@@ -120,4 +120,11 @@ export class UsersService extends BaseService<User> {
 
     return updatedFields;
   }
+
+  async updateAvatar(id: number, avatar: string) {
+    const user = await this.getById(id);
+    user.avatar = avatar;
+    await user.save();
+    return user;
+  }
 }
