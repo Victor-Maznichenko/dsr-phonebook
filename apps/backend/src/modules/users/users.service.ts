@@ -64,7 +64,11 @@ export class UsersService extends BaseService<User> {
   }
 
   async removeById(id: number) {
-    return await this.userModel.destroy({ where: { id } });
+    const deleted = await this.userModel.destroy({ where: { id } });
+
+    if (!deleted) {
+      throw new NotFoundException('Пользователя не существует');
+    }
   }
 
   async patchCredentials(id: number, dto: UpdateCredentialsDto) {
@@ -120,6 +124,11 @@ export class UsersService extends BaseService<User> {
 
     return updatedFields;
   }
+
+  async getAvatarUrl(id: number) {
+    const user = await this.getById(id);
+    return user.avatar;
+  } 
 
   async updateAvatar(id: number, avatar: string) {
     const user = await this.getById(id);

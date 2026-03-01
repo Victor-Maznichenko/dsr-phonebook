@@ -75,6 +75,7 @@ export class AuthController {
   /*   
   =========== Обновить токены =========== 
   */
+  @HttpCode(HttpStatus.OK)
   @Public()
   @Post('refresh')
   @ApiOperation({ summary: 'Обновить пару токенов по refresh-токену' })
@@ -120,6 +121,7 @@ export class AuthController {
   /*   
   =========== Выход из аккаунта =========== 
   */
+  @HttpCode(HttpStatus.OK)
   @Post('logout')
   @ApiOperation({ summary: 'Выход из аккаунта' })
   @ApiResponse({ status: 200, description: 'Сессия завершена' })

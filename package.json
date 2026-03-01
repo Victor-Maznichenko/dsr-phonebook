@@ -22,5 +22,8 @@
     "dev": "turbo dev",
     "build": "turbo run frontend#build",
     "lint": "turbo run lint"
+  },
+  "dependencies": {
+    "uuid": "^13.0.0"
   }
 }

@@ -8,6 +8,7 @@ import {
   Delete,
   FileTypeValidator,
   Get,
+  HttpCode,
   MaxFileSizeValidator,
   ParseFilePipe,
   Patch,
@@ -48,9 +49,10 @@ export class ProfileController {
   /*   
   =========== Удлалить профиль =========== 
   */
+  @HttpCode(204)
   @Delete()
   @ApiOperation({ summary: 'Удалить профиль текущего пользователя' })
-  @ApiResponse({ status: 200, description: 'Профиль пользователя успешно удалён' })
+  @ApiResponse({ status: 204, description: 'Профиль пользователя успешно удалён' })
   async removeProfile(@Req() { user }, @Res({ passthrough: true }) response: Response) {
     await this.usersService.removeById(+user.id);
     response.cookie('refresh_token', '', { maxAge: 0 });
@@ -105,20 +107,20 @@ export class ProfileController {
       new ParseFilePipe({
         validators: [
           new MaxFileSizeValidator({ maxSize: 1024 * 1024 * 5 }),
-          new FileTypeValidator({ fileType: 'image/jpeg' }),
+          new FileTypeValidator({ fileType: /^image\/(jpeg|png|webp|gif)(;.*)?$/i }),
         ],
       }),
-    ) file: UploadedFile) {
+    ) file: Express.Multer.File) {
     if (!file) {
       throw new BadRequestException('Файл аватара не передан');
     }
 
     const fileName = await this.filesService.createFile(file);
 
-    // const oldAvatar = await this.usersService.getAvatarUrl(user.id); // получить старый путь
-    // if (oldAvatar) {
-    //   await this.filesService.deleteFile(oldAvatar);
-    // }
+    const oldAvatar = await this.usersService.getAvatarUrl(user.id);
+    if (oldAvatar) {
+      await this.filesService.deleteFile(oldAvatar);
+    }
 
     const updatedUser = await this.usersService.updateAvatar(+user.id, fileName);
 
