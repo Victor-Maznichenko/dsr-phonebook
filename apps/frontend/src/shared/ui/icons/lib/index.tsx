@@ -1,10 +1,11 @@
-import type { JSX, ReactElement } from 'react';
+import type { ComponentProps, JSX, ReactElement } from 'react';
 
-interface IconProps {
+interface IconProps extends ComponentProps<'svg'> {
   className?: string;
   fill?: string;
   size?: number;
 }
+
 export type IconType = (props: IconProps) => ReactElement | null;
 
 export const withDefaultProps =
