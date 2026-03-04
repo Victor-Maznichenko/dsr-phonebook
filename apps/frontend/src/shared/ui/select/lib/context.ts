@@ -1,7 +1,10 @@
 import type { useSelect } from './use-select';
 import { createContext, use } from 'react';
 
-type SelectContextData = ReturnType<typeof useSelect>;
+interface SelectContextData extends ReturnType<typeof useSelect> {
+  errorMessage?: string;
+  disabled?: boolean;
+};
 
 export const SelectContext = createContext<SelectContextData | null>(null);
 

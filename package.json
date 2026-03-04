@@ -12,6 +12,7 @@
     "apps/*",
     "packages/*"
   ],
+  "packageManager": "bun@1.2.22",
   "devDependencies": {
     "turbo": "^2.8.3",
     "husky": "^9.1.7",

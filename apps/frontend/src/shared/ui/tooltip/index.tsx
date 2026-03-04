@@ -9,6 +9,11 @@ interface TooltipProps extends DefaultProps {
   sideOffset?: number;
 }
 
+/*
+===================
+Root component
+===================
+*/
 const Tooltip = ({ className, sideOffset, children, ...props }: TooltipProps) => {
   const config = useTooltip({ sideOffset });
 
@@ -21,6 +26,11 @@ const Tooltip = ({ className, sideOffset, children, ...props }: TooltipProps) =>
   );
 };
 
+/*
+===================
+Child Trigger component
+===================
+*/
 const Trigger = ({ className, children, ...props }: DefaultProps) => {
   const { refs, getReferenceProps } = useTooltipContext();
 
@@ -36,6 +46,11 @@ const Trigger = ({ className, children, ...props }: DefaultProps) => {
   );
 };
 
+/*
+===================
+Child Content component
+===================
+*/
 const Content = ({ className, children, ...props }: DefaultProps) => {
   const { refs, tooltipStyles, getFloatingProps } = useTooltipContext();
 
@@ -45,8 +60,8 @@ const Content = ({ className, children, ...props }: DefaultProps) => {
         className={clsx(styles.tooltipContent, className)}
         ref={refs.setFloating}
         style={tooltipStyles}
-        {...getFloatingProps()}
         {...props}
+        {...getFloatingProps()}
       >
         {children}
       </div>

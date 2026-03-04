@@ -1,70 +1,139 @@
-/* TODO:
-СДЕЛАТЬ SELECT в будующем
-*/
-
-/* import type { ComponentProps } from 'react';
+import type { SelectOwnProps } from './lib';
+import type { ComponentProps, MouseEventHandler, ReactNode } from 'react';
 import { FloatingPortal } from '@floating-ui/react';
 import clsx from 'clsx';
-import { Children } from 'react';
+import { useMemo } from 'react';
+import { Condition } from '../condition';
+import { Icons } from '../icons';
+import { Tooltip } from '../tooltip';
 import { SelectContext, useSelect, useSelectContext } from './lib';
 import styles from './styles.module.scss';
 
-type DefaultProps = ComponentProps<'div'>;
-interface TooltipProps extends DefaultProps {
-  sideOffset?: number;
+interface SelectProps extends Omit<ComponentProps<'div'>, 'onChange'>, SelectOwnProps {
+  errorMessage?: string;
+  disabled?: boolean;
 }
 
-const Select = ({ className, sideOffset, children, ...props }: TooltipProps) => {
-  const config = useSelect({ sideOffset });
+/*
+===================
+Root component
+===================
+*/
+const Root = ({
+  className,
+  items,
+  value,
+  onChange,
+  sideOffset,
+  errorMessage,
+  children,
+  disabled,
+  ...props
+}: SelectProps) => {
+  const config = useSelect({ sideOffset, onChange, items, value });
+  const isInvalid = !disabled && Boolean(errorMessage);
+
+  const contextValue = useMemo(
+    () => ({ ...config, disabled, errorMessage }),
+    [config, disabled, errorMessage]
+  );
 
   return (
-    <SelectContext value={config}>
-      <div className={clsx(styles.select, className)} {...props}>
+    <SelectContext value={contextValue}>
+      <div
+        className={clsx(
+          styles.select,
+          isInvalid && styles.error,
+          disabled && styles.disabled,
+          className
+        )}
+        {...props}
+      >
         {children}
       </div>
     </SelectContext>
   );
 };
 
-const Trigger = ({ className, children, ...props }: DefaultProps) => {
-  const { refs, getReferenceProps } = useSelectContext();
+/*
+===================
+Child SelectWrapper component
+===================
+*/
+const Wrapper = ({ children, ...props }: ComponentProps<'div'>) => <div {...props}>{children}</div>;
+
+/*
+===================
+Child Label component
+===================
+*/
+const Label = ({ className, children, ...props }: ComponentProps<'p'>) => (
+  <p className={clsx(styles.label, className)} {...props}>
+    {children}
+  </p>
+);
+
+/*
+===================
+Child Trigger component
+===================
+*/
+interface TriggerProps extends Omit<ComponentProps<'div'>, 'children'> {
+  placeholder?: ReactNode;
+}
+
+const Trigger = ({ className, placeholder, ...props }: TriggerProps) => {
+  const { refs, activeItem, selectedValue, disabled, errorMessage, getReferenceProps } =
+    useSelectContext();
+  const isInvalid = !disabled && Boolean(errorMessage);
 
   return (
     <div
-      className={clsx(styles.tooltipTrigger, className)}
+      className={clsx(styles.trigger, !selectedValue && styles.placeholder, className)}
       ref={refs.setReference}
       {...props}
       {...getReferenceProps()}
     >
-      {children}
+      <div className={styles.triggerText}>
+        <Condition then={activeItem?.label ?? selectedValue} value={selectedValue} else={placeholder} />
+      </div>
+      <div className={styles.triggerActions}>
+        <Icons.Arrows />
+        {isInvalid && (
+          <Tooltip className={styles.errorTooltip}>
+            <Tooltip.Trigger>
+              <Icons.Error />
+            </Tooltip.Trigger>
+            <Tooltip.Content>{errorMessage}</Tooltip.Content>
+          </Tooltip>
+        )}
+      </div>
     </div>
   );
 };
 
-interface ItemProps extends ComponentProps<'li'> {}
+/*
+===================
+Child Popup component
+===================
+*/
+const Popup = ({ className, children, ...props }: ComponentProps<'div'>) => {
+  const { refs, selectPopupStyles, getFloatingProps, disabled } = useSelectContext();
 
-const Item = ({ className, children, ...props }: ItemProps) => {
-  const { } = useSelectContext();
-
-  return (
-    <li className={clsx(styles.item, className)} role='option' {...props}>{children}</li>
-  );
-};
-
-const Popup = ({ className, children, ...props }: DefaultProps) => {
-  const { refs, selectPopupStyles, getFloatingProps } = useSelectContext();
-  const d = Children.map(Item, () => <Item />);
+  if (disabled) {
+    return null;
+  }
 
   return (
     <FloatingPortal>
       <div
-        className={clsx(styles.selectPopup, className)}
+        className={clsx(styles.popup, className)}
         style={selectPopupStyles}
         ref={refs.setFloating}
-        {...getFloatingProps()}
         {...props}
+        {...getFloatingProps()}
       >
-        <ul role='listbox'>
+        <ul className={styles.popupList} role='listbox'>
           {children}
         </ul>
       </div>
@@ -72,9 +141,68 @@ const Popup = ({ className, children, ...props }: DefaultProps) => {
   );
 };
 
+/*
+===================
+Child Item component
+===================
+*/
+interface ItemProps extends ComponentProps<'li'> {
+  value: string;
+}
+
+const Item = ({ className, value, children, onClick, ...props }: ItemProps) => {
+  const { selectedValue, handleChange, disabled } = useSelectContext();
+  const isActive = value === selectedValue;
+
+  if (disabled) {
+    return null;
+  }
+
+  const handleClick: MouseEventHandler<HTMLLIElement> = (event) => {
+    handleChange(value);
+    onClick?.(event);
+  };
+
+  return (
+    <li
+      className={clsx(styles.option, isActive && styles.active, className)}
+      onClick={handleClick}
+      role='option'
+      {...props}
+    >
+      {isActive && <Icons.Check />}
+      <span className={styles.optionText}>{children}</span>
+    </li>
+  );
+};
+
+const Select = ({ children, items, ...props }: SelectProps) => {
+  if (!children && items) {
+    return (
+      <Root items={items} {...props}>
+        <Trigger placeholder='Select apple' />
+        <Popup>
+          {items.map(({ label, value }) => (
+            <Item value={value} key={value}>
+              {label}
+            </Item>
+          ))}
+        </Popup>
+      </Root>
+    );
+  }
+
+  return (
+    <Root items={items} {...props}>
+      {children}
+    </Root>
+  );
+};
+
+Select.Wrapper = Wrapper;
 Select.Trigger = Trigger;
 Select.Popup = Popup;
+Select.Label = Label;
 Select.Item = Item;
 
 export { Select };
- */

@@ -41,6 +41,7 @@ const checkValueDefined = (value: InputValue) => {
   return !isUndefined && !isNull && !isEmpty;
 };
 
+/*  ==== TODO: переделать на compound components ==== */
 export const InputText = ({
   className,
   beforeClassName,

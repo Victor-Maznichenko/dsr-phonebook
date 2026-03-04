@@ -1,0 +1,51 @@
+import { Canvas, Meta } from '@storybook/addon-docs/blocks';
+ 
+import * as SelectStories from './select.stories';
+ 
+<Meta of={SelectStories} />
+ 
+# Select
+
+<Canvas of={SelectStories.Example} />
+
+### Список компонентов:
+1) `Select` — контролирует состояние и позиционирование
+2) `Select.Trigger` — кнопка открытия
+3) `Select.Popup` — выпадающий список
+4) `Select.Item` — опция
+
+Дополнительно если нужен `Label`:
+
+5. `Select.Wrapper` — оборачивает `Select` и `Select.Label`
+6. `Select.Label`
+
+### Примеры использования:
+```ts
+// 1. Простейший вариант
+const items = [
+    { value: 'one', label: 'One' },
+    { value: 'two', label: 'Two' },
+]
+
+return <Select items={items}/>
+```
+```ts
+// 2. Составной компонент
+const items = [
+    { value: 'one', label: 'One' },
+    { value: 'two', label: 'Two' },
+]
+
+return (
+    <Select items={items}>
+        <Select.Trigger placeholder='Select apple' />
+        <Select.Popup>
+            {items.map(({ label, value }) => (
+                <Select.Item value={value} key={value}>{label}</Select.Item>
+            ))}
+        </Select.Popup>
+    </Select>
+)
+```
+Единственное насчет accessibility я тут не парился. 
+TODO: улучшить accessibility. 

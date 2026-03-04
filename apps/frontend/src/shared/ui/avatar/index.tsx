@@ -11,7 +11,7 @@ interface AvatarProps extends ComponentProps<'img'> {
   size?: number;
 }
 
-export const Avatar = ({ src, variant = 'circle', size = 24, text, ...props }: AvatarProps) => (
+export const Avatar = ({ src, variant = 'circle', size = 32, text, ...props }: AvatarProps) => (
   <div
     className={clsx(styles.avatar, variant && styles[variant], !text && !src && styles.iconPlaceholder)}
     style={{ '--avatar-size': `${size}px`, ...props.style } as React.CSSProperties}

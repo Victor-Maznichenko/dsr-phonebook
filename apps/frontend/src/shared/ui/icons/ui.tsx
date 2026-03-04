@@ -233,3 +233,16 @@ export const User = withDefaultProps(({ size = 16, ...props }) => (
     </svg>
   </svg>
 ));
+
+export const Arrows = withDefaultProps(({ size = 12, ...props }) => (
+  <svg stroke='currentcolor' viewBox='0 0 8 12' strokeWidth='1.5' height={size} fill='none' {...props}>
+    <path d='M0.5 4.5L4 1.5L7.5 4.5'></path>
+    <path d='M0.5 7.5L4 10.5L7.5 7.5'></path>
+  </svg>
+));
+
+export const Check = withDefaultProps(({ size = 12, ...props }) => (
+  <svg xmlns='http://www.w3.org/2000/svg' stroke='currentColor' viewBox='0 0 24 24' strokeWidth='1.5' width={size} fill='none' {...props}>
+    <path d='m4.5 12.75 6 6 9-13.5' strokeLinejoin='round' strokeLinecap='round' />
+  </svg>
+));

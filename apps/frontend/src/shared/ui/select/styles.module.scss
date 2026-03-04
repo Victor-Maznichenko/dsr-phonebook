@@ -1,24 +1,106 @@
-.avatar {
-    display: inline-block;
-    aspect-ratio: 1;
-    width: 38px;
-    border: 1px solid #000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: Poppins, sans-serif;
-    font-size: 17px;
+@use "@/shared/styles/variables" as *;
+
+.select {
+   min-width: 8rem;
+   width: 100%;
+
+   &.error {
+      .trigger {
+         border-color: var(--color-red);
+      }
+   }
+
+   &.disabled {
+      .trigger {
+         cursor: not-allowed;
+         opacity: 0.6;
+      }
+   }
 }
 
-.circle {
-    border-radius: 50%;
+.trigger,
+.popup {
+   border-radius: var(--border-radius-sm);
+   border: 1px solid var(--color-gray-light);
+   font-size: 0.875rem;
 }
 
-.square {
-    border-radius: var(--border-radius-md);
+.trigger {
+   width: 100%;
+   cursor: pointer;
+   height: 36px;
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   column-gap: 0.75rem;
+   padding: 0 0.75rem 0 1rem;
+   overflow: hidden;
+   white-space: nowrap;
+
+   &.placeholder &Text {
+      color: var(--color-gray-light);
+   }
+
+   &Text {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      flex-shrink: 2;
+   }
+
+   &Actions {
+      display: flex;
+      align-items: center;
+      column-gap: 0.375rem;
+      font-size: 0;
+   }
 }
 
-.icon {
-    width: 87.5%;
-    height: 87.5%;
+.popup {
+   user-select: none;
+   z-index: var(--z-select);
+   background-color: var(--color-popup-content);
+   border-radius: var(--border-radius-sm);
+   font-family: Poppins, sans-serif;
+   padding: 0.35rem;
+   font-weight: 400;
+   line-height: 0.875rem;
+   width: 100%;
+
+   &List {
+      overflow: hidden;
+   }
+}
+
+   .option {
+      cursor: pointer;
+      padding: 0.5rem 1rem 0.5rem 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      display: grid;
+      gap: 0.15rem;
+      grid-template-columns: 0.75rem 1fr;
+      align-items: center;
+
+      &Text {
+         grid-column-start: 2;
+      }
+
+      &:hover {
+         background-color: var(--color-gray-light);
+      }
+   }
+
+.errorTooltip {
+   color: var(--color-red);
+}
+
+.label {
+   font-family: inherit;
+   font-weight: 600;
+   font-size: 0.75rem;
+}
+
+.textEmpty {
+   line-height: 0;
 }
