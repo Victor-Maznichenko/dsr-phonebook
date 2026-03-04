@@ -1,5 +1,5 @@
 .wrapper {
-    font-size: .875rem;
+    font-size: var(--fs-text_M);
     width: 100%;
 }
 
@@ -44,16 +44,10 @@
     }
 }
 
-.label {
-    font-family: inherit;
-    font-weight: 600;
-    font-size: .75rem;
-}
-
 .clearButton {
     color: var(--color-gray-light);
 }
 
 .clearButton, .errorTooltip {
-    font-size: 0;
+    line-height: 0;
 }

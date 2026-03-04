@@ -22,7 +22,6 @@
 .popup {
    border-radius: var(--border-radius-sm);
    border: 1px solid var(--color-gray-light);
-   font-size: 0.875rem;
 }
 
 .trigger {
@@ -60,10 +59,7 @@
    z-index: var(--z-select);
    background-color: var(--color-popup-content);
    border-radius: var(--border-radius-sm);
-   font-family: Poppins, sans-serif;
    padding: 0.35rem;
-   font-weight: 400;
-   line-height: 0.875rem;
    width: 100%;
 
    &List {
@@ -93,12 +89,6 @@
 
 .errorTooltip {
    color: var(--color-red);
-}
-
-.label {
-   font-family: inherit;
-   font-weight: 600;
-   font-size: 0.75rem;
 }
 
 .textEmpty {

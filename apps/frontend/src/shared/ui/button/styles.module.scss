@@ -10,7 +10,7 @@
   text-decoration: none;
   display: inline-block;
   padding: .875rem 1rem;
-  font-size: 0.75rem;
+  font-size: var(--fs-text_M);
   font-weight: 600;
   transition: opacity 0.25s, background-color 0.25s;
   border-radius: var(--border-radius-sm);
@@ -32,15 +32,15 @@
 $sizes: (
   sm: (
     padding: .625rem .75rem,
-    font-size: .75rem,
+    font-size: var(--fs-text_S),
   ),
   md: (
     padding: .875rem 1rem,
-    font-size: .875rem,
+    font-size: var(--fs-text_M),
   ),
   lg: (
     padding: 1rem 1.125rem,
-    font-size: 1.125rem,
+    font-size: var(--fs-text_L),
   ),
 );
 

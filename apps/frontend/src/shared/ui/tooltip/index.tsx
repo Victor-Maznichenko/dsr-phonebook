@@ -1,6 +1,7 @@
 import type { ComponentProps } from 'react';
 import { FloatingPortal } from '@floating-ui/react';
 import clsx from 'clsx';
+import { Typography } from '../typography';
 import { TooltipContext, useTooltip, useTooltipContext } from './lib';
 import styles from './styles.module.scss';
 
@@ -56,15 +57,17 @@ const Content = ({ className, children, ...props }: DefaultProps) => {
 
   return (
     <FloatingPortal>
-      <div
+      <Typography
         className={clsx(styles.tooltipContent, className)}
+        style={{ ...props.style, ...tooltipStyles }}
         ref={refs.setFloating}
-        style={tooltipStyles}
+        variant='text_S'
+        as='div'
         {...props}
         {...getFloatingProps()}
       >
         {children}
-      </div>
+      </Typography>
     </FloatingPortal>
   );
 };

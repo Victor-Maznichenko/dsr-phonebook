@@ -1,52 +1,67 @@
-@use '@/assets/styles/mixins' as *;
-@use '@/assets/styles/keyframes' as *;
-@use '@/assets/styles/variables' as *;
+@use '@/shared/styles/variables' as *;
 
-.heading_L,
-.heading_M,
+.heading_1,
+.heading_2,
+.heading_3,
+.heading_4,
+.text_L,
+.text_M,
+.text_S,
+.label {
+  font-family: Poppins, sans-serif;
+}
+
+// Заголовки (жирные)
+.heading_1,
+.heading_2,
+.heading_3,
+.heading_4 {
+  font-weight: 700;
+}
+
+// Основные тексты (нормальные)
+.text_L,
 .text_M,
 .text_S {
-   font-family: var(--font-jetbrains-mono);
+  font-weight: 400;
 }
 
-.heading_L,
-.heading_M {
-   font-weight: 700;
+// Другое
+.label {
+   font-weight: 600;
 }
 
-.text_L,
-.text_M {
-   font-weight: 400;
+// Индивидуальные размеры и высоты строк
+.heading_1 {
+  font-size: var(--fs-heading_1);
+  line-height: 105%;
 }
 
-.heading_L {
-   font-size: 5.25rem;
-   font-weight: 700;
-   line-height: 105%;
-
-   @include to($mobile) {
-      font-size: 4.25rem;
-   }
+.heading_2 {
+  font-size: var(--fs-heading_2);
+  line-height: 105%;
 }
 
-.heading_M {
-   font-size: 2.75rem;
-   font-weight: 700;
-   line-height: 105%;
+.heading_3 {
+  font-size: var(--fs-heading_3);
+  line-height: 105%;
+}
+
+.heading_4 {
+  font-size: var(--fs-heading_4);
+  line-height: 105%;
 }
 
 .text_L {
-   font-weight: 400;
-   font-size: 1.125rem;
-   line-height: 115%;
+  font-size: var(--fs-text_L);
 }
 
 .text_M {
-   font-size: 1.25rem;
-   line-height: 120%;
+  font-size: var(--fs-text_M);
+  line-height: 120%;
 }
 
-.text_S {
-   font-size: 1rem;
-   line-height: 150%;
+.text_S, .label {
+  font-size: var(--fs-text_S);
+  line-height: 150%;
 }

@@ -19,19 +19,13 @@ export const useTooltip = ({ sideOffset = 8 }) => {
   });
 
   const role = useRole(context, { role: 'tooltip' });
-  const hover = useHover(context);
+  const hover = useHover(context, { delay: { close: 150 } });
   const { getReferenceProps, getFloatingProps } = useInteractions([role, hover]);
 
   const { styles: transitionStyles } = useTransitionStyles(context, {
     duration: 300,
-    initial: {
-      opacity: 0,
-      pointerEvents: 'none'
-    },
-    open: {
-      opacity: 1,
-      pointerEvents: 'auto'
-    }
+    initial: { opacity: 0, pointerEvents: 'none' },
+    open: { opacity: 1, pointerEvents: 'auto' }
   });
 
   const tooltipStyles = { ...floatingStyles, ...transitionStyles };

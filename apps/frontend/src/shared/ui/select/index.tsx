@@ -6,6 +6,7 @@ import { useMemo } from 'react';
 import { Condition } from '../condition';
 import { Icons } from '../icons';
 import { Tooltip } from '../tooltip';
+import { Typography } from '../typography';
 import { SelectContext, useSelect, useSelectContext } from './lib';
 import styles from './styles.module.scss';
 
@@ -68,9 +69,9 @@ Child Label component
 ===================
 */
 const Label = ({ className, children, ...props }: ComponentProps<'p'>) => (
-  <p className={clsx(styles.label, className)} {...props}>
+  <Typography className={className} variant='label' {...props}>
     {children}
-  </p>
+  </Typography>
 );
 
 /*
@@ -94,9 +95,9 @@ const Trigger = ({ className, placeholder, ...props }: TriggerProps) => {
       {...props}
       {...getReferenceProps()}
     >
-      <div className={styles.triggerText}>
+      <Typography className={styles.triggerText}>
         <Condition then={activeItem?.label ?? selectedValue} value={selectedValue} else={placeholder} />
-      </div>
+      </Typography>
       <div className={styles.triggerActions}>
         <Icons.Arrows />
         {isInvalid && (
@@ -104,7 +105,7 @@ const Trigger = ({ className, placeholder, ...props }: TriggerProps) => {
             <Tooltip.Trigger>
               <Icons.Error />
             </Tooltip.Trigger>
-            <Tooltip.Content>{errorMessage}</Tooltip.Content>
+            <Typography as={Tooltip.Content} variant='text_S'>{errorMessage}</Typography>
           </Tooltip>
         )}
       </div>
@@ -171,7 +172,7 @@ const Item = ({ className, value, children, onClick, ...props }: ItemProps) => {
       {...props}
     >
       {isActive && <Icons.Check />}
-      <span className={styles.optionText}>{children}</span>
+      <Typography className={styles.optionText} as='span'>{children}</Typography>
     </li>
   );
 };

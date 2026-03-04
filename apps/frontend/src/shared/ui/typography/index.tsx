@@ -5,10 +5,9 @@ import styles from './styles.module.scss';
 
 export const Typography = <E extends ElementType = 'p'>({
   as,
-  glitch,
   children,
   className,
-  variant = 'text_S',
+  variant = 'text_M',
   ...props
 }: TypographyProps<E>) => {
   const Component = as ?? 'p';

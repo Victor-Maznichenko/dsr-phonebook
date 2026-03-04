@@ -7,6 +7,7 @@ import { Button } from '../button';
 import { Condition } from '../condition';
 import { Icons } from '../icons';
 import { Tooltip } from '../tooltip';
+import { Typography } from '../typography';
 import styles from './styles.module.scss';
 
 type InputTextVariants = 'default' | 'rounded';
@@ -97,7 +98,7 @@ export const InputText = ({
   };
 
   return (
-    <span
+    <Typography
       className={
         clsx(
           styles.wrapper,
@@ -107,11 +108,12 @@ export const InputText = ({
           isClearControl && styles.hasClear,
           className
         )}
+      as='span'
     >
       {label && (
-        <label className={styles.label} htmlFor={inputId}>
+        <Typography className={styles.label} htmlFor={inputId} variant='label' as='label'>
           {label}
-        </label>
+        </Typography>
       )}
       <div className={styles.field}>
         {before && <div className={beforeClassName}>{before}</div>}
@@ -152,10 +154,10 @@ export const InputText = ({
             <Tooltip.Trigger>
               <Icons.Error />
             </Tooltip.Trigger>
-            <Tooltip.Content>{errorMessage}</Tooltip.Content>
+            <Typography as={Tooltip.Content} variant='text_S'>{errorMessage}</Typography>
           </Tooltip>
         )}
       </div>
-    </span>
+    </Typography>
   );
 };

@@ -1,15 +1,17 @@
 import type { ComponentProps, ElementType } from 'react';
 
-type TypographyStyle
-  = | 'heading_L'
-    | 'heading_M'
-    | 'text_L'
-    | 'text_M'
-    | 'text_S';
+type TypographyStyle =
+  | 'heading_1'
+  | 'heading_2'
+  | 'heading_3'
+  | 'heading_4'
+  | 'label'
+  | 'text_L'
+  | 'text_M'
+  | 'text_S';
 
 interface TypographyOwnProps<E extends ElementType> {
   variant?: TypographyStyle;
-  glitch?: boolean;
   as?: E;
 }
 

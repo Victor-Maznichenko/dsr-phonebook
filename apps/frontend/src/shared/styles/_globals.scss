@@ -23,21 +23,20 @@
 }
 
 html {
-  --site-scale: calc(100vw / var(--desktop));
-
-  font-size: calc(var(--site-scale) * #{16});
+  --site-scale: calc(100vw / #{$desktop});
+  font-size: calc(var(--site-scale) * 16px);
   scrollbar-gutter: stable;
 
-  @include to(var(--lg)) {
-    --site-scale: calc(100vw / var(--lg));
+  @include to($lg) {
+    --site-scale: calc(100vw / #{$lg});
   }
 
-  @include to(var(--tablet)) {
-    --site-scale: calc(100vw / var(--tablet));
+  @include to($tablet) {
+    --site-scale: calc(100vw / #{$tablet});
   }
 
-  @include to(var(--mobile)) {
-    --site-scale: calc(100vw / var(--mobile));
+  @include to($mobile) {
+    --site-scale: calc(100vw / #{$mobile});
   }
 }
 
@@ -47,11 +46,6 @@ body {
   font-optical-sizing: auto;
   color: var(--color-text);
   overflow-x: hidden;
-  font-size: 17px;
-
-  @include to($mobile) {
-    font-size: 15px;
-  }
 }
 
 button {
