@@ -1,0 +1,52 @@
+@use '@/assets/styles/mixins' as *;
+@use '@/assets/styles/keyframes' as *;
+@use '@/assets/styles/variables' as *;
+
+.heading_L,
+.heading_M,
+.text_M,
+.text_S {
+   font-family: var(--font-jetbrains-mono);
+}
+
+.heading_L,
+.heading_M {
+   font-weight: 700;
+}
+
+.text_L,
+.text_M {
+   font-weight: 400;
+}
+
+.heading_L {
+   font-size: 5.25rem;
+   font-weight: 700;
+   line-height: 105%;
+
+   @include to($mobile) {
+      font-size: 4.25rem;
+   }
+}
+
+.heading_M {
+   font-size: 2.75rem;
+   font-weight: 700;
+   line-height: 105%;
+}
+
+.text_L {
+   font-weight: 400;
+   font-size: 1.125rem;
+   line-height: 115%;
+}
+
+.text_M {
+   font-size: 1.25rem;
+   line-height: 120%;
+}
+
+.text_S {
+   font-size: 1rem;
+   line-height: 150%;
+}

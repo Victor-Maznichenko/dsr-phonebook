@@ -1,8 +1,7 @@
 import type { ComponentProps, MouseEvent } from 'react';
 import { use } from 'react';
 import { ThemeContext } from '@/shared/lib';
-import { Button } from '../button';
-import { Icons } from '../icons';
+import { Button, Icons } from '@/shared/ui';
 import styles from './styles.module.scss';
 
 const getThemeSwitchAnimation = (x: number, y: number, isReverse?: boolean) => {
