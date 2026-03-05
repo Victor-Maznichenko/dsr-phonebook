@@ -1,0 +1,47 @@
+.wrapper {
+    width: 100%;
+}
+
+.blocked {
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+.field {
+    display: flex;
+    align-items: center;
+    column-gap: .375rem;
+    position: relative;
+    border-radius: var(--border-radius-sm);
+    border: 0.0625rem solid var(--color-gray-light);
+    overflow: hidden;
+    position: relative;
+}
+
+.invalid .field {
+    border-color: var(--color-red);
+}
+
+.errorTooltip {
+    background-color: #fff;
+    color: var(--color-red);
+    position: absolute;
+    z-index: var(--z-over);
+    right: 0.25rem;
+    top: 0.25rem;
+}
+
+.textarea {
+    font-size: var(--fs-text_M);
+    padding: 0.25rem 0.5rem;
+    flex: 1 0 auto;
+    font-family: inherit;
+    background-color: transparent;
+    outline: none;
+    border: none;
+
+    &::placeholder {
+        font-family: Poppins, sans-serif;
+        font-size: var(--fs-text_M);
+    }
+}

@@ -1,4 +1,5 @@
 import {
+  autoUpdate,
   offset,
   useFloating,
   useHover,
@@ -15,7 +16,8 @@ export const useTooltip = ({ sideOffset = 8 }) => {
   const { refs, floatingStyles, context } = useFloating({
     open: isOpen,
     onOpenChange: setIsOpen,
-    middleware: [offset(sideOffset)]
+    middleware: [offset(sideOffset)],
+    whileElementsMounted: autoUpdate
   });
 
   const role = useRole(context, { role: 'tooltip' });
