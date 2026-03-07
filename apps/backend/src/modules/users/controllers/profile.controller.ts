@@ -23,7 +23,7 @@ import { plainToInstance } from 'class-transformer';
 
 import { FilesService } from '@/modules/files/files.service';
 
-import { UpdateCredentialsDto, UpdatePersonalDto, UserDetailDto } from '../dto';
+import { AvatarResponseDto, UpdateCredentialsDto, UpdatePersonalDto, UserDetailDto } from '../dto';
 import { UsersService } from '../users.service';
 
 @ApiTags('Профиль')
@@ -39,7 +39,7 @@ export class ProfileController {
   =========== Получить профиль =========== 
   */
   @Get()
-  @ApiOperation({ summary: 'Получить профиль текущего пользователя' })
+  @ApiOperation({ operationId: 'getProfile', summary: 'Получить профиль текущего пользователя' })
   @ApiResponse({ status: 200, description: 'Профиль пользователя успешно получен', type: UserDetailDto })
   async getProfile(@Req() { user }) {
     const targetUser = await this.usersService.getById(+user.id);
@@ -51,7 +51,7 @@ export class ProfileController {
   */
   @HttpCode(204)
   @Delete()
-  @ApiOperation({ summary: 'Удалить профиль текущего пользователя' })
+  @ApiOperation({ operationId: 'deleteProfile', summary: 'Удалить профиль текущего пользователя' })
   @ApiResponse({ status: 204, description: 'Профиль пользователя успешно удалён' })
   async removeProfile(@Req() { user }, @Res({ passthrough: true }) response: Response) {
     await this.usersService.removeById(+user.id);
@@ -62,7 +62,7 @@ export class ProfileController {
   =========== Обновить учетные данные профиля =========== 
   */
   @Patch('credentials')
-  @ApiOperation({ summary: 'Обновить учетные данные текущего пользователя' })
+  @ApiOperation({ operationId: 'patchProfileCredentitals', summary: 'Обновить учетные данные текущего пользователя' })
   @ApiResponse({ status: 200, description: 'Учетные данные успешно обновлены' })
   patchCredentials(@Req() { user }, @Body() dto: UpdateCredentialsDto) {
     return this.usersService.patchCredentials(+user.id, dto);
@@ -75,7 +75,7 @@ export class ProfileController {
   */
   @Patch('personal')
   @UseInterceptors(ClassSerializerInterceptor)
-  @ApiOperation({ summary: 'Обновить личные данные текущего пользователя' })
+  @ApiOperation({ operationId: 'patchProfilePersonal', summary: 'Обновить личные данные текущего пользователя' })
   @ApiResponse({ status: 200, description: 'Личные данные успешно обновлены', type: UpdatePersonalDto })
   async patchPersonalData(@Req() { user }, @Body() dto: UpdatePersonalDto) {
     const updatedFields = await this.usersService.patchPersonalData(+user.id, dto);
@@ -87,7 +87,7 @@ export class ProfileController {
   */
   @Patch('avatar')
   @UseInterceptors(FileInterceptor('image'))
-  @ApiOperation({ summary: 'Обновить аватар текущего пользователя' })
+  @ApiOperation({ operationId: 'patchProfileAvatar', summary: 'Обновить аватар текущего пользователя' })
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {
@@ -100,7 +100,7 @@ export class ProfileController {
       },
     },
   })
-  @ApiResponse({ status: 200, description: 'Аватар успешно обновлён', type: UserDetailDto })
+  @ApiResponse({ status: 200, description: 'Аватар успешно обновлён', type: AvatarResponseDto })
   async updateAvatar(
     @Req() { user },
     @UploadedFile(
@@ -124,6 +124,6 @@ export class ProfileController {
 
     const updatedUser = await this.usersService.updateAvatar(+user.id, fileName);
 
-    return plainToInstance(UserDetailDto, updatedUser, { excludeExtraneousValues: true });
+    return plainToInstance(AvatarResponseDto, updatedUser, { excludeExtraneousValues: true });
   }
 }

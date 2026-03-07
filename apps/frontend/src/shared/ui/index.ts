@@ -3,5 +3,8 @@ export * from './button';
 export * from './condition';
 export * from './icons';
 export * from './input-text';
+export * from './select';
 export * from './spinner';
+export * from './textarea';
 export * from './tooltip';
+export * from './typography';

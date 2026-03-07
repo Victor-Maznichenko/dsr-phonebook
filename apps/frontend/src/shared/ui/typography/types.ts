@@ -6,6 +6,7 @@ type TypographyStyle =
   | 'heading_3'
   | 'heading_4'
   | 'label'
+  | 'link'
   | 'text_L'
   | 'text_M'
   | 'text_S';

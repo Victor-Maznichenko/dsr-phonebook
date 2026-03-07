@@ -5,7 +5,13 @@ import { Roles } from '@/modules/auth/decorators';
 import { Role } from '@/shared/constants';
 
 import { AccessRequestsService } from './access-requests.service';
-import { CreateAccessRequestDto, RequestsFiltersDto, UpdateAccessRequestDto } from './dto';
+import {
+  AccessRequestListResponseDto,
+  AccessRequestResponseDto,
+  CreateAccessRequestDto,
+  RequestsFiltersDto,
+  UpdateAccessRequestDto,
+} from './dto';
 import { AccessRequestStatus } from './lib';
 
 @ApiTags('Запросы доступа')
@@ -20,8 +26,8 @@ export class AccessRequestsController {
   */
   @Roles(Role.DEFAULT)
   @Post()
-  @ApiOperation({ summary: 'Создать запрос на доступ к персональным данным пользователя' })
-  @ApiResponse({ status: 201, description: 'Запрос на доступ успешно создан' })
+  @ApiOperation({ operationId: 'postRequest', summary: 'Создать запрос на доступ к персональным данным пользователя' })
+  @ApiResponse({ status: 201, description: 'Запрос на доступ успешно создан', type: AccessRequestResponseDto })
   @ApiResponse({ status: 400, description: 'Запрос уже отправлен и ожидает рассмотрения' })
   create(@Req() request: RequestWithUser, @Body() dto: CreateAccessRequestDto) {
     return this.requestsService.create(+request.user.id, +dto.targetUserId);
@@ -33,8 +39,8 @@ export class AccessRequestsController {
   ===================
   */
   @Patch(':id')
-  @ApiOperation({ summary: 'Обновить статус запроса на доступ' })
-  @ApiResponse({ status: 200, description: 'Статус запроса успешно обновлён' })
+  @ApiOperation({ operationId: 'patchRequestById', summary: 'Обновить статус запроса на доступ' })
+  @ApiResponse({ status: 200, description: 'Статус запроса успешно обновлён', type: AccessRequestResponseDto })
   @ApiResponse({ status: 400, description: 'Некорректный новый статус запроса' })
   @ApiResponse({ status: 403, description: 'Нет прав для изменения статуса запроса' })
   async update(@Param('id') id: string, @Req() request: RequestWithUser, @Body() dto: UpdateAccessRequestDto) {
@@ -59,8 +65,8 @@ export class AccessRequestsController {
   ===================
   */
   @Get('outgoing')
-  @ApiOperation({ summary: 'Получить исходящие запросы по идентификатору пользователя' })
-  @ApiResponse({ status: 200, description: 'Исходящие запросы успешно получены' })
+  @ApiOperation({ operationId: 'getOutgoingRequestsByUserId', summary: 'Получить исходящие запросы по идентификатору пользователя' })
+  @ApiResponse({ status: 200, description: 'Исходящие запросы успешно получены', type: AccessRequestListResponseDto })
   @ApiResponse({ status: 400, description: 'Некорректный идентификатор пользователя' })
   @ApiResponse({ status: 403, description: 'Нет доступа к запросам указанного пользователя' })
   getOutgoing(@Req() request: RequestWithUser, @Query() dto: RequestsFiltersDto & { userId?: number; }) {
@@ -90,8 +96,8 @@ export class AccessRequestsController {
   */
   @Roles(Role.DEFAULT)
   @Get('incoming')
-  @ApiOperation({ summary: 'Получить входящие запросы по идентификатору пользователя' })
-  @ApiResponse({ status: 200, description: 'Входящие запросы успешно получены' })
+  @ApiOperation({ operationId: 'getIncomingRequestsByUserId', summary: 'Получить входящие запросы по идентификатору пользователя' })
+  @ApiResponse({ status: 200, description: 'Входящие запросы успешно получены', type: AccessRequestListResponseDto })
   @ApiResponse({ status: 403, description: 'Нет доступа к запросам указанного пользователя' })
   getIncoming(@Req() request: RequestWithUser, @Query() dto: RequestsFiltersDto & { userId?: number; }) {
     const offset = dto.offset ?? 0;
@@ -120,8 +126,8 @@ export class AccessRequestsController {
   */
   @Roles(Role.ADMIN)
   @Get()
-  @ApiOperation({ summary: '[ADMIN] Получить все запросы на доступ' })
-  @ApiResponse({ status: 200, description: 'Список всех запросов успешно получен' })
+  @ApiOperation({ operationId: 'getRequests', summary: '[ADMIN] Получить все запросы на доступ' })
+  @ApiResponse({ status: 200, description: 'Список всех запросов успешно получен', type: AccessRequestListResponseDto })
   @ApiResponse({ status: 403, description: 'Недостаточно прав для получения всех запросов' })
   findAll(@Query() dto: RequestsFiltersDto) {
     const offset = dto.offset ?? 0;
@@ -136,7 +142,7 @@ export class AccessRequestsController {
   ===================
   */
   @Delete(':id')
-  @ApiOperation({ summary: 'Удалить запрос на доступ' })
+  @ApiOperation({ operationId: 'deleteRequestById', summary: 'Удалить запрос на доступ' })
   @ApiResponse({ status: 200, description: 'Запрос успешно удалён' })
   @ApiResponse({ status: 403, description: 'Нет прав для удаления запроса' })
   async remove(@Param('id') id: string, @Req() request: RequestWithUser) {

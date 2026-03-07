@@ -7,6 +7,7 @@
 .text_L,
 .text_M,
 .text_S,
+.link,
 .label {
   font-family: Poppins, sans-serif;
 }
@@ -22,7 +23,8 @@
 // Основные тексты (нормальные)
 .text_L,
 .text_M,
-.text_S {
+.text_S,
+.link {
   font-weight: 400;
 }
 
@@ -64,4 +66,15 @@
 .text_S, .label {
   font-size: var(--fs-text_S);
   line-height: 150%;
+}
+
+.link {
+  font-size: var(--fs-text_S);
+  color: var(--color-green);
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.1s;
+
+  &:hover {
+    border-color: var(--color-green);
+  }
 }

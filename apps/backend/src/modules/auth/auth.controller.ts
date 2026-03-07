@@ -34,7 +34,7 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Public()
   @Post('admin/login')
-  @ApiOperation({ summary: 'Логин администратора' })
+  @ApiOperation({ operationId: 'postAdminLogin', summary: 'Логин администратора' })
   @ApiResponse({ status: 200, description: 'Администратор успешно авторизован' })
   @ApiResponse({ status: 401, description: 'Неверные учетные данные администратора' })
   async adminLogin(@Body() dto: LoginDto, @Res({ passthrough: true }) response: Response) {
@@ -49,7 +49,7 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Public()
   @Post('login')
-  @ApiOperation({ summary: 'Логин пользователя' })
+  @ApiOperation({ operationId: 'postLogin', summary: 'Логин пользователя' })
   @ApiResponse({ status: 200, description: 'Пользователь успешно авторизован' })
   @ApiResponse({ status: 401, description: 'Неверные учетные данные' })
   async login(@Body() dto: LoginDto, @Res({ passthrough: true }) response: Response) {
@@ -63,7 +63,7 @@ export class AuthController {
   */
   @Public()
   @Post('register')
-  @ApiOperation({ summary: 'Регистрация нового пользователя' })
+  @ApiOperation({ operationId: 'postRegister', summary: 'Регистрация нового пользователя' })
   @ApiResponse({ status: 201, description: 'Пользователь успешно зарегистрирован' })
   @ApiResponse({ status: 400, description: 'Некорректные данные для регистрации' })
   async register(@Body() dto: CreateUserDto, @Res({ passthrough: true }) response: Response) {
@@ -78,7 +78,7 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Public()
   @Post('refresh')
-  @ApiOperation({ summary: 'Обновить пару токенов по refresh-токену' })
+  @ApiOperation({ operationId: 'postRefresh', summary: 'Обновить пару токенов по refresh-токену' })
   @ApiResponse({ status: 200, description: 'Токены успешно обновлены' })
   @ApiResponse({ status: 401, description: 'Неверный или отсутствующий refresh-токен' })
   async refreshToken(@Req() request: RequestWithUser, @Res({ passthrough: true }) response: Response) {
@@ -99,7 +99,7 @@ export class AuthController {
   =========== Получить базовые поля текущего пользователя =========== 
   */
   @Get('me')
-  @ApiOperation({ summary: 'Получить базовую информацию о текущем пользователе' })
+  @ApiOperation({ operationId: 'getMe', summary: 'Получить базовую информацию о текущем пользователе' })
   @ApiResponse({ status: 200, description: 'Информация о пользователе успешно получена' })
   @ApiResponse({ status: 404, description: 'Пользователь не найден' })
   async getUserInfo(@Req() request: RequestWithUser) {
@@ -123,7 +123,7 @@ export class AuthController {
   */
   @HttpCode(HttpStatus.OK)
   @Post('logout')
-  @ApiOperation({ summary: 'Выход из аккаунта' })
+  @ApiOperation({ operationId: 'postLogout', summary: 'Выход из аккаунта' })
   @ApiResponse({ status: 200, description: 'Сессия завершена' })
   logout(@Res({ passthrough: true }) response: Response) {
     response.cookie('refresh_token', '', { maxAge: 0 });

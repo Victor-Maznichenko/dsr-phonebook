@@ -1,42 +1,20 @@
-import { AppShell } from '@mantine/core';
-import { createBrowserRouter, Outlet, RouterProvider } from 'react-router';
-import { ROUTES, useAuth } from '@/shared/lib';
-import { HomePage, LoginPage, NotFoundPage, ProfilePage, RegisterPage, UserPage } from '@/pages';
-import { Header } from '@/widgets';
-import { Footer } from '@/shared/ui';
-import { ProtectedRoute } from './protected-route';
+import { Route, RouterProvider } from 'atomic-router-react';
+import { appStarted, router, routes } from '@/shared/config';
+import { LoginPage } from '@/pages';
+import { Footer, Header } from '@/widgets';
+import styles from './styles.module.scss';
+import '@/shared/styles/index.scss';
 
-const Layout = () => (
-  <AppShell>
-    <Header />
-    <Outlet />
-    <Footer />
-  </AppShell>
+appStarted();
+export const App = () => (
+  <div className={styles.app}>
+    <RouterProvider router={router}>
+      <Header />
+      <main className={styles.main}>
+        <Route route={routes.login} view={LoginPage} />
+      </main>
+      <Footer />
+    </RouterProvider>
+    <div className='noise' />
+  </div>
 );
-
-const router = createBrowserRouter([
-  {
-    path: ROUTES.ROOT,
-    element: <Layout />,
-    errorElement: <NotFoundPage />,
-    children: [
-      {
-        element: <ProtectedRoute />,
-        children: [
-          { index: true, element: <HomePage /> },
-          { path: ROUTES.USER, element: <UserPage /> },
-          { path: ROUTES.PROFILE, element: <ProfilePage /> }
-        ]
-      },
-      { path: ROUTES.LOGIN, element: <LoginPage /> },
-      { path: ROUTES.REGISTER, element: <RegisterPage /> },
-      { path: ROUTES.ADMIN_LOGIN, element: <LoginPage isAdmin /> }
-    ]
-  }
-]);
-
-export const App = () => {
-  useAuth();
-
-  return <RouterProvider router={router} />;
-};

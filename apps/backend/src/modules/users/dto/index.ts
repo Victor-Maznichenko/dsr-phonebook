@@ -1,3 +1,4 @@
+export * from './avatar-response.dto';
 export * from './create-user.dto';
 export * from './update-credentials.dto';
 export * from './update-personal.dto';

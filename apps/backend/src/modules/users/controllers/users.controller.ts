@@ -33,7 +33,7 @@ export class UsersController {
   */
   @Get()
   @UseInterceptors(ClassSerializerInterceptor)
-  @ApiOperation({ summary: 'Получить список пользователей' })
+  @ApiOperation({ operationId: 'getUsers', summary: 'Получить список пользователей' })
   @ApiResponse({
     status: 200,
     description: 'Список пользователей успешно получен',
@@ -59,7 +59,7 @@ export class UsersController {
   ===================
   */
   @Get(':id')
-  @ApiOperation({ summary: 'Получить пользователя по идентификатору' })
+  @ApiOperation({ operationId: 'getUserById', summary: 'Получить пользователя по идентификатору' })
   @ApiResponse({ status: 200, description: 'Пользователь успешно получен', type: UserDetailDto })
   @ApiResponse({ status: 403, description: 'Нет доступа к личным данным пользователя' })
   @ApiResponse({ status: 404, description: 'Пользователь не найден' })
@@ -87,7 +87,7 @@ export class UsersController {
   */
   @Roles(Role.ADMIN)
   @Patch(':id/credentials')
-  @ApiOperation({ summary: '[ADMIN] Обновить учетные данные пользователя' })
+  @ApiOperation({ operationId: 'patchUserCredentitals', summary: '[ADMIN] Обновить учетные данные пользователя' })
   @ApiResponse({ status: 200, description: 'Учетные данные пользователя успешно обновлены' })
   @ApiResponse({ status: 403, description: 'Недостаточно прав для изменения учетных данных' })
   patchCredentials(@Param('id') id: string, @Body() dto: UpdateCredentialsDto) {
@@ -102,7 +102,7 @@ export class UsersController {
   @Roles(Role.ADMIN)
   @Patch(':id/personal')
   @UseInterceptors(ClassSerializerInterceptor)
-  @ApiOperation({ summary: '[ADMIN] Обновить личные данные пользователя' })
+  @ApiOperation({ operationId: 'patchUserPersonal', summary: '[ADMIN] Обновить личные данные пользователя' })
   @ApiResponse({ status: 200, description: 'Личные данные пользователя успешно обновлены', type: UpdatePersonalDto })
   @ApiResponse({ status: 403, description: 'Недостаточно прав для изменения личных данных' })
   async patchPersonalData(@Param('id') id: string, @Body() dto: UpdatePersonalDto) {
@@ -117,7 +117,7 @@ export class UsersController {
   */
   @Roles(Role.ADMIN)
   @Delete(':id')
-  @ApiOperation({ summary: '[ADMIN] Удалить пользователя' })
+  @ApiOperation({ operationId: 'deleteUser', summary: '[ADMIN] Удалить пользователя' })
   @ApiResponse({ status: 200, description: 'Пользователь успешно удалён' })
   @ApiResponse({ status: 403, description: 'Недостаточно прав для удаления пользователя' })
   remove(@Param('id') id: string) {

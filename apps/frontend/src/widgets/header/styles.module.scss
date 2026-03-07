@@ -1,0 +1,17 @@
+@use "@/shared/styles/variables" as *;
+
+.header {
+    padding: .625rem 0;
+}
+
+.inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+    column-gap: .75rem;
+}

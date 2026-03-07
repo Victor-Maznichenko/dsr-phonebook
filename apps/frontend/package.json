@@ -10,12 +10,12 @@
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "generate:api": "node scripts/fetch-openapi.mjs && openapi-ts",
     "generate:api:from-file": "openapi-ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.2.0",
     "@floating-ui/react": "^0.27.17",
+    "@hookform/resolvers": "^5.2.2",
     "atomic-router": "^0.12.0",
     "atomic-router-react": "^0.12.1",
     "clsx": "^2.1.1",
@@ -25,11 +25,10 @@
     "motion": "^12.33.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.0",
+    "react-hook-form": "^7.71.2",
     "react-number-format": "^5.4.4"
   },
   "devDependencies": {
-    "@hey-api/client-fetch": "^0.13.1",
-    "@hey-api/openapi-ts": "^0.93.1",
     "@chromatic-com/storybook": "^5.0.0",
     "@siberiacancode/eslint": "2.12.0",
     "@storybook/addon-a11y": "^10.2.6",
@@ -43,12 +42,13 @@
     "@vitejs/plugin-react": "^5.1.1",
     "@vitest/browser-playwright": "^4.0.18",
     "@vitest/coverage-v8": "^4.0.18",
+    "dotenv-cli": "^11.0.0",
     "eslint-plugin-storybook": "^10.2.6",
     "globals": "^16.5.0",
     "playwright": "^1.58.1",
     "sass-embedded": "^1.97.3",
     "storybook": "^10.2.6",
-    "typescript": "~5.9.3",
+    "typescript": "^5.9.3",
     "vite": "^7.2.4",
     "vitest": "^4.0.18"
   }
