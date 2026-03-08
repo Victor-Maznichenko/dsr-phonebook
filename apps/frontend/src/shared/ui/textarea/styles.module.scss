@@ -37,10 +37,12 @@
     flex: 1 0 auto;
     font-family: inherit;
     background-color: transparent;
+    color: inherit;
     outline: none;
     border: none;
 
     &::placeholder {
+        color: var(--color-placeholder);
         font-family: Poppins, sans-serif;
         font-size: var(--fs-text_M);
     }

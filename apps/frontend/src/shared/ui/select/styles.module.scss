@@ -27,17 +27,17 @@
 .trigger {
    width: 100%;
    cursor: pointer;
-   height: 36px;
+   height: 2.25rem;
    display: flex;
    align-items: center;
    justify-content: space-between;
    column-gap: 0.75rem;
-   padding: 0 0.75rem 0 1rem;
+   padding: 0.25rem 0.5rem;
    overflow: hidden;
    white-space: nowrap;
 
    &.placeholder &Text {
-      color: var(--color-gray-light);
+      color: var(--color-placeholder);
    }
 
    &Text {

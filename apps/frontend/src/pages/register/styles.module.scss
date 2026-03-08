@@ -1,0 +1,24 @@
+.inner {
+    max-width: 32rem;
+    padding: 0 1rem;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+    row-gap: 1rem;
+}
+
+.error {
+    color: var(--color-red);
+}
+
+.bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

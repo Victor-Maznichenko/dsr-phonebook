@@ -1,8 +1,9 @@
 import z from 'zod';
+import { DEPARTMENTS, GRADE } from '../constants';
 
 export const schemas = {
-  firstName: z.string().min(2).max(50),
-  lastName: z.string().min(2).max(50),
+  firstName: z.string().min(2, 'Имя должно содержать от 2 символов').max(50, 'Имя должно содержать до 50 символов'),
+  lastName: z.string().min(2, 'Фамилия должна содержать от 2 символов').max(50, 'Фамилия должна содержать до 50 символов'),
   email: z.email('Некорректный адрес электронной почты.'),
   password: z
     .string()
@@ -11,5 +12,9 @@ export const schemas = {
     .regex(/\d/, 'Пароль должен содержать хотя бы одну цифру')
     .regex(/[A-Z]/, 'Пароль должен содержать хотя бы одну заглавную букву')
     .regex(/[a-z]/, 'Пароль должен содержать хотя бы одну строчную букву')
-    .regex(/[@$!%*?&#]/, 'Пароль должен содержать хотя бы один специальный символ')
+    .regex(/[@$!%*?&#]/, 'Пароль должен содержать хотя бы один специальный символ'),
+  about: z.string().max(255, 'Максимум 255 символов'),
+  department: z.enum(DEPARTMENTS),
+  grade: z.enum(GRADE),
+  phone: z.string().length(11)
 };

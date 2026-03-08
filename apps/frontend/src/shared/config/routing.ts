@@ -31,7 +31,7 @@ export const router = createHistoryRouter({
       route: routes.home
     },
     {
-      path: '/auth/login',
+      path: '/login',
       route: routes.login
     },
     {
@@ -39,7 +39,7 @@ export const router = createHistoryRouter({
       route: routes.loginAdmin
     },
     {
-      path: '/auth/register',
+      path: '/register',
       route: routes.register
     }
   ],

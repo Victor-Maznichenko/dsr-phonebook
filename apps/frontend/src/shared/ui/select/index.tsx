@@ -12,6 +12,7 @@ import styles from './styles.module.scss';
 
 interface SelectProps extends Omit<ComponentProps<'div'>, 'onChange'>, SelectOwnProps {
   errorMessage?: string;
+  placeholder?: string;
   disabled?: boolean;
 }
 
@@ -177,11 +178,11 @@ const Item = ({ className, value, children, onClick, ...props }: ItemProps) => {
   );
 };
 
-const Select = ({ children, items, ...props }: SelectProps) => {
+const Select = ({ children, placeholder, items, ...props }: SelectProps) => {
   if (!children && items) {
     return (
       <Root items={items} {...props}>
-        <Trigger placeholder='Select apple' />
+        <Trigger placeholder={placeholder ?? 'Выберите'} />
         <Popup>
           {items.map(({ label, value }) => (
             <Item value={value} key={value}>

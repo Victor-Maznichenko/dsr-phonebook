@@ -3,10 +3,18 @@ interface LoginDto {
   email: string;
 }
 
-interface RegisterDto {
+interface RegisterDto extends Pick<Required<UserDto>, | 'about'
+  | 'department'
+  | 'email'
+  | 'firstName'
+  | 'grade'
+  | 'lastName'
+  | 'officePhone'
+  | 'position'
+  | 'workPhone'> {
   password: string;
-  email: string;
 }
+
 interface UserDto {
   hasPersonalAccess: boolean;
   avatar?: Nullable<string>;

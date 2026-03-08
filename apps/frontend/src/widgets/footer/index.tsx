@@ -4,6 +4,6 @@ import styles from './styles.module.scss';
 export const Footer = () => (
   <footer className={styles.footer}>
     <Typography variant='text_S' as='span'>Develop by </Typography>
-    <Typography className={styles.link} variant='text_S' as='a'>Victor Maznichenko</Typography>
+    <Typography href='https://t.me/victor_maznichenko' variant='link' as='a'>Victor Maznichenko</Typography>
   </footer>
 );

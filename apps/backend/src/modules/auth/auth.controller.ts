@@ -51,7 +51,7 @@ export class AuthController {
   @Post('login')
   @ApiOperation({ operationId: 'postLogin', summary: 'Логин пользователя' })
   @ApiResponse({ status: 200, description: 'Пользователь успешно авторизован' })
-  @ApiResponse({ status: 401, description: 'Неверные учетные данные' })
+  @ApiResponse({ status: 400, description: 'Неверные учетные данные' })
   async login(@Body() dto: LoginDto, @Res({ passthrough: true }) response: Response) {
     const tokens = await this.authService.login(dto);
     response.cookie('refresh_token', tokens.refresh_token, { httpOnly: true, secure: true, maxAge: 7 * 24 * 3600000 });

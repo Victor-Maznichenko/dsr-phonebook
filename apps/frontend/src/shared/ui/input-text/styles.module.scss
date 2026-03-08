@@ -1,3 +1,5 @@
+@use "@/shared/styles/variables" as *;
+
 .wrapper {
     font-size: var(--fs-text_M);
     width: 100%;
@@ -30,17 +32,25 @@
 .rounded .field {
     border-radius: var(--border-radius-max);
 }
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px var(--color-gray-light) inset;
+}
 
 .input {
     flex: 1 0 auto;
     font-family: inherit;
-    background-color: transparent;
+    background-color: var(--color-background);
     font-size: inherit;
     outline: none;
     border: none;
+    color: inherit;
 
     &::placeholder {
         font-family: Poppins, sans-serif;
+        color: var(--color-placeholder);
     }
 }
 

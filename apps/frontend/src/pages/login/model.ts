@@ -1,5 +1,9 @@
+import { redirect } from 'atomic-router';
 import { createEffect, createEvent, createStore, sample } from 'effector';
+import { reset } from 'patronum';
 import { requests } from '@/shared/api';
+import { routes } from '@/shared/config';
+import { accessTokenFx } from '@/shared/lib';
 
 const loginFx = createEffect(requests.postLogin);
 const submited = createEvent<LoginDto>();
@@ -19,6 +23,22 @@ sample({
 sample({
   clock: loginFx.fail,
   fn: () => true,
+  target: $isIncorrectData
+});
+
+sample({
+  clock: loginFx.doneData,
+  target: accessTokenFx
+});
+
+redirect({
+  clock: accessTokenFx.done,
+  route: routes.home
+});
+
+// Reset values
+reset({
+  clock: routes.login.closed,
   target: $isIncorrectData
 });
 
