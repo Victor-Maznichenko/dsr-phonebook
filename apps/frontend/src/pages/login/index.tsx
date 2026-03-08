@@ -21,7 +21,7 @@ export const LoginPage = ({ isAdmin = false }: { isAdmin?: boolean }) => {
   const { register, handleSubmit, formState: { errors } } = useForm({ resolver: zodResolver(schema) });
 
   return (
-    <main className={clsx(styles.root, isAdmin && styles.admin)}>
+    <div className={clsx(styles.root, isAdmin && styles.admin)}>
       <div className={styles.inner}>
         <form className={styles.form} onSubmit={handleSubmit(submited)}>
           <div>
@@ -43,6 +43,7 @@ export const LoginPage = ({ isAdmin = false }: { isAdmin?: boolean }) => {
             errorMessage={errors.password?.message}
             autoComplete='current-password'
             placeholder='Введите пароль'
+            type='password'
           />
           <Button
             className={styles.button}
@@ -55,13 +56,13 @@ export const LoginPage = ({ isAdmin = false }: { isAdmin?: boolean }) => {
             Войти
           </Button>
           <div className={styles.bottom}>
-            <Typography className={styles.error} variant='label'>
+            <Typography className={styles.error} variant='label_S'>
               {isIncorrectData && 'Некорректный email или пароль'}
             </Typography>
             <Typography to={routes.register} variant='link' as={Link}>Зарегистрироваться</Typography>
           </div>
         </form>
       </div>
-    </main>
+    </div>
   );
 };

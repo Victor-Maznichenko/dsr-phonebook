@@ -4,8 +4,9 @@ import clsx from 'clsx';
 import { useUnit } from 'effector-react';
 import { Controller, useForm } from 'react-hook-form';
 import { routes } from '@/shared/config';
+import { departmentItems, gradeItems } from '@/shared/lib';
 import { Button, InputText, Select, Textarea, Typography } from '@/shared/ui';
-import { departmentItems, gradeItems, schema } from './lib';
+import { schema } from './lib';
 import { model } from './model';
 import styles from './styles.module.scss';
 
@@ -14,7 +15,7 @@ export const RegisterPage = ({ isAdmin = false }: { isAdmin?: boolean }) => {
   const { control, register, handleSubmit, formState: { errors } } = useForm({ resolver: zodResolver(schema) });
 
   return (
-    <main className={clsx(styles.root, isAdmin && styles.admin)}>
+    <div className={clsx(styles.root, isAdmin && styles.admin)}>
       <div className={styles.inner}>
         <form className={styles.form} onSubmit={handleSubmit(submited)}>
           <div>
@@ -34,8 +35,9 @@ export const RegisterPage = ({ isAdmin = false }: { isAdmin?: boolean }) => {
           <InputText
             {...register('password', { required: true })}
             errorMessage={errors.password?.message}
-            autoComplete='current-password'
             placeholder='Придумайте пароль'
+            autoComplete='new-password'
+            type='password'
           />
           <InputText
             {...register('firstName', { required: true })}
@@ -91,13 +93,13 @@ export const RegisterPage = ({ isAdmin = false }: { isAdmin?: boolean }) => {
             Войти
           </Button>
           <div className={styles.bottom}>
-            <Typography className={styles.error} variant='label'>
+            <Typography className={styles.error} variant='label_S'>
               {errorMessage && errorMessage}
             </Typography>
             <Typography to={routes.login} variant='link' as={Link}>Уже есть аккаунт?</Typography>
           </div>
         </form>
       </div>
-    </main>
+    </div>
   );
 };

@@ -6,6 +6,7 @@ interface Item {
 export interface SelectOwnProps {
   onChange?: (value: string | null) => void;
   sideOffset?: number;
+  label?: string;
   items?: Item[]
   value?: string;
 }

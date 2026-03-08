@@ -20,6 +20,7 @@
    --color-orange-light: oklch(87.7% 0.112 78.4);
    --color-indigo: oklch(51% 0.23 276.97);
 
+   --color-black-50: oklch(0 0 0 / 0.25);
    --color-black-25: oklch(0 0 0 / 0.25);
    --color-black-10: oklch(0 0 0 / 0.1);
    --color-stone-85: oklch(0.28 0.01 0 / 0.85);
@@ -33,6 +34,7 @@
    /*=== border-radius === */
    --border-radius-sm: 0.25rem;
    --border-radius-md: 0.5rem;
+   --border-radius-lg: 0.75rem;
    --border-radius-max: 1000rem;
 
    /*=== Layers === */
@@ -73,13 +75,17 @@ Dark Theme
    --color-stone: oklch(0.28 0.01 0);
    --color-gray-light: oklch(0.5 0 0);
    --color-placeholder: oklch(0.4 0 0);
+   --color-popup-content: oklch(0.3 0 0);
 
    --color-red: oklch(44.6% 0.154 22.3);
    --color-orange: oklch(0.65 0.19 36.32);
    --color-orange-light: oklch(0.53 0.09 77.96);
    --color-indigo: oklch(60% 0.23 276.97);
 
-   --color-black-10: oklch(95% 0 0 / 0.1);
+
+   --color-black-50: oklch(0.95 0 0 / 0.25);
+   --color-black-25: oklch(0.95 0 0 / 0.25);
+   --color-black-10: oklch(0.95 0 0 / 0.1);
    --color-black-25: oklch(95% 0 0 / 0.25);
    --color-white-70: oklch(5% 0 90 / 0.7);
 }

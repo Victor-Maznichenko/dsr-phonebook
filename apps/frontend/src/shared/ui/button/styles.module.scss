@@ -1,4 +1,5 @@
 @use "sass:map";
+@use "@/shared/styles/variables" as *;
 
 .button {
   line-height: 1;
@@ -84,7 +85,7 @@ $sizes: (
 @include init-filled-colors('orange');
 @include init-filled-colors('stone');
 
-.text {
+.text-md, .text-sm {
   all: unset;
   display: inline;
   transition: filter var(--trans-fast);
@@ -93,6 +94,14 @@ $sizes: (
   &:hover {
     filter: drop-shadow(0 0 1.5rem var(--color-indigo));
   }
+}
+
+.text-md {
+  font-size: var(--fs-text_M);
+}
+
+.text-sm {
+  font-size: var(--fs-text_S);
 }
 
 .disabled {

@@ -22,11 +22,12 @@ export const useSelect = ({ sideOffset = 8, items, value, onChange }: SelectOwnP
   Select choosed logic
   ======================
   */
-  const [selectedValue, setSelectedValue] = useState<Nullable<string>>(value ?? null);
+  const [internalValue, setInternalValue] = useState<Nullable<string>>(value ?? null);
+  const selectedValue = value ?? internalValue;
   const activeItem = items?.find((i) => i.value === selectedValue);
 
   const handleChange = (value: string) => {
-    setSelectedValue(value);
+    setInternalValue(value);
     handleClose();
 
     if (onChange) {
@@ -82,7 +83,6 @@ export const useSelect = ({ sideOffset = 8, items, value, onChange }: SelectOwnP
     selectPopupStyles,
     getReferenceProps,
     getFloatingProps,
-    setSelectedValue,
     handleChange,
     handleClose
   };

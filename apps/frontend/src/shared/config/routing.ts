@@ -4,6 +4,7 @@ import { createBrowserHistory } from 'history';
 import { appStarted } from '@/shared/config/init';
 
 /* Обьявляем константу с роутами которые будем использовать во всем приложении */
+
 export const routes = {
   user: createRoute<{ userId: string }>(),
   home: createRoute(),

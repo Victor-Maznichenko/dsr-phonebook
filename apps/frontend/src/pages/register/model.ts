@@ -3,7 +3,7 @@ import { createEffect, createEvent, createStore, sample } from 'effector';
 import { reset } from 'patronum';
 import { requests } from '@/shared/api';
 import { routes } from '@/shared/config';
-import { accessTokenFx } from '@/shared/lib';
+import { setAccessTokenFx } from '@/shared/lib';
 
 const registerFx = createEffect(requests.postRegister);
 const submited = createEvent<RegisterDto>();
@@ -29,11 +29,11 @@ sample({
 
 sample({
   clock: registerFx.doneData,
-  target: accessTokenFx
+  target: setAccessTokenFx
 });
 
 redirect({
-  clock: accessTokenFx.done,
+  clock: setAccessTokenFx.done,
   route: routes.home
 });
 

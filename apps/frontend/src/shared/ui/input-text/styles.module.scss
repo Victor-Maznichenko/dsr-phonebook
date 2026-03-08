@@ -41,8 +41,8 @@ input:-webkit-autofill:active {
 
 .input {
     flex: 1 0 auto;
+    background-color: transparent;
     font-family: inherit;
-    background-color: var(--color-background);
     font-size: inherit;
     outline: none;
     border: none;

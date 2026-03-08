@@ -1,0 +1,26 @@
+.modal[open] {
+    display: flex;
+    row-gap: 0.5rem;
+    flex-direction: column;
+}
+
+.form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.about, .saveBtn {
+    grid-column: span 2;
+}
+
+.bottom {
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.deleteBtn {
+    color: var(--color-red);
+}

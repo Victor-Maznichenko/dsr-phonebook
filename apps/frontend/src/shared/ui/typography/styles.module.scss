@@ -8,7 +8,8 @@
 .text_M,
 .text_S,
 .link,
-.label {
+.label_S,
+.label_M  {
   font-family: Poppins, sans-serif;
 }
 
@@ -29,7 +30,7 @@
 }
 
 // Другое
-.label {
+.label_S, .label_M {
    font-weight: 600;
 }
 
@@ -58,12 +59,12 @@
   font-size: var(--fs-text_L);
 }
 
-.text_M {
+.text_M, .label_M {
   font-size: var(--fs-text_M);
   line-height: 120%;
 }
 
-.text_S, .label {
+.text_S, .label_S {
   font-size: var(--fs-text_S);
   line-height: 150%;
 }

@@ -111,7 +111,7 @@ export const InputText = ({
       as='span'
     >
       {label && (
-        <Typography className={styles.label} htmlFor={inputId} variant='label' as='label'>
+        <Typography className={styles.label} htmlFor={inputId} variant='label_S' as='label'>
           {label}
         </Typography>
       )}
@@ -134,6 +134,7 @@ export const InputText = ({
             <input
               className={clsx(styles.input, inputClassName)}
               ref={handleRef}
+              type={type}
               {...inputProps}
               {...props}
             />

@@ -37,7 +37,7 @@ const Root = ({
 
   const contextValue = useMemo(
     () => ({ ...config, disabled, errorMessage }),
-    [config, disabled, errorMessage]
+    [config, disabled, errorMessage, value]
   );
 
   return (
@@ -70,7 +70,7 @@ Child Label component
 ===================
 */
 const Label = ({ className, children, ...props }: ComponentProps<'p'>) => (
-  <Typography className={className} variant='label' {...props}>
+  <Typography className={className} variant='label_S' {...props}>
     {children}
   </Typography>
 );
@@ -178,26 +178,32 @@ const Item = ({ className, value, children, onClick, ...props }: ItemProps) => {
   );
 };
 
-const Select = ({ children, placeholder, items, ...props }: SelectProps) => {
+const Select = ({ children, placeholder, items, label, ...props }: SelectProps) => {
   if (!children && items) {
     return (
-      <Root items={items} {...props}>
-        <Trigger placeholder={placeholder ?? 'Выберите'} />
-        <Popup>
-          {items.map(({ label, value }) => (
-            <Item value={value} key={value}>
-              {label}
-            </Item>
-          ))}
-        </Popup>
-      </Root>
+      <div className={styles.field}>
+        <Typography variant='label_S'>{label}</Typography>
+        <Root items={items} {...props}>
+          <Trigger placeholder={placeholder ?? 'Выберите'} />
+          <Popup>
+            {items.map(({ label, value }) => (
+              <Item value={value} key={value}>
+                {label}
+              </Item>
+            ))}
+          </Popup>
+        </Root>
+      </div>
     );
   }
 
   return (
-    <Root items={items} {...props}>
-      {children}
-    </Root>
+    <div className={styles.field}>
+      <Typography variant='label_S'>{label}</Typography>
+      <Root items={items} {...props}>
+        {children}
+      </Root>
+    </div>
   );
 };
 

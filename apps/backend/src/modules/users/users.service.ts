@@ -74,35 +74,19 @@ export class UsersService extends BaseService<User> {
   async patchCredentials(id: number, dto: UpdateCredentialsDto) {
     const user = await this.getById(id);
 
-    // Валидации
-    if ((dto.newPassword && !dto.oldPassword) || (!dto.newPassword && dto.oldPassword)) {
-      throw new BadRequestException('Для смены пароля необходимо указать старый и новый пароль');
-    }
-
-    if (dto.email === user.email) {
-      throw new BadRequestException('Новый email такой же как старый');
-    }
-
     // Проверка совпадения паролей
     if (dto.newPassword && dto.oldPassword) {
       const isOldPasswordValid = await bcrypt.compare(dto.oldPassword, user.password);
 
       if (!isOldPasswordValid) {
-        throw new UnauthorizedException('Неверный старый пароль');
+        throw new BadRequestException('Неверный старый пароль');
+      }
+
+      if(dto.newPassword === dto.oldPassword) {
+        throw new BadRequestException('Новый пароль не отличается от старого');
       }
 
       user.password = await bcrypt.hash(dto.newPassword, 10);
-    }
-
-    // Обработка смены email
-    if (dto.email && dto.email !== user.email) {
-      const existingUser = await this.getByEmail(dto.email);
-
-      if (existingUser) {
-        throw new ConflictException('Указанный email уже используется');
-      }
-
-      user.email = dto.email;
     }
 
     await user.save();

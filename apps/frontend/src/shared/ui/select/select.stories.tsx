@@ -21,22 +21,20 @@ const items = [
 
 export const Example: Story = {
   args: {
-    sideOffset: 8
+    sideOffset: 8,
+    label: 'Выберите яблоко'
   },
 
   render: (args) => {
     return (
-      <Select.Wrapper>
-        <Select.Label>Вспомогательный текст</Select.Label>
-        <Select style={{ width: 200 }} items={items} {...args}>
-          <Select.Trigger placeholder='Select apple' />
-          <Select.Popup>
-            {items.map(({ label, value }) => (
-              <Select.Item value={value} key={value}>{label}</Select.Item>
-            ))}
-          </Select.Popup>
-        </Select>
-      </Select.Wrapper>
+      <Select style={{ width: 200 }} items={items} {...args}>
+        <Select.Trigger placeholder='Select apple' />
+        <Select.Popup>
+          {items.map(({ label, value }) => (
+            <Select.Item value={value} key={value}>{label}</Select.Item>
+          ))}
+        </Select.Popup>
+      </Select>
     );
   }
 };

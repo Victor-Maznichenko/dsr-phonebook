@@ -59,7 +59,7 @@ export const Textarea = ({
       as='span'
     >
       {label && (
-        <Typography className={styles.label} htmlFor={textareaId} variant='label' as='label'>
+        <Typography className={styles.label} htmlFor={textareaId} variant='label_S' as='label'>
           {label}
         </Typography>
       )}

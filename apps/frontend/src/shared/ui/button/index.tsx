@@ -15,7 +15,8 @@ type ButtonVariants =
   | 'light-orange-lg'
   | 'light-orange-md'
   | 'light-orange-sm'
-  | 'text'
+  | 'text-md'
+  | 'text-sm'
   | 'unstyled';
 
 interface ButtonOwnProps<T> {

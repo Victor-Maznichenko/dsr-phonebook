@@ -1,0 +1,46 @@
+.main {
+    display: flex;
+    align-items: flex-start;
+    gap: 3.75rem;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 0;
+    row-gap: 1rem;
+}
+
+.preview {
+    text-align: center;
+}
+
+.actions {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 1rem;
+}
+
+.detailedModal[open] {
+    display: flex;
+    row-gap: 0.5rem;
+    flex-direction: column;
+}
+
+.personalForm {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.personalFormAbout, .personalFormBtn {
+    grid-column: span 2;
+}
+
+.personalBottom {
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}

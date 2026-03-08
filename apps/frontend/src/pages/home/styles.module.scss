@@ -1,0 +1,16 @@
+@use "@/shared/styles/variables" as *;
+
+.title {
+    margin-bottom: 2rem;
+}
+
+.list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    gap: 1rem;
+}
+
+.card {
+    max-width: calc((100% - 2rem) / 3);
+}
