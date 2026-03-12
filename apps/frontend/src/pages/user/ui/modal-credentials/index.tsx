@@ -2,14 +2,13 @@ import type { ComponentProps } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useUnit } from 'effector-react';
 import { useForm } from 'react-hook-form';
-import { Modal } from '@/widgets';
-import { Button, InputText, Typography } from '@/shared/ui';
+import { Button, InputText, Modal, Typography } from '@/shared/ui';
 import { model } from '../../model';
 import { schema } from './lib';
 import styles from './styles.module.scss';
 
 export const ModalCredentials = ({ ...props }: ComponentProps<typeof Modal>) => {
-  const [submited] = useUnit([model.submited.credentials]);
+  const [submited] = useUnit([model.submitted.credentials]);
 
   const { register, handleSubmit, formState: { errors, isDirty } } = useForm({
     resolver: zodResolver(schema)

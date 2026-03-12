@@ -5,12 +5,14 @@ import { Icons } from '../icons';
 import { getInitials } from './lib';
 import styles from './styles.module.scss';
 
-interface AvatarProps extends ComponentProps<'img'> {
+interface AvatarOwnProps {
   variant?: 'circle' | 'square';
   src?: Nullable<string>;
   text?: string;
   size?: number;
 }
+
+interface AvatarProps extends Omit<ComponentProps<'img'>, keyof AvatarOwnProps>, AvatarOwnProps {};
 
 export const Avatar = ({ src, variant = 'circle', size = 32, text, ...props }: AvatarProps) => (
   <div

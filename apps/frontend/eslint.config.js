@@ -93,6 +93,5 @@ export default eslint(
         }
       ]
     }
-  },
-  { ignores: ['./src/shared/api/generated'] }
+  }
 );

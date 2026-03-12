@@ -11,13 +11,13 @@ import { model } from './model';
 import styles from './styles.module.scss';
 
 export const RegisterPage = ({ isAdmin = false }: { isAdmin?: boolean }) => {
-  const [isLoading, errorMessage, submited] = useUnit([model.$isLoading, model.$errorMessage, model.submited]);
+  const [isLoading, errorMessage, submitted] = useUnit([model.$isLoading, model.$errorMessage, model.submitted]);
   const { control, register, handleSubmit, formState: { errors } } = useForm({ resolver: zodResolver(schema) });
 
   return (
     <div className={clsx(styles.root, isAdmin && styles.admin)}>
       <div className={styles.inner}>
-        <form className={styles.form} onSubmit={handleSubmit(submited)}>
+        <form className={styles.form} onSubmit={handleSubmit(submitted)}>
           <div>
             <Typography className={styles.title} variant='heading_2'>
               Добро пожаловать!

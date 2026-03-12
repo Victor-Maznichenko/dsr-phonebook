@@ -1,7 +1,7 @@
 import type { ModalType } from './lib';
 import { redirect } from 'atomic-router';
-import { attach, createEffect, createEvent, createStore, sample } from 'effector';
-import { not, or, reset } from 'patronum';
+import { attach, combine, createEffect, createEvent, createStore, sample } from 'effector';
+import { reset } from 'patronum';
 import { requests } from '@/shared/api';
 import { routes } from '@/shared/config';
 import { $isAdmin, $me, deleteAccessTokenFx } from '@/shared/lib';
@@ -12,20 +12,24 @@ import { $isAdmin, $me, deleteAccessTokenFx } from '@/shared/lib';
 ===================
 */
 const closeModal = createEvent();
-const setModal = createEvent<string>();
+const setModal = createEvent<Nullable<ModalType>>();
 const $currentModal = createStore<Nullable<ModalType>>(null)
   .on(setModal, (_, modalName) => modalName)
   .reset(closeModal);
 
-// Submited events
-const submited = {
+// Submitted events
+const submitted = {
   credentials: createEvent<PatchUserPasswords>(),
   personal: createEvent<PatchUserPersonal>()
 };
 
-// Get user id
-const $userId = createStore<Nullable<number>>(null);
-const $havePremissions = or(not($userId), $isAdmin);
+/*
+===================
+User id & permissions
+===================
+*/
+const $userId = createStore<number | null>(null);
+$userId.reset(routes.profile.opened);
 
 sample({
   clock: routes.user.opened,
@@ -33,7 +37,7 @@ sample({
   target: $userId
 });
 
-$userId.reset(routes.profile.opened);
+const $hasPermissions = combine($userId, $isAdmin, (userId, isAdmin) => userId === null || isAdmin);
 
 /*
 ===================
@@ -110,7 +114,7 @@ const patchPersonalFx = attach({
 });
 
 sample({
-  clock: submited.personal,
+  clock: submitted.personal,
   target: patchPersonalFx
 });
 
@@ -132,7 +136,7 @@ const patchCredentialsFx = attach({
   mapParams: patchCredentialsMapParams,
   effect: createEffect(async (params: ReturnType<typeof patchCredentialsMapParams>) => {
     if (params.userId) {
-      console.error(new Error('Not allowed change another user credentials'));
+      throw new Error('Changing another user credentials is not allowed.');
     }
     return await requests.patchProfileCredentials(params.body);
   })
@@ -144,23 +148,36 @@ sample({
 });
 
 sample({
-  clock: submited.credentials,
+  clock: submitted.credentials,
   target: patchCredentialsFx
 });
 
-// Сброс значений
+/*
+===================
+Сброс значений
+===================
+*/
 reset({
   clock: [routes.user.closed, routes.profile.closed],
   target: [$user, $userId]
 });
 
-// Loading states
+/*
+===================
+Loading states
+===================
+*/
 const $isLoading = {
   getUser: getUserFx.pending,
   patchPersonal: patchPersonalFx.pending,
   patchCredentials: patchCredentialsFx.pending
 };
 
+/*
+===================
+Redirect: если открыли /user/:id и это мой профиль — редиректим на profile
+===================
+*/
 redirect({
   clock: sample({
     clock: routes.user.opened,
@@ -170,6 +187,11 @@ redirect({
   route: routes.profile
 });
 
+/*
+===================
+Экспорт модели
+===================
+*/
 export const model = {
   $currentModal,
   $isLoading,
@@ -178,7 +200,7 @@ export const model = {
   closeModal,
   patchPersonalFx,
   patchCredentialsFx,
-  submited,
+  submitted,
   userDeleted,
-  $havePremissions
+  $hasPermissions
 };

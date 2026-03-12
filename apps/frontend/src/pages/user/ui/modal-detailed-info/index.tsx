@@ -1,8 +1,7 @@
 import type { ComponentProps } from 'react';
 import { useUnit } from 'effector-react';
-import { DEPARTMENTS_LABELS, GRADE_LABELS } from '@/shared/lib/constants';
-import { Modal } from '@/widgets';
-import { Button, Typography } from '@/shared/ui';
+import { DEPARTMENTS_LABELS, GRADE_LABELS } from '@/shared/lib';
+import { Button, Modal, Typography } from '@/shared/ui';
 import { model as pageModel } from '../../model';
 import styles from './styles.module.scss';
 

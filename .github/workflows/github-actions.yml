@@ -1,0 +1,21 @@
+name: GitHub Actions
+run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+on: [push]
+jobs:
+   init:
+      runs-on: ubuntu-latest
+      strategy:
+         matrix:
+            node-version: [20.19.0]
+      steps:
+         - uses: actions/checkout@v3
+         - name: Staring Node.js ${{ matrix.node-version }}
+           uses: actions/setup-node@v3
+           with:
+              node-version: ${{ matrix.node-version }}
+         - name: install modules
+           run: bun install
+         - name: build project
+           run: bun run build
+         - name: lint code
+           run: bun run lint

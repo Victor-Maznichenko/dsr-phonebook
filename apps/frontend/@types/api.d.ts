@@ -3,14 +3,14 @@ interface LoginDto {
   email: string;
 }
 
-interface RegisterDto extends Pick<Required<UserDto>, | 'about'
-  | 'department'
+interface RegisterDto extends Pick<Required<UserDto>, | 'department'
   | 'email'
   | 'firstName'
   | 'grade'
   | 'lastName'
   | 'workPhone'> {
   password: string;
+  about?: string;
 }
 
 interface UserMe extends Pick<Required<UserDto>, 'avatar' | 'email' | 'firstName' | 'id' | 'lastName' | 'role'> { }

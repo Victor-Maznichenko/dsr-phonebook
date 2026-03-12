@@ -10,8 +10,8 @@ import { ModalPersonal } from './modal-personal';
 import styles from './styles.module.scss';
 
 export const UserPage = () => {
-  const [havePremissions, user, currentModal, closeModal, setModal] = useUnit([
-    model.$havePremissions,
+  const [hasPermissions, user, currentModal, closeModal, setModal] = useUnit([
+    model.$hasPermissions,
     model.$user,
     model.$currentModal,
     model.closeModal,
@@ -41,7 +41,7 @@ export const UserPage = () => {
           {about && <Textarea label='О себе' value={about} disabled />}
           <div className={styles.actions}>
             <Button onClick={() => setModal(MODAL_TYPES.DetailedInfo)} variant='filled-stone-sm'>Подробнее</Button>
-            { havePremissions && <Button onClick={() => setModal(MODAL_TYPES.Personal)} variant='light-orange-sm'>Изменить</Button> }
+            { hasPermissions && <Button onClick={() => setModal(MODAL_TYPES.Personal)} variant='light-orange-sm'>Изменить</Button> }
           </div>
         </div>
         <ModalPersonal

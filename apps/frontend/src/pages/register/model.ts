@@ -6,11 +6,11 @@ import { routes } from '@/shared/config';
 import { setAccessTokenFx } from '@/shared/lib';
 
 const registerFx = createEffect(requests.postRegister);
-const submited = createEvent<RegisterDto>();
+const submitted = createEvent<RegisterDto>();
 const $errorMessage = createStore('');
 
 sample({
-  clock: submited,
+  clock: submitted,
   fn: (data) => ({
     avatar: null,
     personalPhones: [],
@@ -39,7 +39,7 @@ redirect({
 
 // Reset values
 reset({
-  clock: submited,
+  clock: submitted,
   target: $errorMessage
 });
 
@@ -48,4 +48,4 @@ reset({
   target: $errorMessage
 });
 
-export const model = { $isLoading: registerFx.pending, $errorMessage, submited };
+export const model = { $isLoading: registerFx.pending, $errorMessage, submitted };

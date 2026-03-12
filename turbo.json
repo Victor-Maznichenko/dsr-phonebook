@@ -11,12 +11,7 @@
       "persistent": true,
       "cache": false
     },
-    "lint": {
-      "outputs": []
-    },
-    "generate:api": {
-      "outputs": ["src/shared/api/**"],
-      "cache": false
-    }
+    "lint": { "outputs": [] },
+    "lint:fix": { "outputs": [] }
   }
 }

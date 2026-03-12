@@ -5,8 +5,7 @@ import { useUnit } from 'effector-react';
 import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { departmentItems, gradeItems } from '@/shared/lib';
-import { Modal } from '@/widgets';
-import { Button, InputText, Select, Textarea, Typography } from '@/shared/ui';
+import { Button, InputText, Modal, Select, Textarea, Typography } from '@/shared/ui';
 import { model } from '../../model';
 import { schema } from './lib';
 import styles from './styles.module.scss';
@@ -16,7 +15,7 @@ interface ModalPersonalProps extends ComponentProps<typeof Modal> {
 }
 
 export const ModalPersonal = ({ onChangeCredentials, ...props }: ModalPersonalProps) => {
-  const [user, submited, userDeleted] = useUnit([model.$user, model.submited.personal, model.userDeleted]);
+  const [user, submited, userDeleted] = useUnit([model.$user, model.submitted.personal, model.userDeleted]);
 
   const {
     control,

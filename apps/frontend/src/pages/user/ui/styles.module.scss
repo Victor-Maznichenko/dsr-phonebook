@@ -21,26 +21,3 @@
     grid-template-columns: 1fr 1fr;
     column-gap: 1rem;
 }
-
-.detailedModal[open] {
-    display: flex;
-    row-gap: 0.5rem;
-    flex-direction: column;
-}
-
-.personalForm {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-}
-
-.personalFormAbout, .personalFormBtn {
-    grid-column: span 2;
-}
-
-.personalBottom {
-    margin-top: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
