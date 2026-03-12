@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
-import { SequelizeModule } from '@nestjs/sequelize';
+import { SequelizeModule, SequelizeModuleOptions } from '@nestjs/sequelize';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { resolve } from 'node:path';
 
@@ -12,17 +12,41 @@ import { FilesModule } from './modules/files/files.module';
 @Module({
    imports: [
     ConfigModule.forRoot({
-      envFilePath: `.${process.env.NODE_ENV}.env`,
+      isGlobal: true,
+      envFilePath: [`.${process.env.NODE_ENV}.env`, '.env'],
     }),
-    SequelizeModule.forRoot({
-      dialect: 'postgres',
-      host: process.env.POSTGRES_HOST,
-      port: Number(process.env.POSTGRESS_PORT),
-      username: process.env.POSTGRES_USER,
-      password: process.env.POSTGRESS_PASSWORD,
-      database: process.env.POSTGRES_DB,
-      models: [],
-      autoLoadModels: true,
+ SequelizeModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => {
+        const isProd = process.env.NODE_ENV === 'production';
+
+        if (isProd) {
+          return {
+            dialect: 'postgres',
+            uri: config.get<string>('DATABASE_URL'),
+            dialectOptions: {
+              ssl: {
+                require: true,
+                rejectUnauthorized: false,
+              },
+            },
+            models: [],
+            autoLoadModels: true,
+          } as SequelizeModuleOptions;
+        }
+
+        return {
+          dialect: 'postgres',
+          host: config.get<string>('POSTGRES_HOST'),
+          port: Number(config.get<number>('POSTGRES_PORT') || 5432),
+          username: config.get<string>('POSTGRES_USER'),
+          password: config.get<string>('POSTGRES_PASSWORD'),
+          database: config.get<string>('POSTGRES_DB'),
+          models: [],
+          autoLoadModels: true,
+        };
+      },
     }),
     ServeStaticModule.forRoot({
       rootPath: resolve(__dirname, 'modules/static'),
