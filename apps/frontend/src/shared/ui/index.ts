@@ -6,6 +6,7 @@ export * from './icons';
 export * from './input-text';
 export * from './modal';
 export * from './select';
+export * from './skeletons';
 export * from './spinner';
 export * from './textarea';
 export * from './tooltip';

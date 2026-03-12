@@ -16,4 +16,4 @@ sample({
   target: $users
 });
 
-export const model = { $users };
+export const model = { $users, $isLoading: getUsersFx.pending };

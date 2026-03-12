@@ -1,6 +1,7 @@
 @use "@/shared/styles/variables" as *;
 
 .card {
+    min-height: 13.8rem;
     width: 100%;
     max-width: 20rem;
     padding: .75rem;

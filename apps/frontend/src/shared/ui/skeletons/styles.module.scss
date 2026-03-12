@@ -1,0 +1,10 @@
+.userCard {
+    width: 100%;
+    line-height: 0;
+    display: block;
+    overflow: hidden;
+    max-width: 20rem;
+    min-height: 13.8rem;
+    border: 1px solid var(--color-gray-light);
+    border-radius: var(--border-radius-lg);
+}
