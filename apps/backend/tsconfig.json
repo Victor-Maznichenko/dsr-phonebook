@@ -12,7 +12,6 @@
       "@/generated/*": ["./generated/*"]
     },
     "resolvePackageJsonExports": true,
-    "types": ["node", "Multer"],
     "strictBindCallApply": false,
     "strictNullChecks": true,
     "noFallthroughCasesInSwitch": false,
