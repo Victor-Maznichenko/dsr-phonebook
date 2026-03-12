@@ -9,13 +9,14 @@ jobs:
             node-version: [20.19.0]
       steps:
          - uses: actions/checkout@v3
+         - uses: oven-sh/setup-bun@v1.2.22
          - name: Staring Node.js ${{ matrix.node-version }}
            uses: actions/setup-node@v3
            with:
               node-version: ${{ matrix.node-version }}
          - name: install modules
-           run: npm install
+           run: bun install
          - name: build project
-           run: npm run build
+           run: bun run build
          - name: lint code
-           run: npm run lint
+           run: bun run lint
