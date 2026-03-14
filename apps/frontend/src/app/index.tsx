@@ -1,7 +1,7 @@
-import { Route, RouterProvider } from 'atomic-router-react';
-import { appStarted, router, routes } from '@/shared/config';
+import { RouterProvider } from 'atomic-router-react';
+import { appStarted, router } from '@/shared/config';
 import { ThemeProvider } from '@/shared/lib';
-import { HomePage, LoginPage, RegisterPage, UserPage } from '@/pages';
+import { Pages } from '@/pages';
 import { Footer, Header } from '@/widgets';
 import styles from './styles.module.scss';
 import '@/shared/styles/index.scss';
@@ -13,11 +13,7 @@ export const App = () => (
       <RouterProvider router={router}>
         <Header />
         <main className={styles.main}>
-          <Route route={routes.home} view={HomePage} />
-          <Route route={routes.user} view={UserPage} />
-          <Route route={routes.profile} view={UserPage} />
-          <Route route={routes.login} view={LoginPage} />
-          <Route route={routes.register} view={RegisterPage} />
+          <Pages />
         </main>
         <Footer />
       </RouterProvider>

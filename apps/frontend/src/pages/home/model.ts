@@ -1,6 +1,10 @@
 import { createEffect, createStore, sample } from 'effector';
 import { requests } from '@/shared/api';
 import { routes } from '@/shared/config';
+import { chainAuthorized } from '@/shared/session';
+
+const route = routes.home;
+const authorizedRoute = chainAuthorized(route);
 
 const $users = createStore<UserCompactDto[]>([]);
 const getUsersFx = createEffect(requests.getUsers);
@@ -16,4 +20,4 @@ sample({
   target: $users
 });
 
-export const model = { $users, $isLoading: getUsersFx.pending };
+export const model = { route, authorizedRoute, $users, $isLoading: getUsersFx.pending };

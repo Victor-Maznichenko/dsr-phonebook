@@ -5,12 +5,18 @@ import { reset } from 'patronum';
 import { requests } from '@/shared/api';
 import { routes } from '@/shared/config';
 import { $isAdmin, $me, deleteAccessTokenFx } from '@/shared/lib';
+import { chainAuthorized } from '@/shared/session';
 
 /*
 ===================
 Общее
 ===================
 */
+const userRoute = routes.user;
+const profileRoute = routes.profile;
+const authorizedUserRoute = chainAuthorized(userRoute);
+const authorizedProfileRoute = chainAuthorized(profileRoute);
+
 const closeModal = createEvent();
 const setModal = createEvent<Nullable<ModalType>>();
 const $currentModal = createStore<Nullable<ModalType>>(null)
@@ -29,10 +35,10 @@ User id & permissions
 ===================
 */
 const $userId = createStore<number | null>(null);
-$userId.reset(routes.profile.opened);
+$userId.reset(profileRoute.opened);
 
 sample({
-  clock: routes.user.opened,
+  clock: userRoute.opened,
   fn: (route) => Number(route.params.userId),
   target: $userId
 });
@@ -58,7 +64,7 @@ const getUserFx = attach({
 });
 
 sample({
-  clock: [routes.user.opened, routes.profile.opened],
+  clock: [userRoute.opened, profileRoute.opened],
   fn: () => undefined,
   target: getUserFx
 });
@@ -158,7 +164,7 @@ sample({
 ===================
 */
 reset({
-  clock: [routes.user.closed, routes.profile.closed],
+  clock: [userRoute.closed, profileRoute.closed],
   target: [$user, $userId]
 });
 
@@ -180,11 +186,11 @@ Redirect: если открыли /user/:id и это мой профиль — 
 */
 redirect({
   clock: sample({
-    clock: routes.user.opened,
+    clock: userRoute.opened,
     source: $me,
     filter: (me, route) => me?.id === Number(route.params.userId)
   }),
-  route: routes.profile
+  route: profileRoute
 });
 
 /*
@@ -193,6 +199,10 @@ redirect({
 ===================
 */
 export const model = {
+  userRoute,
+  profileRoute,
+  authorizedUserRoute,
+  authorizedProfileRoute,
   $currentModal,
   $isLoading,
   $user,

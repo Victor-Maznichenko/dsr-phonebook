@@ -1,7 +1,9 @@
+import { createEvent } from 'effector';
 import ky from 'ky';
-import { authAdminRedirect, authRedirect } from '../config';
 
 const BASE_URL = import.meta.env.VITE_API_BASE;
+export const requestForbidden = createEvent();
+export const requestUnauthorized = createEvent();
 
 export const api = ky.create({
   prefixUrl: BASE_URL,
@@ -19,7 +21,7 @@ export const api = ky.create({
       // Недостаточно прав
       (_input, _options, response) => {
         if (response.status === 403) {
-          authAdminRedirect();
+          requestForbidden();
         }
       },
       // Не аутентифицирован
@@ -35,7 +37,7 @@ export const api = ky.create({
             }
           } catch {
             localStorage.removeItem('access_token');
-            authRedirect();
+            requestUnauthorized();
           }
         }
       }

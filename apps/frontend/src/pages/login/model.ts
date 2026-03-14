@@ -5,6 +5,7 @@ import { requests } from '@/shared/api';
 import { routes } from '@/shared/config';
 import { setAccessTokenFx } from '@/shared/lib';
 
+const route = routes.login;
 const loginFx = createEffect(requests.postLogin);
 const submited = createEvent<LoginDto>();
 const $isIncorrectData = createStore(false);
@@ -38,8 +39,8 @@ redirect({
 
 // Reset values
 reset({
-  clock: routes.login.closed,
+  clock: route.closed,
   target: $isIncorrectData
 });
 
-export const model = { $isLoading: loginFx.pending, $isIncorrectData, submited };
+export const model = { route, $isLoading: loginFx.pending, $isIncorrectData, submited };

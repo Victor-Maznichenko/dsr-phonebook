@@ -1,12 +1,13 @@
 import { createHistoryRouter, createRoute, createRouterControls, redirect } from 'atomic-router';
-import { createEvent, sample } from 'effector';
+import { sample } from 'effector';
 import { createBrowserHistory } from 'history';
 import { appStarted } from '@/shared/config/init';
+import { requestForbidden, requestUnauthorized } from '../api/instance';
 
 /* Обьявляем константу с роутами которые будем использовать во всем приложении */
 
 export const routes = {
-  user: createRoute<{ userId: string }>(),
+  user: createRoute<{ userId?: string }>(),
   home: createRoute(),
   login: createRoute(),
   profile: createRoute(),
@@ -56,15 +57,12 @@ sample({
 });
 
 /* Redirect auth logic */
-export const authRedirect = createEvent();
-export const authAdminRedirect = createEvent();
-
 redirect({
-  clock: authRedirect,
+  clock: requestForbidden,
   route: routes.login
 });
 
 redirect({
-  clock: authAdminRedirect,
+  clock: requestUnauthorized,
   route: routes.loginAdmin
 });

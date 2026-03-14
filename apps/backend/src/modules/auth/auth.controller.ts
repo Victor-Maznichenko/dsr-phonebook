@@ -39,7 +39,7 @@ export class AuthController {
   @ApiResponse({ status: 401, description: 'Неверные учетные данные администратора' })
   async adminLogin(@Body() dto: LoginDto, @Res({ passthrough: true }) response: Response) {
     const tokens = await this.authService.login(dto, true);
-    response.cookie('refresh_token', tokens.refresh_token, { httpOnly: true, secure: true, maxAge: 7 * 24 * 3600000 });
+    response.cookie('refresh_token', tokens.refresh_token, { httpOnly: true, secure: false, maxAge: 7 * 24 * 3600000 });
     return tokens.access_token;
   }
 
@@ -54,7 +54,7 @@ export class AuthController {
   @ApiResponse({ status: 400, description: 'Неверные учетные данные' })
   async login(@Body() dto: LoginDto, @Res({ passthrough: true }) response: Response) {
     const tokens = await this.authService.login(dto);
-    response.cookie('refresh_token', tokens.refresh_token, { httpOnly: true, secure: true, maxAge: 7 * 24 * 3600000 });
+    response.cookie('refresh_token', tokens.refresh_token, { httpOnly: true, secure: false, maxAge: 7 * 24 * 3600000 });
     return tokens.access_token;
   }
 
@@ -68,7 +68,7 @@ export class AuthController {
   @ApiResponse({ status: 400, description: 'Некорректные данные для регистрации' })
   async register(@Body() dto: CreateUserDto, @Res({ passthrough: true }) response: Response) {
     const tokens = await this.authService.register(dto);
-    response.cookie('refresh_token', tokens.refresh_token, { httpOnly: true, secure: true, maxAge: 7 * 24 * 3600000 });
+    response.cookie('refresh_token', tokens.refresh_token, { httpOnly: true, secure: false, maxAge: 7 * 24 * 3600000 });
     return tokens.access_token;
   }
 

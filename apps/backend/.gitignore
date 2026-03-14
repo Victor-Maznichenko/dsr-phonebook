@@ -3,7 +3,7 @@ dist
 node_modules
 
 # Env
-.development.env
+.env
 .production.env
 
 # Logs

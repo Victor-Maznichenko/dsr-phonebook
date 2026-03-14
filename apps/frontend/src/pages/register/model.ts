@@ -5,6 +5,7 @@ import { requests } from '@/shared/api';
 import { routes } from '@/shared/config';
 import { setAccessTokenFx } from '@/shared/lib';
 
+const route = routes.register;
 const registerFx = createEffect(requests.postRegister);
 const submitted = createEvent<RegisterDto>();
 const $errorMessage = createStore('');
@@ -44,8 +45,8 @@ reset({
 });
 
 reset({
-  clock: routes.login.closed,
+  clock: route.closed,
   target: $errorMessage
 });
 
-export const model = { $isLoading: registerFx.pending, $errorMessage, submitted };
+export const model = { route, $isLoading: registerFx.pending, $errorMessage, submitted };
