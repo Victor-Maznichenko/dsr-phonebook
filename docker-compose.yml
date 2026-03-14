@@ -35,7 +35,9 @@ services:
       - postgres
 
   app:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
     container_name: dsr-phonebook-app
     depends_on:
       postgres:
