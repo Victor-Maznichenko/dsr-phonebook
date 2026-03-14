@@ -58,11 +58,11 @@ sample({
 
 /* Redirect auth logic */
 redirect({
-  clock: requestForbidden,
+  clock: requestUnauthorized,
   route: routes.login
 });
 
 redirect({
-  clock: requestUnauthorized,
+  clock: requestForbidden,
   route: routes.loginAdmin
 });
