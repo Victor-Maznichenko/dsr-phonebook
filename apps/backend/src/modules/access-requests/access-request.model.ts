@@ -31,7 +31,7 @@ export class AccessRequest extends Model {
         example: 10,
     })
     @ForeignKey(() => User)
-    @Column({ allowNull: false })
+    @Column({ type: DataType.INTEGER, allowNull: false })
     declare granteeUserId: number;
 
     @ApiProperty({
@@ -39,7 +39,7 @@ export class AccessRequest extends Model {
         example: 20,
     })
     @ForeignKey(() => User)
-    @Column({ allowNull: false })
+    @Column({ type: DataType.INTEGER, allowNull: false })
     declare targetUserId: number;
 
     @ApiProperty({

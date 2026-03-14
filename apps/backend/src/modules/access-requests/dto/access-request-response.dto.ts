@@ -20,9 +20,9 @@ export class AccessRequestResponseDto {
   @ApiProperty({ description: 'Дата создания', example: '2025-03-06T12:00:00.000Z' })
   declare createdAt: Date;
 
-  @ApiProperty({ description: 'Пользователь, который запрашивает доступ', type: AccessRequestUserDto, required: false })
+  @ApiProperty({ description: 'Пользователь, который запрашивает доступ', type: () => AccessRequestUserDto, required: false })
   declare grantee?: AccessRequestUserDto;
 
-  @ApiProperty({ description: 'Пользователь, к данным которого запрашивается доступ', type: AccessRequestUserDto, required: false })
+  @ApiProperty({ description: 'Пользователь, к данным которого запрашивается доступ', type: () => AccessRequestUserDto, required: false })
   declare target?: AccessRequestUserDto;
 }
