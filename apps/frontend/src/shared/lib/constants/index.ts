@@ -6,6 +6,11 @@ export const DEPARTMENTS = {
   Development: 'development'
 } as const;
 
+export const ROLES = {
+  Admin: 'admin',
+  Default: 'default'
+} as const;
+
 export const GRADE = {
   Intern: 'intern',
   Junior: 'junior',
@@ -46,5 +51,12 @@ export const gradeItems = [
   { label: 'Lead', value: GRADE.Lead }
 ];
 
+export const ACCESS_REQUEST_STATUS = {
+  Pending: 'pending',
+  Approved: 'approved',
+  Rejected: 'rejected'
+} as const;
+
+export type AccessRequestStatus = typeof ACCESS_REQUEST_STATUS[keyof typeof ACCESS_REQUEST_STATUS];
 export type DepartmentValue = typeof DEPARTMENTS[keyof typeof DEPARTMENTS];
 export type GradeValue = typeof GRADE[keyof typeof GRADE];

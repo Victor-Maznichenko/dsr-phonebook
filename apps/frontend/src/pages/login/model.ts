@@ -1,14 +1,27 @@
 import { redirect } from 'atomic-router';
-import { createEffect, createEvent, createStore, sample } from 'effector';
+import { attach, createEffect, createEvent, createStore, sample } from 'effector';
 import { reset } from 'patronum';
 import { requests } from '@/shared/api';
 import { routes } from '@/shared/config';
 import { setAccessTokenFx } from '@/shared/lib';
 
 const route = routes.login;
-const loginFx = createEffect(requests.postLogin);
+const adminRoute = routes.loginAdmin;
+const $isAdminRouteOpened = adminRoute.$isOpened;
 const submited = createEvent<LoginDto>();
 const $isIncorrectData = createStore(false);
+
+const loginMapParams = (body: LoginDto, isAdminRouteOpened: boolean) => ({ body, isAdminRouteOpened });
+const loginFx = attach({
+  source: $isAdminRouteOpened,
+  mapParams: loginMapParams,
+  effect: createEffect(async ({ isAdminRouteOpened, body }: ReturnType<typeof loginMapParams>) => {
+    if (isAdminRouteOpened) {
+      return await requests.postAdminLogin(body);
+    }
+    return await requests.postLogin(body);
+  })
+});
 
 sample({
   clock: submited,
@@ -43,4 +56,11 @@ reset({
   target: $isIncorrectData
 });
 
-export const model = { route, $isLoading: loginFx.pending, $isIncorrectData, submited };
+export const model = {
+  route,
+  adminRoute,
+  $isAdminRouteOpened,
+  $isLoading: loginFx.pending,
+  $isIncorrectData,
+  submited
+};

@@ -1,0 +1,9 @@
+@use "@/shared/styles/variables" as *;
+
+.title {
+    margin-bottom: 2rem;
+}
+
+.requestDelete {
+    color: var(--color-red);
+}

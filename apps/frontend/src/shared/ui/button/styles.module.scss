@@ -46,7 +46,7 @@ $sizes: (
 );
 
 @mixin init-button-sizes($size) {
-  .filled-stone-#{$size}, .filled-orange-#{$size}, .light-green-#{$size}, .light-orange-#{$size} {
+  .filled-stone-#{$size}, .filled-orange-#{$size}, .filled-red-#{$size}, .light-green-#{$size}, .light-orange-#{$size} {
     $config: map.get($sizes, $size);
     padding: map.get($config, padding);
     font-size: map.get($config, font-size);
@@ -82,6 +82,7 @@ $sizes: (
 @include init-light-colors('orange');
 @include init-light-colors('green');
 
+@include init-filled-colors('red');
 @include init-filled-colors('orange');
 @include init-filled-colors('stone');
 

@@ -1,5 +1,5 @@
 export const getPassedYears = (dateISO: string) => {
-  const [year, month, day] = dateISO.split('-').map(Number);
+  const [year, month, day] = dateISO.slice(0, 10).split('-').map(Number);
   const today = new Date();
 
   let age = today.getFullYear() - year;

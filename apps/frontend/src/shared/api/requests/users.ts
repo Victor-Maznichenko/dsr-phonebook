@@ -15,4 +15,4 @@ export const getUsers = async ({ limit = 10, offset = 0 }: GetUsersParams = {}) 
 
 export const getUserById = (id: string) => api.get<UserDetailDto>(`users/${id}`).json();
 export const deleteUserById = (id: string) => api.delete(`users/${id}`).json();
-export const patchUserPersonal = (id: string, body: PatchUserPersonal) => api.patch<PatchUserPersonal>(`users/${id}`, { json: body }).json();
+export const patchUserPersonal = (id: string, body: PatchUserPersonal) => api.patch<PatchUserPersonal>(`users/${id}/personal`, { json: body }).json();

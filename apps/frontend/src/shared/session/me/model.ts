@@ -1,12 +1,13 @@
 import { createEffect, createEvent, createStore, sample } from 'effector';
 import { requests } from '@/shared/api';
 import { appStarted } from '@/shared/config';
-import { setAccessTokenFx } from '@/shared/lib';
+import { ROLES, setAccessTokenFx } from '@/shared/lib';
 
 const getMe = createEvent();
 const getMeFx = createEffect(requests.getMe);
 const $me = createStore<Nullable<UserMe>>(null);
-const $isAdmin = $me.map((me) => Boolean(me?.role));
+const $isAdmin = $me.map((me) => Boolean(me?.role === ROLES.Admin));
+const $isDefault = $me.map((me) => Boolean(me?.role === ROLES.Default));
 
 sample({
   clock: [setAccessTokenFx.done, appStarted],
@@ -27,5 +28,6 @@ export const model = {
   $me,
   $isAdmin,
   getMe,
-  getMeFx
+  getMeFx,
+  $isDefault
 };

@@ -13,6 +13,7 @@ export const routes = {
   profile: createRoute(),
   loginAdmin: createRoute(),
   register: createRoute(),
+  accessRequests: createRoute(),
   notFound: createRoute()
 };
 
@@ -39,6 +40,10 @@ export const router = createHistoryRouter({
     {
       path: '/admin/login',
       route: routes.loginAdmin
+    },
+    {
+      path: '/admin/access-requests',
+      route: routes.accessRequests
     },
     {
       path: '/register',

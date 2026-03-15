@@ -88,7 +88,7 @@ export class AuthController {
       if (!refreshToken) throw new UnauthorizedException('Refresh token not found');
 
       const tokens = await this.authService.refreshTokens(refreshToken);
-      response.cookie('refresh_token', tokens.refresh_token, { httpOnly: true, maxAge: 7 * 24 * 3600000 });
+      response.cookie('refresh_token', tokens.refresh_token, { httpOnly: true, secure: false, maxAge: 7 * 24 * 3600000 });
       return tokens.access_token;
     } catch {
       throw new UnauthorizedException('Invalid refresh token');
@@ -115,6 +115,7 @@ export class AuthController {
       lastName: user.lastName,
       avatar: user.avatar,
       email: user.email,
+      role: user.role,
     };
   }
 
@@ -126,6 +127,6 @@ export class AuthController {
   @ApiOperation({ operationId: 'postLogout', summary: 'Выход из аккаунта' })
   @ApiResponse({ status: 200, description: 'Сессия завершена' })
   logout(@Res({ passthrough: true }) response: Response) {
-    response.cookie('refresh_token', '', { maxAge: 0 });
+    response.cookie('refresh_token', '', { httpOnly: true, secure: false, maxAge: 0 });
   }
 }

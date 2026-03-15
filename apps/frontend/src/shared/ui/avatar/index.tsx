@@ -21,7 +21,7 @@ export const Avatar = ({ src, variant = 'circle', size = 32, text, ...props }: A
   >
     <Condition
       else={
-        <Condition else={<Icons.User className={styles.icon} height='none' width='none' />} then={getInitials(text ?? '')} value={text} />
+        <Condition else={<Icons.User className={styles.icon} height='auto' width='auto' />} then={getInitials(text ?? '')} value={text} />
       }
       then={<img className={styles.img} src={src ?? undefined} {...props} />}
       value={src}

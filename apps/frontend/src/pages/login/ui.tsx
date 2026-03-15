@@ -15,13 +15,17 @@ const schema = z.object({
   password: schemas.password
 });
 
-export const LoginPage = ({ isAdmin = false }: { isAdmin?: boolean }) => {
-  const accentColor = isAdmin ? 'red.6' : 'indigo.8';
-  const [isLoading, isIncorrectData, submited] = useUnit([model.$isLoading, model.$isIncorrectData, model.submited]);
+export const LoginPage = () => {
+  const [isLoading, isIncorrectData, isAdminRouteOpened, submited] = useUnit([
+    model.$isLoading,
+    model.$isIncorrectData,
+    model.$isAdminRouteOpened,
+    model.submited
+  ]);
   const { register, handleSubmit, formState: { errors } } = useForm({ resolver: zodResolver(schema) });
 
   return (
-    <div className={clsx(styles.root, isAdmin && styles.admin)}>
+    <div className={clsx(styles.root, isAdminRouteOpened && styles.admin)}>
       <div className={styles.inner}>
         <form className={styles.form} onSubmit={handleSubmit(submited)}>
           <div>
@@ -47,10 +51,9 @@ export const LoginPage = ({ isAdmin = false }: { isAdmin?: boolean }) => {
           />
           <Button
             className={styles.button}
+            variant={isAdminRouteOpened ? 'filled-red-md' : 'filled-orange-md'}
             disabled={isIncorrectData}
-            variant='filled-orange-md'
             loading={isLoading}
-            color={accentColor}
             type='submit'
           >
             Войти
@@ -59,7 +62,7 @@ export const LoginPage = ({ isAdmin = false }: { isAdmin?: boolean }) => {
             <Typography className={styles.error} variant='label_S'>
               {isIncorrectData && 'Некорректный email или пароль'}
             </Typography>
-            <Typography to={routes.register} variant='link' as={Link}>Зарегистрироваться</Typography>
+            { !isAdminRouteOpened && <Typography to={routes.register} variant='link' as={Link}>Зарегистрироваться</Typography> }
           </div>
         </form>
       </div>

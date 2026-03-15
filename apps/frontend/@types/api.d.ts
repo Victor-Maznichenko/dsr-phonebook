@@ -42,3 +42,26 @@ interface PatchUserPasswords {
   oldPassword: string;
   newPassword: string;
 }
+
+interface AccessRequestUser {
+  firstName: string;
+  lastName: string;
+  avatar?: string;
+  email: string;
+  id: number;
+}
+
+interface AccessRequestDto {
+  status: 'approved' | 'pending' | 'rejected';
+  grantee: AccessRequestUser;
+  target: AccessRequestUser;
+  granteeUserId: number;
+  targetUserId: number;
+  createdAt: string;
+  id: number;
+}
+
+interface AccessRequestsResponse {
+  rows: AccessRequestDto[];
+  count: number;
+}

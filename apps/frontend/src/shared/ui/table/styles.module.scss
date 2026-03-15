@@ -1,0 +1,14 @@
+.table {
+    overflow-x: scroll;
+    border-spacing: 0;
+    border-top: 0.5rem solid var(--color-orange);
+    border-collapse: collapse;
+    text-align: center;
+}
+
+.td, .th {
+    border-collapse: collapse;
+    border-top: 0.0625rem solid var(--color-orange);
+    padding: 0.875rem;
+    line-height: 1.2;
+}

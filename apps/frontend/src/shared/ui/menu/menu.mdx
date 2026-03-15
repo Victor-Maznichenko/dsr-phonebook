@@ -1,0 +1,27 @@
+import { Canvas, Meta } from '@storybook/addon-docs/blocks';
+ 
+import * as MenuStories from './menu.stories';
+ 
+<Meta of={MenuStories} />
+ 
+# Menu
+
+<Canvas of={MenuStories.Example} />
+
+### Список компонентов:
+1) `Menu.Root` — контролирует состояние и позиционирование
+2) `Menu.Trigger` — кнопка открытия
+3) `Menu.Popup` — выпадающий список
+4) `Menu.Item` — опция
+
+### Примеры использования:
+```tsx
+    <Menu.Root style={{ width: 200 }} {...args}>
+      <Menu.Trigger>Menu.Trigger</Menu.Trigger>
+      <Menu.Popup>
+        {items.map((text) => (
+          <Menu.Item key={text}>{text}</Menu.Item>
+        ))}
+      </Menu.Popup>
+    </Menu.Root>
+```
