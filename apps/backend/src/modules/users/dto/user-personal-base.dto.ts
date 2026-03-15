@@ -1,5 +1,5 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsArray, IsDateString, IsString, Length } from 'class-validator';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { IsArray, IsDateString, IsOptional, IsString, Length } from 'class-validator';
 
 import { ValidationMessage } from '@/shared/constants';
 
@@ -46,4 +46,9 @@ export class UserPersonalBaseDto {
   @ApiProperty({ description: 'Дата рождения (ISO 8601)', example: '1990-01-01' })
   @IsDateString({}, { message: ValidationMessage.BIRTHDAY_MUST_BE_DATE })
   declare readonly birthday: string;
+
+  @ApiPropertyOptional({ description: 'О себе', example: 'Backend-разработчик' })
+  @IsOptional()
+  @IsString({ message: ValidationMessage.ABOUT_MUST_BE_STRING })
+  declare readonly about?: string;
 }

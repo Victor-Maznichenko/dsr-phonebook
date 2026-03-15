@@ -26,6 +26,8 @@
     "lint:fix": "turbo lint:fix"
   },
   "dependencies": {
+    "@faker-js/faker": "^10.3.0",
+    "nest-commander": "^3.20.1",
     "uuid": "^13.0.0"
   }
 }

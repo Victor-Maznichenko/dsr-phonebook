@@ -8,6 +8,7 @@ import { resolve } from 'node:path';
 import { AccessRequestsModule, AuthGuard, AuthModule, UsersModule } from '@/modules';
 
 import { FilesModule } from './modules/files/files.module';
+import { SeedCommand } from './seed.command';
 
 @Module({
    imports: [
@@ -57,6 +58,6 @@ import { FilesModule } from './modules/files/files.module';
     FilesModule,
   ],
   controllers: [],
-  providers: [{ provide: APP_GUARD, useClass: AuthGuard }],
+  providers: [{ provide: APP_GUARD, useClass: AuthGuard }, SeedCommand],
 })
 export class AppModule {}

@@ -2,11 +2,19 @@ import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, OpenAPIObject, SwaggerModule } from '@nestjs/swagger';
 import cookieParser from 'cookie-parser';
+import { CommandFactory } from 'nest-commander';
 import process from 'node:process';
 
 import { AppModule } from './app.module';
 
 async function bootstrap() {
+  const hasCliCommand = process.argv.slice(2).length > 0;
+
+  if (hasCliCommand) {
+    await CommandFactory.run(AppModule);
+    return;
+  }
+
   const app = await NestFactory.create(AppModule);
 
   app.enableCors({
