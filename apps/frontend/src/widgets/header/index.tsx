@@ -2,14 +2,14 @@ import { Link } from 'atomic-router-react';
 import clsx from 'clsx';
 import { useUnit } from 'effector-react';
 import { routes } from '@/shared/config';
-import { $isAdmin } from '@/shared/lib';
+import { selfModel } from '@/shared/session';
 import { ThemeSwitcher } from '@/features';
 import { Avatar, Button, Icons, Menu } from '@/shared/ui';
 import { model } from './model';
 import styles from './styles.module.scss';
 
 export const Header = () => {
-  const [isAdmin, logout] = useUnit([$isAdmin, model.logout]);
+  const [isAdmin, logout] = useUnit([selfModel.$isAdmin, model.logout]);
   return (
     <header className={styles.header}>
       <div className={clsx('container', styles.inner)}>

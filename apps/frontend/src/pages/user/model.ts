@@ -4,8 +4,8 @@ import { attach, combine, createEffect, createEvent, createStore, sample } from 
 import { reset } from 'patronum';
 import { requests } from '@/shared/api';
 import { routes } from '@/shared/config';
-import { $isAdmin, $me, deleteAccessTokenFx } from '@/shared/lib';
-import { chainAuthorized } from '@/shared/session';
+import { $me, deleteAccessTokenFx } from '@/shared/lib';
+import { chainAuthorized, selfModel } from '@/shared/session';
 
 /*
 ===================
@@ -43,7 +43,7 @@ sample({
   target: $userId
 });
 
-const $hasPermissions = combine($userId, $isAdmin, (userId, isAdmin) => userId === null || isAdmin);
+const $hasPermissions = combine($userId, selfModel.$isAdmin, (userId, isAdmin) => userId === null || isAdmin);
 
 /*
 ===================

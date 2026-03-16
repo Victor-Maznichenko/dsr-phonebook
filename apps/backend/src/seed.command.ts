@@ -19,7 +19,7 @@ export class SeedCommand extends CommandRunner {
     super();
   }
 
-  async run(): Promise<void> {
+  private async seedUsers(): Promise<void> {
     // Предопределенный список админов
     const admins: CreateUserDto[] = [
       {
@@ -71,6 +71,10 @@ export class SeedCommand extends CommandRunner {
         this.logger.warn(`Failed to create user #${i}`, error as any);
       }
     }
+  }
+
+  async run(): Promise<void> {
+    await this.seedUsers();
 
     this.logger.log('Seeding completed!');
   }

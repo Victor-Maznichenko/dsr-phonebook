@@ -7,7 +7,6 @@ export const deleteAccessTokenFx = createEffect(() => localStorage.removeItem('a
 
 const getMeFx = createEffect(requests.getMe);
 export const $me = createStore<Nullable<UserMe>>(null);
-export const $isAdmin = $me.map((me) => Boolean(me?.role));
 
 sample({
   clock: [setAccessTokenFx.done, appStarted],

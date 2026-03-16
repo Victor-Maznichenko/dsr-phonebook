@@ -1,6 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Link } from 'atomic-router-react';
-import clsx from 'clsx';
 import { useUnit } from 'effector-react';
 import { Controller, useForm } from 'react-hook-form';
 import { routes } from '@/shared/config';
@@ -10,12 +9,12 @@ import { schema } from './lib';
 import { model } from './model';
 import styles from './styles.module.scss';
 
-export const RegisterPage = ({ isAdmin = false }: { isAdmin?: boolean }) => {
+export const RegisterPage = () => {
   const [isLoading, errorMessage, submitted] = useUnit([model.$isLoading, model.$errorMessage, model.submitted]);
   const { control, register, handleSubmit, formState: { errors } } = useForm({ resolver: zodResolver(schema) });
 
   return (
-    <div className={clsx(styles.root, isAdmin && styles.admin)}>
+    <div className={styles.root}>
       <div className={styles.inner}>
         <form className={styles.form} onSubmit={handleSubmit(submitted)}>
           <div>
