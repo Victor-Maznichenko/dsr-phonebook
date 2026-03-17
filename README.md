@@ -9,6 +9,22 @@
 [![Bun](https://img.shields.io/badge/runtime-bun-000000.svg?logo=bun)](https://bun.sh)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
+## 🔎 Демо
+Демо: [dsr-phonebook.netlify.app](https://dsr-phonebook.netlify.app/)  
+
+**Аккаунты для демонстрации:**
+
+1. **Админ**
+    - email: `admin@mail.ru`
+    - password: `Password!23`
+        
+2. **Пользователь**
+    - email: `user@mail.ru`
+    - password: `Password!23`
+
+> Примечание: эти учётные записи доступны на демо-сборке. <br>При проблемах с доступом проверьте состояние сервиса или следуйте инструкции по локальному запуску ниже.
+
+<br>
 
 ---
 ## Технические требования
