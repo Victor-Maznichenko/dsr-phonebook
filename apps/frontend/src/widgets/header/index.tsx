@@ -10,6 +10,7 @@ import styles from './styles.module.scss';
 
 export const Header = () => {
   const [isAdmin, logout] = useUnit([selfModel.$isAdmin, model.logout]);
+
   return (
     <header className={styles.header}>
       <div className={clsx('container', styles.inner)}>
@@ -27,8 +28,8 @@ export const Header = () => {
             </Menu.Trigger>
             <Menu.Popup>
               <Menu.Item disabled>Ваша роль: {isAdmin ? 'Администратор' : 'Пользователь'}</Menu.Item>
-              <Menu.Item><Link to={routes.profile}>Профиль</Link></Menu.Item>
-              <Menu.Item><Button variant='text-sm' onClick={logout}>Выйти из аккаунта</Button></Menu.Item>
+              <Menu.Item to={routes.profile} as={Link}>Профиль</Menu.Item>
+              <Menu.Item variant='text-sm' onClick={logout} as={Button}>Выйти из аккаунта</Menu.Item>
             </Menu.Popup>
           </Menu.Root>
         </div>

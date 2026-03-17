@@ -90,6 +90,7 @@ $sizes: (
   all: unset;
   display: inline;
   transition: filter var(--trans-fast);
+  box-sizing: border-box;
   cursor: pointer;
 
   &:hover {
@@ -112,6 +113,7 @@ $sizes: (
 
 .unstyled {
   all: unset;
+  box-sizing: border-box;
   display: inline-block;
   cursor: pointer;
 }

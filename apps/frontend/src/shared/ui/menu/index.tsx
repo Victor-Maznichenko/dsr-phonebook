@@ -1,5 +1,5 @@
 import type { MenuProps } from './lib';
-import type { ComponentProps } from 'react';
+import type { ComponentProps, ElementType } from 'react';
 import { FloatingPortal } from '@floating-ui/react';
 import clsx from 'clsx';
 import { Typography } from '../typography';
@@ -71,21 +71,26 @@ const Popup = ({ className, children, ...props }: ComponentProps<'div'>) => {
 Child Item component
 ===================
 */
-interface ItemProps extends ComponentProps<'li'> {
+interface ItemOwnProps<T> {
   disabled?: boolean;
+  as?: T;
 }
 
-const Item = ({ className, disabled, value, children, onClick, ...props }: ItemProps) => {
+type ItemProps<T extends ElementType = 'div'> = ItemOwnProps<T> & Omit<ComponentProps<T>, keyof ItemOwnProps<T>>;
+
+const Item = <T extends ElementType = 'div'>({ className, disabled, children, as, ...props }: ItemProps<T>) => {
   const { handleClose } = useMenuContext();
+  const Component = as || 'div';
 
   return (
     <Typography
-      className={clsx(styles.option, disabled && styles.disabled, className)}
+      className={styles.option}
       onClick={handleClose}
       as='li'
-      {...props}
     >
-      {children}
+      <Component className={clsx(styles.option__inner, disabled && styles.disabled, className)} {...props}>
+        {children}
+      </Component>
     </Typography>
   );
 };
