@@ -1,7 +1,8 @@
 
-# 📒DSR Phonebook
+# 📒DSR Phonebook (проект не завершен)
 
-**Корпоративная телефонная книга**
+**Корпоративная телефонная книга**<br>
+Текстовое задание: <a target="_blank" href="task.pdf">тык</a>
 
 [![React](https://img.shields.io/badge/Frontend-React_19-61DAFB.svg?logo=react)](https://react.dev)
 [![NestJS](https://img.shields.io/badge/Backend-NestJS-E0234E.svg?logo=nestjs)](https://nestjs.com)
@@ -10,7 +11,7 @@
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 ## 🔎 Демо
-Демо: [dsr-phonebook.netlify.app](https://dsr-phonebook.netlify.app/)  
+Демо: <a target="_blank" href="https://dsr-phonebook.netlify.app/">dsr-phonebook.netlify.app</a>
 
 **Аккаунты для демонстрации:**
 
@@ -24,18 +25,15 @@
 
 > Примечание: эти учётные записи доступны на демо-сборке. <br>При проблемах с доступом проверьте состояние сервиса или следуйте инструкции по локальному запуску ниже.
 
-<br>
-
----
-## Технические требования
-
-- Node.js v22.17.0
-- bun
-
 ---
 <br>
 
 ## Быстрый старт
+
+### Технические требования
+
+- Node.js v22.17.0
+- bun
 
 ### 👷1. Локальный запуск
 ```bash
