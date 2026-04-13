@@ -28,7 +28,7 @@ export const api = ky.create({
       async (request, _options, response) => {
         if (response.status === 401) {
           try {
-            const newAccessToken = await ky.post(`${BASE_URL}/auth/refresh`, { credentials: 'include' }).text();
+            const newAccessToken = await ky.post(`${BASE_URL}auth/refresh`, { credentials: 'include' }).text();
 
             if (newAccessToken) {
               localStorage.setItem('access_token', newAccessToken);
