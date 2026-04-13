@@ -78,3 +78,31 @@ li {
 dialog:-internal-dialog-in-top-layer::backdrop {
   background-color: var(--color-black-25);
 }
+
+.noise {
+   position: fixed;
+   top: -300%;
+   left: -150%;
+   width: 600%;
+   height: 600%;
+   opacity: 0.1;
+   z-index: 9999;
+   animation: noise-grain 9s steps(10) infinite;
+   background-image: url('/images/noise.webp');
+   background-size: 12.5rem;
+   background-repeat: repeat;
+   pointer-events: none;
+}
+
+@keyframes noise-grain {
+  0%,
+  100% {
+     transform: translate(0); // Возврат к начальному положению
+  }
+
+  @for $i from 1 through 9 {
+     #{($i * 10) + '%'} {
+        transform: translate(#{math.random(30) - 15} + '%', #{math.random(30) - 15} + '%');
+     }
+  }
+}
