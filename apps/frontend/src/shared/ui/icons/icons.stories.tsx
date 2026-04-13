@@ -36,7 +36,7 @@ export const Gallery: Story = (args: { size: number; color: string }) => {
       >
         {entries.map(([name, Icon]) => (
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }} key={name}>
-            <div style={{ border: '1px solid #000', fontSize: 0 }}>
+            <div style={{ border: '1px dashed #000', fontSize: 0 }}>
               <Icon size={args.size} />
             </div>
             <span>{name}</span>

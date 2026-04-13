@@ -7,8 +7,8 @@ import styles from './styles.module.scss';
 
 export const Toast = ({ id, title, message, variant }: ToastType) => (
   <div className={clsx(styles.toast, styles[`variant-${variant}`])}>
-    <Typography className={styles.toastTitle} variant='heading_4' as='h6'>{title}</Typography>
-    <Typography className={styles.toastMessage}>{message}</Typography>
+    <Typography className={styles.toastTitle} variant='heading_5' as='h5'>{title}</Typography>
+    <Typography className={styles.toastMessage} variant='text_S'>{message}</Typography>
 
     <Button className={styles.toastClose} onClick={() => toast.close(id)} variant='unstyled'>
       <Icons.Cross />

@@ -5,6 +5,7 @@ type TypographyStyle =
   | 'heading_2'
   | 'heading_3'
   | 'heading_4'
+  | 'heading_5'
   | 'label_M'
   | 'label_S'
   | 'link'

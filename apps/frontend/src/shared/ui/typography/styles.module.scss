@@ -4,24 +4,10 @@
 .heading_2,
 .heading_3,
 .heading_4,
-.text_L,
-.text_M,
-.text_S,
-.link,
-.label_S,
-.label_M  {
-  font-family: Poppins, sans-serif;
-}
-
-// Заголовки (жирные)
-.heading_1,
-.heading_2,
-.heading_3,
-.heading_4 {
+.heading_5 {
   font-weight: 700;
 }
 
-// Основные тексты (нормальные)
 .text_L,
 .text_M,
 .text_S,
@@ -29,31 +15,23 @@
   font-weight: 400;
 }
 
-// Другое
 .label_S, .label_M {
    font-weight: 600;
 }
 
-// Индивидуальные размеры и высоты строк
-.heading_1 {
-  font-size: var(--fs-heading_1);
-  line-height: 105%;
+@mixin init-heading($size) {
+  .heading_#{$size} {
+    font-size: var(--fs-heading_#{$size});
+    line-height: 105%;
+  }
 }
 
-.heading_2 {
-  font-size: var(--fs-heading_2);
-  line-height: 105%;
-}
-
-.heading_3 {
-  font-size: var(--fs-heading_3);
-  line-height: 105%;
-}
-
-.heading_4 {
-  font-size: var(--fs-heading_4);
-  line-height: 105%;
-}
+@include init-heading(1);
+@include init-heading(2);
+@include init-heading(3);
+@include init-heading(4);
+@include init-heading(5);
+@include init-heading(6);
 
 .text_L {
   font-size: var(--fs-text_L);

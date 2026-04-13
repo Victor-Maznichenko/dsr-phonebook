@@ -15,6 +15,7 @@ const meta = {
         'heading_2',
         'heading_3',
         'heading_4',
+        'heading_5',
         'text_L',
         'text_M',
         'text_S'
@@ -43,6 +44,7 @@ export const AllVariants: Story = {
       <Typography variant='heading_2'>Heading 2 (40px)</Typography>
       <Typography variant='heading_3'>Heading 3 (30px)</Typography>
       <Typography variant='heading_4'>Heading 4 (24px)</Typography>
+      <Typography variant='heading_5'>Heading 5 (20px)</Typography>
       <Typography variant='text_L'>Text L (18px) — крупный текст</Typography>
       <Typography variant='text_M'>Text M (15px) — основной текст</Typography>
       <Typography variant='text_S'>Text S (12px) — мелкий текст</Typography>
