@@ -3,6 +3,7 @@ import { appStarted, router } from '@/shared/config';
 import { ThemeProvider } from '@/shared/lib';
 import { Pages } from '@/pages';
 import { Footer, Header } from '@/widgets';
+import { Toaster } from '@/shared/ui';
 import styles from './styles.module.scss';
 import '@/shared/styles/index.scss';
 
@@ -17,6 +18,7 @@ export const App = () => (
         </main>
         <Footer />
       </RouterProvider>
+      <Toaster />
       <div className='noise' />
     </ThemeProvider>
   </div>

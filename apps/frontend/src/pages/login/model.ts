@@ -4,6 +4,7 @@ import { reset } from 'patronum';
 import { requests } from '@/shared/api';
 import { routes } from '@/shared/config';
 import { setAccessTokenFx } from '@/shared/lib';
+import { toast } from '@/shared/ui';
 
 const route = routes.login;
 const adminRoute = routes.loginAdmin;
@@ -38,6 +39,14 @@ sample({
   clock: loginFx.fail,
   fn: () => true,
   target: $isIncorrectData
+});
+
+loginFx.fail.watch(() => {
+  toast.add({
+    title: 'Ошибка',
+    message: 'Ошибка авторизации. Попробуйте позже.',
+    variant: 'error'
+  });
 });
 
 sample({

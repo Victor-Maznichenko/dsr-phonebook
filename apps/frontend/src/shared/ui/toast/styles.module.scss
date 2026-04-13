@@ -1,0 +1,67 @@
+.toaster {
+   position: fixed;
+   bottom: 20px;
+   right: 20px;
+   display: flex;
+   row-gap: 20px;
+   flex-direction: column;
+   z-index: var(--z-toaster);
+}
+
+.toast {
+    padding: 10px 36px 10px 22px;
+    border-radius: 8px;
+    position: relative;    
+    background-color: var(--color-gray-light);
+    animation: notify-slide-in 250ms cubic-bezier(0.51, 0.3, 0, 1.21) forwards;
+    max-width: 350px;
+    overflow: hidden;
+
+    @keyframes notify-slide-in {
+        0% {
+            opacity: 0;
+            transform: translateX(100%);
+        }
+        100% {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    &:before {
+       content: '';
+       width: 6px;
+       position: absolute;
+       z-index: var(--z-over);
+       top: 8px;
+       left: 4px;
+       bottom: 8px;
+       border-radius: 8px;
+       background-color: var(--color-indigo);
+    }
+
+    &.variant-success {
+        &:before {
+           background-color: var(--color-green);
+        }
+    }    
+    
+    &.variant-error {
+        &:before {
+           background-color: var(--color-red);
+        }
+    }    
+}
+
+.toastTitle {
+   margin-bottom: 4px;
+}
+
+.toastClose {
+   position: absolute;
+   top: 8px;
+   right: 8px;
+   z-index: var(--z-over);
+   padding: 4px;
+   color: var(--color-white);
+}

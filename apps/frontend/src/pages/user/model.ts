@@ -6,6 +6,7 @@ import { requests } from '@/shared/api';
 import { routes } from '@/shared/config';
 import { $me, deleteAccessTokenFx } from '@/shared/lib';
 import { chainAuthorized, selfModel } from '@/shared/session';
+import { toast } from '@/shared/ui';
 
 /*
 ===================
@@ -74,6 +75,14 @@ sample({
   target: $user
 });
 
+getUserFx.fail.watch(() => {
+  toast.add({
+    title: 'Ошибка',
+    message: 'Не удалось загрузить пользователя. Попробуйте позже.',
+    variant: 'error'
+  });
+});
+
 /*
 ===================
 Удаление пользователя
@@ -100,6 +109,14 @@ sample({
 sample({
   clock: deleteUserFx.done,
   target: deleteAccessTokenFx
+});
+
+deleteUserFx.fail.watch(() => {
+  toast.add({
+    title: 'Ошибка',
+    message: 'Не удалось удалить пользователя. Попробуйте позже.',
+    variant: 'error'
+  });
 });
 
 /*
@@ -131,6 +148,14 @@ sample({
   target: [$user, closeModal]
 });
 
+patchPersonalFx.fail.watch(() => {
+  toast.add({
+    title: 'Ошибка',
+    message: 'Произошла ошибка. Попробуйте позже.',
+    variant: 'error'
+  });
+});
+
 /*
 ===================
 Изменение пароля
@@ -146,6 +171,14 @@ const patchCredentialsFx = attach({
     }
     return await requests.patchProfileCredentials(params.body);
   })
+});
+
+patchCredentialsFx.fail.watch(() => {
+  toast.add({
+    title: 'Ошибка',
+    message: 'Произошла ошибка. Попробуйте позже.',
+    variant: 'error'
+  });
 });
 
 sample({

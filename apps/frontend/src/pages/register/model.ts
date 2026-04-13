@@ -4,6 +4,7 @@ import { reset } from 'patronum';
 import { requests } from '@/shared/api';
 import { routes } from '@/shared/config';
 import { setAccessTokenFx } from '@/shared/lib';
+import { toast } from '@/shared/ui';
 
 const route = routes.register;
 const registerFx = createEffect(requests.postRegister);
@@ -26,6 +27,14 @@ sample({
   clock: registerFx.failData,
   fn: ({ message }) => message,
   target: $errorMessage
+});
+
+registerFx.fail.watch(() => {
+  toast.add({
+    title: 'Ошибка',
+    message: 'Ошибка регистрации. Попробуйте позже.',
+    variant: 'error'
+  });
 });
 
 sample({

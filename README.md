@@ -1,5 +1,5 @@
 
-# 📒DSR Phonebook (проект не завершен)
+# 📒DSR Phonebook 
 
 **Корпоративная телефонная книга**<br>
 Текстовое задание: <a target="_blank" href="task.pdf">тык</a>

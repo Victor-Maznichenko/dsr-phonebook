@@ -11,5 +11,6 @@ export * from './skeletons';
 export * from './spinner';
 export * from './table';
 export * from './textarea';
+export * from './toast';
 export * from './tooltip';
 export * from './typography';

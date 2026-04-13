@@ -14,12 +14,10 @@
   ],
   "packageManager": "bun@1.2.22",
   "devDependencies": {
-    "turbo": "^2.8.3",
-    "husky": "^9.1.7",
-    "lint-staged": "^16.2.7"
+    "lefthook": "^2.1.5",
+    "turbo": "^2.8.3"
   },
   "scripts": {
-    "prepare": "husky",
     "dev": "turbo dev",
     "build": "turbo build",
     "lint": "turbo lint",

@@ -1,0 +1,15 @@
+#   Refer for explanation to following link:
+#   https://lefthook.dev/configuration/
+#
+pre-push:
+  jobs:
+    - name: build
+      run: bun run build
+
+pre-commit:
+  parallel: true
+  jobs:
+    - name: lint
+      run: bunx eslint --fix "{staged_files}"
+      glob: '*.{js,ts,jsx,tsx}'
+      stage_fixed: true

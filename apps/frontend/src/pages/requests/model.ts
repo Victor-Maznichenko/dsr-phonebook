@@ -3,6 +3,7 @@ import { chainRoute } from 'atomic-router';
 import { createEffect, createEvent, createStore, sample } from 'effector';
 import { requests } from '@/shared/api';
 import { routes } from '@/shared/config';
+import { toast } from '@/shared/ui';
 
 const $accessRequests = createStore<AccessRequestDto[]>([]);
 const getAccessRequests = createEvent();
@@ -25,6 +26,14 @@ const authorizedRoute = chainRoute({
   beforeOpen: getAccessRequests,
   openOn: getAccessRequestsFx.done,
   cancelOn: getAccessRequestsFx.fail
+});
+
+getAccessRequestsFx.fail.watch(() => {
+  toast.add({
+    title: 'Ошибка',
+    message: 'Не удалось загрузить запросы доступа. Попробуйте позже.',
+    variant: 'error'
+  });
 });
 
 /* DELETE REQUEST */
