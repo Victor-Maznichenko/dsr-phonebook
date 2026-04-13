@@ -1,20 +1,21 @@
 
 # 📒DSR Phonebook 
 
-**Корпоративная телефонная книга**<br>
-Текстовое задание: <a target="_blank" href="task.pdf">тык</a>
+Техническое задание: <a target="_blank" href="task.pdf">тык</a>
 
-[![React](https://img.shields.io/badge/Frontend-React_19-61DAFB.svg?logo=react)](https://react.dev)
-[![NestJS](https://img.shields.io/badge/Backend-NestJS-E0234E.svg?logo=nestjs)](https://nestjs.com)
-[![Turborepo](https://img.shields.io/badge/build-turborepo-EF4444.svg?logo=turbo)](https://turbo.build)
-[![Bun](https://img.shields.io/badge/runtime-bun-000000.svg?logo=bun)](https://bun.sh)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+<span><img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React Badge"></span>
+<span><img src="https://img.shields.io/badge/NestJS-E0234E?style=for-the-badge&logo=nestjs&logoColor=white" alt="NestJS logo" title="NestJS" style="height: 25px" /></span>
+<span><img src="https://img.shields.io/badge/Turbo-EF4444?style=for-the-badge&logo=turbo&logoColor=white" alt="turbo logo" title="turbo" style="height: 25px" /></span>
+<span><img src="https://img.shields.io/badge/bun-000000?style=for-the-badge&logo=bun&logoColor=white" alt="bun logo" title="turbo" style="height: 25px" /></span>
+<span><img src="https://img.shields.io/badge/license-MIT-blue?style=for-the-badge&logo=license-MIT-blue.svg&logoColor=white" alt="bun logo" title="turbo" style="height: 25px" /></span>
 
 ## 🔎 Демо
 Демо: <a target="_blank" href="https://dsr-phonebook.netlify.app/">dsr-phonebook.netlify.app</a><br>
+Storybook: <a target="_blank" href="https://dsr-phonebook-storybook.netlify.app/">https://dsr-phonebook-storybook.netlify.app/</a><br>
 Swagger: <a target="_blank" href="https://backend-production-b18b.up.railway.app/api/docs">https://backend-production-b18b.up.railway.app/api/docs</a>
 
 **Аккаунты для демонстрации:**
+> Доступны на деплое по ссылке выше. 
 
 1. **Админ**
     - email: `admin@mail.ru`
@@ -24,9 +25,7 @@ Swagger: <a target="_blank" href="https://backend-production-b18b.up.railway.app
     - email: `user@mail.ru`
     - password: `Password!23`
 
-> Примечание: эти учётные записи доступны на демо-сборке. <br>При проблемах с доступом проверьте состояние сервиса или следуйте инструкции по локальному запуску ниже.
 
----
 <br>
 
 ## Быстрый старт
@@ -38,42 +37,33 @@ Swagger: <a target="_blank" href="https://backend-production-b18b.up.railway.app
 
 ### 👷1. Локальный запуск
 ```bash
-# Клонировать репозиторий  
 git clone https://github.com/Victor-Maznichenko/dsr-phonebook.git  
 cd dsr-phonebook  
-  
-# Установить зависимости  
 bun install  
-  
-# Запустить dev-сервер  
 bun run dev
 ```
 
 Перед запуском:
 - разверните `PostgreSQL`
-- заполните `.env` для frontend и backend (примеры уже есть в проекте)
+- заполните `.env` для frontend и backend (cм. .env.example)
 
 ---
 
 ### 🐳 2. Через Docker
 
 ```bash
-# Клонировать репозиторий  
 git clone https://github.com/Victor-Maznichenko/dsr-phonebook.git  
 cd dsr-phonebook  
-  
-# Запуск  
 docker compose up --build
 ```
 
 Приложение будет доступно:
-- 🌐 **Frontend**: http://localhost:5173
-- 🔌 **Backend API**: http://localhost:7000
-- 📖 **Swagger**: http://localhost:7000/api
-- 🗄️ **pgAdmin**: http://localhost:5050
+- **Frontend**: http://localhost:5173/
+- **Backend API**: http://localhost:7000/api/
+- **Swagger**: http://localhost:7000/api/docs/
+- **pgAdmin**: http://localhost:5050/        
 
 
----
 <br>
 
 ## 📜 Доступные скрипты
@@ -107,11 +97,10 @@ docker compose up --build
 | `bun run lint` | Проверка кода линтером |
 
 
----
 <br>
 
 # 🏗️ Архитектура
-Проект построен по принципу **монорепозитория** с использованием [Turborepo](https://turbo.build):
+Проект является монорепозиторием:
 ```
 dsr-phonebook/
 ├── apps/
@@ -121,18 +110,17 @@ dsr-phonebook/
 └── package.json
 ```
 
----
 
 ## Frontend
 
-**Библиотеки:**
-- `React 19` + `TypeScript` — современные возможности React
-- `Effector` — state management
-- `Atomic Router` — маршрутизация
-- `React Hook Form` + `Zod` — работа с формами и валидация
-- `Storybook` — документация компонентов
+**Основные библиотеки:**
+- `React 19` + `TypeScript` 
+- `Effector` — State management
+- `Atomic Router` — Маршрутизация
+- `React Hook Form` + `Zod` — Работа с формами и валидация
+- `Storybook` — Документация ui-kit-а
 
-**Архитектура FSD (Feature-Sliced Design):**
+**Архитектура фронтенда:**
 
 ```
 # Типы предопределенные во всем приложении
@@ -172,7 +160,7 @@ src/
 │   ├── session/
 │   ├── styles/
 │   │
-│   │   # UI-компоненты
+│   │   # UI-компоненты (без бизнес логики)
 │   ├── ui/                  
 │   │   ├── action-button/
 │   │   ├── avatar/
@@ -186,24 +174,25 @@ src/
 │   │   ├── skeletons/
 │   │   ├── spinner/
 │   │   ├── table/
+│   │   ├── toast/
 │   │   ├── textarea/
 │   │   ├── tooltip/
 │   │   └── typography/
 └── main.tsx
 ```
 
----
 
 ## Backend
 
-**Библиотеки:**
-- `NestJS` — масштабируемый `Node.js` фреймворк
-- `PostgreSQL` + `Sequelize` — база данных и ORM
-- `JWT` — аутентификация
+**Основные библиотеки:**
+- `NestJS` — `Node.js` фреймворк
+- `PostgreSQL` + `Sequelize` — БД и ORM
+- `JWT` — Аутентификация
 - `Swagger` — API документация
-- `class-validator` — валидация данных
+- `class-validator` — Валидация данных
 
 
+**Архитектура бэкенда:**
 ```
 # Типы предопределенные во всем приложении
 @types
@@ -225,17 +214,3 @@ src/
 ├── main.ts
 └── seed.command.ts
 ```
-
-
----
-
-## 📄 Лицензия
-MIT License
-
----
-
-<div align="center">
-
-**Создано с ❤️ для удобного управления корпоративными контактами**
-
-</div>
