@@ -11,7 +11,7 @@
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 ## 🔎 Демо
-Демо: <a target="_blank" href="https://dsr-phonebook.netlify.app/">dsr-phonebook.netlify.app</a>
+Демо: <a target="_blank" href="https://dsr-phonebook.netlify.app/">dsr-phonebook.netlify.app</a><br>
 Swagger: <a target="_blank" href="https://backend-production-b18b.up.railway.app/api/docs">https://backend-production-b18b.up.railway.app/api/docs</a>
 
 **Аккаунты для демонстрации:**
